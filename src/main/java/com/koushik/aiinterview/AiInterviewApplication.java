@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AiInterviewApplication {
 
     public static void main(String[] args) {
+        System.out.println("=== DEBUG: DB_URL ENV VAR IS: " + System.getenv("DB_URL") + " ===");
         SpringApplication.run(AiInterviewApplication.class, args);
     }
 }
