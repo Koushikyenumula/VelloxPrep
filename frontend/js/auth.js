@@ -21,7 +21,7 @@ const Auth = (() => {
             localStorage.setItem('createdAt', createdAt);
         }
         if (profileImageUrl) {
-            localStorage.setItem('profileImageUrl', 'https://velloxprep-api.onrender.com' + profileImageUrl);
+            localStorage.setItem('profileImageUrl', 'https://velloxprep.onrender.com' + profileImageUrl);
         }
     }
 
