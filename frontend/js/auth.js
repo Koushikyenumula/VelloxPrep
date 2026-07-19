@@ -21,7 +21,7 @@ const Auth = (() => {
             localStorage.setItem('createdAt', createdAt);
         }
         if (profileImageUrl) {
-            localStorage.setItem('profileImageUrl', 'http://localhost:8080' + profileImageUrl);
+            localStorage.setItem('profileImageUrl', 'https://velloxprep.onrender.com' + profileImageUrl);
         }
     }
 
