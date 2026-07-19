@@ -11,7 +11,7 @@
 const API = (() => {
     'use strict';
 
-    const BASE_URL = 'https://velloxprep.onrender.com/api';
+    const BASE_URL = 'https://velloxprep-api.onrender.com/api';
 
     // Core helper to process responses and handle errors
     async function handleResponse(response) {
