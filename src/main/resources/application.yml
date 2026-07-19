@@ -9,7 +9,7 @@ spring:
 
   # ── Datasource (MySQL) ──────────────────────────────────────────────
   datasource:
-    url: jdbc:mysql://localhost:3306/ai_interview_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://tokaido.proxy.rlwy.net:57675/railway?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME:root}
     password: ${DB_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
