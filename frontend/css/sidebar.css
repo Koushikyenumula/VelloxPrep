@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════
+   REUSABLE COLLAPSIBLE SIDEBAR Styles
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Desktop Collapsible Styles ─────────────────────────────────── */
+@media (min-width: 992px) {
+    /* Transition sidebar width and main-content margin-left */
+    .sidebar {
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .main-content {
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* Collapsed state adjustments */
+    body.sidebar-collapsed {
+        --sidebar-width: 80px;
+    }
+
+    body.sidebar-collapsed .sidebar-brand-text,
+    body.sidebar-collapsed .sidebar-link span,
+    body.sidebar-collapsed .sidebar-user-info,
+    body.sidebar-collapsed .sidebar-logout-btn span {
+        opacity: 0;
+        visibility: hidden;
+        width: 0;
+        display: none !important;
+    }
+
+    body.sidebar-collapsed .sidebar-header {
+        justify-content: center;
+        padding: 1.5rem 0.5rem;
+    }
+
+    body.sidebar-collapsed .sidebar-brand {
+        justify-content: center;
+    }
+
+    body.sidebar-collapsed .sidebar-menu-item a {
+        justify-content: center;
+        padding: 0.75rem 0.5rem;
+        gap: 0;
+    }
+
+    body.sidebar-collapsed .sidebar-logout-btn {
+        justify-content: center;
+        padding: 0.75rem 0.5rem;
+        gap: 0;
+    }
+
+    body.sidebar-collapsed .sidebar-user {
+        justify-content: center;
+        padding: 0.75rem 0.5rem;
+        gap: 0;
+    }
+}
+
+/* ── Sidebar Collapse Button ────────────────────────────────────── */
+.sidebar-collapse-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 0;
+    font-size: 0.85rem;
+}
+
+.sidebar-collapse-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--primary-light);
+    transform: scale(1.1);
+}
+
+body.sidebar-collapsed .sidebar-collapse-btn i {
+    transform: rotate(180deg);
+}
+
+/* Make sure elements transition smoothly */
+.sidebar-brand-text,
+.sidebar-link span,
+.sidebar-user-info,
+.sidebar-logout-btn span {
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}

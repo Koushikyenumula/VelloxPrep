@@ -1,0 +1,153 @@
+/* ═══════════════════════════════════════════════════════════════════
+   RESULTS PAGE — Page-Specific Custom Styling
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Back to List Link ───────────────────────────────────────────── */
+.btn-back-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.btn-back-list:hover {
+    color: var(--text-primary);
+    border-color: var(--primary-light);
+    transform: translateX(-4px);
+    box-shadow: 0 4px 12px hsla(230, 80%, 60%, 0.15);
+}
+
+/* ── Session Meta Badge ─────────────────────────────────────────── */
+.session-meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.88rem;
+}
+
+.session-meta-badge .meta-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+}
+
+.session-meta-badge .meta-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* ── Table Cell Wrap & Spacing ──────────────────────────────────── */
+.table-dashboard tbody td {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+/* ── Score Badge ────────────────────────────────────────────────── */
+.badge-score {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: var(--radius-sm);
+}
+
+.badge-score.success {
+    background-color: hsla(145, 65%, 45%, 0.15);
+    color: var(--success);
+    border: 1px solid hsla(145, 65%, 45%, 0.3);
+}
+
+.badge-score.warning {
+    background-color: hsla(38, 92%, 55%, 0.15);
+    color: var(--warning);
+    border: 1px solid hsla(38, 92%, 55%, 0.3);
+}
+
+.badge-score.danger {
+    background-color: hsla(0, 75%, 60%, 0.15);
+    color: var(--danger);
+    border: 1px solid hsla(0, 75%, 60%, 0.3);
+}
+
+/* ── Text Areas in Feedback Table ───────────────────────────────── */
+.text-block {
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.text-block::-webkit-scrollbar {
+    width: 6px;
+}
+
+.text-block::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.text-block::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 3px;
+}
+
+/* ── Difficulty Badges ──────────────────────────────────────────── */
+.difficulty-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.difficulty-badge.easy {
+    background: hsla(145, 65%, 45%, 0.15);
+    color: var(--success);
+}
+
+.difficulty-badge.medium {
+    background: hsla(38, 92%, 55%, 0.15);
+    color: var(--warning);
+}
+
+.difficulty-badge.hard {
+    background: hsla(0, 75%, 60%, 0.15);
+    color: var(--danger);
+}
+
+/* ── Search Input ───────────────────────────────────────────────── */
+.search-box .form-control {
+    color: var(--text-primary) !important;
+}
+
+.search-box .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.search-box .form-control:focus {
+    background-color: var(--bg-input) !important;
+    border-color: var(--border-focus);
+    box-shadow: none;
+}

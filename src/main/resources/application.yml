@@ -1,0 +1,102 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  VelloxPrep Platform
+#  Application Configuration
+# ═══════════════════════════════════════════════════════════════════════
+
+spring:
+  application:
+    name: ai-interview-prep
+
+  # ── Datasource (MySQL) ──────────────────────────────────────────────
+  datasource:
+    url: jdbc:mysql://localhost:3306/ai_interview_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # ── JPA / Hibernate ────────────────────────────────────────────────
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  # ── Jackson ─────────────────────────────────────────────────────────
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+    time-zone: UTC
+
+  # ── Mail (optional — configure when needed) ─────────────────────────
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+  # ── Multipart File Upload ─────────────────────────────────────────────
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# ── Server ──────────────────────────────────────────────────────────
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# ── JWT ─────────────────────────────────────────────────────────────
+app:
+  jwt:
+    secret: ${JWT_SECRET:bXlTdXBlclNlY3JldEtleUZvckp3dEF1dGhlbnRpY2F0aW9uQWlJbnRlcnZpZXdQbGF0Zm9ybTIwMjU=}
+    expiration-ms: 86400000        # 24 hours
+    refresh-expiration-ms: 604800000  # 7 days
+    issuer: ai-interview-platform
+  upload:
+    dir: uploads
+  gemini:
+    api-key: ${GEMINI_API_KEY:your_api_key_here}
+    model: gemini-3.1-flash-lite
+    temperature: 0.7
+    max-output-tokens: 2048
+    base-url: https://generativelanguage.googleapis.com
+
+# ── Logging ─────────────────────────────────────────────────────────
+logging:
+  level:
+    root: INFO
+    com.koushik.aiinterview: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %cyan(%logger{36}) — %msg%n"
+
+# ── Swagger / OpenAPI ───────────────────────────────────────────────
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+
+# ── Actuator ────────────────────────────────────────────────────────
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  endpoint:
+    health:
+      show-details: when-authorized

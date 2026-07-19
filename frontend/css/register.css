@@ -1,0 +1,420 @@
+/* ═══════════════════════════════════════════════════════════════════
+   REGISTER PAGE — Premium Glassmorphism Design
+   VelloxPrep Platform
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Custom Properties ───────────────────────────────────────── */
+:root {
+    --primary:        hsl(190, 90%, 50%);
+    --primary-light:  hsl(190, 90%, 65%);
+    --primary-dark:   hsl(190, 90%, 35%);
+    --accent:         hsl(320, 90%, 55%);
+    --accent-light:   hsl(320, 90%, 65%);
+
+    --bg-dark:        hsl(0, 0%, 4%);
+    --bg-card:        hsl(0, 0%, 8%);
+    --bg-input:       hsl(0, 0%, 12%);
+
+    --text-primary:   hsl(0, 0%, 96%);
+    --text-secondary: hsl(0, 0%, 65%);
+    --text-muted:     hsl(0, 0%, 45%);
+
+    --border-color:   hsla(0, 0%, 100%, 0.12);
+    --border-focus:   hsla(190, 90%, 50%, 0.50);
+
+    --success:        hsl(150, 80%, 40%);
+    --danger:         hsl(350, 80%, 50%);
+
+    --font-family:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --radius-sm:      6px;
+    --radius-md:      10px;
+    --radius-lg:      14px;
+
+    --shadow-card:    0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-input:   0 2px 6px rgba(0, 0, 0, 0.4);
+
+    --transition:     all 0.2s ease-out;
+}
+
+/* ── Base Reset ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-family);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ── Animated Background Orbs ────────────────────────────────────── */
+.bg-orbs {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: orbFloat 20s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    top: -10%;
+    left: -5%;
+    animation-duration: 22s;
+}
+
+.orb-2 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    bottom: -10%;
+    right: -5%;
+    animation-duration: 18s;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+    top: 50%;
+    left: 60%;
+    animation-duration: 25s;
+    animation-delay: -10s;
+    opacity: 0.25;
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25%      { transform: translate(30px, -40px) scale(1.05); }
+    50%      { transform: translate(-20px, 20px) scale(0.95); }
+    75%      { transform: translate(15px, 30px) scale(1.02); }
+}
+
+/* ── Register Wrapper ───────────────────────────────────────────── */
+.register-wrapper {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 0;
+}
+
+/* ── Register Card (Glassmorphism) ──────────────────────────────── */
+.register-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-card);
+    animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Brand Header ────────────────────────────────────────────────── */
+.brand-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    box-shadow: 0 4px 20px hsla(245, 80%, 55%, 0.35);
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.brand-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ── Input Fields ────────────────────────────────────────────────── */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.form-control {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.925rem;
+    font-weight: 400;
+    padding: 0.8rem 1rem 0.8rem 2.75rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow-input);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.form-control:hover {
+    border-color: hsla(230, 30%, 50%, 0.40);
+    background: hsla(225, 20%, 20%, 0.85);
+}
+
+.form-control:focus {
+    background: hsla(225, 20%, 20%, 0.90);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px hsla(230, 80%, 60%, 0.15),
+                var(--shadow-input);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.form-control:focus + .input-icon,
+.form-control:focus ~ .input-icon,
+.input-icon-wrapper:focus-within .input-icon {
+    color: var(--primary-light);
+}
+
+/* ── Validation States ───────────────────────────────────────────── */
+.form-control.is-invalid {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px hsla(0, 75%, 60%, 0.12);
+}
+
+.form-control.is-valid {
+    border-color: var(--success);
+    box-shadow: 0 0 0 3px hsla(145, 65%, 45%, 0.12);
+}
+
+.invalid-feedback {
+    font-size: 0.8rem;
+    color: var(--danger);
+    margin-top: 0.35rem;
+    padding-left: 0.25rem;
+    display: none;
+}
+
+.form-control.is-invalid ~ .invalid-feedback,
+.was-validated .form-control:invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* ── Password Toggle ─────────────────────────────────────────────── */
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 1.05rem;
+    transition: var(--transition);
+    z-index: 2;
+}
+
+.btn-toggle-password:hover {
+    color: var(--text-secondary);
+}
+
+/* ── Register Button ─────────────────────────────────────────────── */
+.btn-register {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-register::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        hsla(0, 0%, 100%, 0.12),
+        hsla(0, 0%, 100%, 0));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-register:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px hsla(245, 80%, 55%, 0.35);
+    color: #fff;
+}
+
+.btn-register:hover::before {
+    opacity: 1;
+}
+
+.btn-register:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px hsla(245, 80%, 55%, 0.25);
+}
+
+.btn-register:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-loader {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* ── Alert Styles ────────────────────────────────────────────────── */
+#alertContainer .alert {
+    background: hsla(0, 75%, 60%, 0.12);
+    border: 1px solid hsla(0, 75%, 60%, 0.25);
+    color: hsl(0, 70%, 72%);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+    animation: alertFadeIn 0.3s ease;
+}
+
+#alertContainer .alert-success {
+    background: hsla(145, 65%, 45%, 0.12);
+    border-color: hsla(145, 65%, 45%, 0.25);
+    color: hsl(145, 55%, 65%);
+}
+
+@keyframes alertFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Divider ─────────────────────────────────────────────────────── */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+/* ── Login Link ──────────────────────────────────────────────────── */
+.login-link {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.login-link a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.login-link a:hover {
+    color: var(--accent-light);
+    text-decoration: underline;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────── */
+.footer-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+    .register-card {
+        padding: 2rem 1.5rem;
+        border-radius: var(--radius-md);
+    }
+
+    .brand-title {
+        font-size: 1.3rem;
+    }
+
+    .brand-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .register-card {
+        padding: 1.75rem 1.25rem;
+    }
+}
+
+/* ── Reduced Motion Preference ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .orb,
+    .register-card,
+    #alertContainer .alert {
+        animation: none !important;
+    }
+
+    .btn-register:hover {
+        transform: none;
+    }
+}

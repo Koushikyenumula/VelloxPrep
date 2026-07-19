@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Resume Analyzer — upload your resume, receive ATS optimization feedback, and extract key skills.">
+    <title>Resume Management — VelloxPrep</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+
+    <!-- Auth Guard and Fetch Interceptor -->
+    <script src="../js/auth.js"></script>
+</head>
+<body>
+
+    <!-- ── Animated Background Orbs ──────────────────────────────────── -->
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- ── Sidebar Overlay (Mobile) ──────────────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── Main Content ──────────────────────────────────────────────── -->
+    <div class="main-content" id="mainContent">
+
+        <!-- ── Top Navbar ────────────────────────────────────────────── -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="topbar-toggle d-lg-none" id="sidebarToggleBtn" aria-label="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div>
+                    <h1 class="topbar-title">Resume Management</h1>
+                    <p class="topbar-subtitle">Analyze and optimize your resume for applicant tracking systems (ATS).</p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <span class="topbar-date" id="currentDate"></span>
+            </div>
+        </header>
+
+        <!-- ── Page Content ──────────────────────────────────────────── -->
+        <div class="page-content">
+            <div class="row g-4">
+                <!-- Left Column: Upload Dropzone & Analysis Results -->
+                <div class="col-lg-5">
+                    <!-- Upload Box -->
+                    <div class="glass-panel p-4 mb-4">
+                        <h2 class="h5 text-primary mb-3">
+                            <i class="bi bi-cloud-arrow-up-fill me-2"></i>Upload Resume
+                        </h2>
+                        <div class="upload-dropzone text-center p-5 border border-2 border-dashed rounded-3" id="uploadDropzone" style="cursor: pointer; border-color: var(--border-color) !important; transition: var(--transition);">
+                            <input type="file" id="fileInput" accept=".pdf" class="d-none">
+                            <i class="bi bi-file-earmark-pdf-fill text-secondary mb-3" style="font-size: 3.5rem; opacity: 0.7;"></i>
+                            <h3 class="h6 mb-2">Drag & Drop your Resume</h3>
+                            <p class="text-muted small mb-3">Only PDF files are supported (Max 10MB)</p>
+                            <button type="button" class="btn btn-outline-primary btn-sm px-4" id="browseBtn">
+                                Browse File
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Result Panel (Hidden by default) -->
+                    <div class="glass-panel p-4 d-none" id="analysisResultPanel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="h5 text-primary m-0">
+                                <i class="bi bi-clipboard-data-fill me-2"></i>Analysis Results
+                            </h2>
+                            <button type="button" class="btn-close btn-close-white" id="closeResultBtn" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Score card -->
+                        <div class="text-center py-4 mb-4 rounded-3" style="background: rgba(0, 0, 0, 0.15); border: 1px solid var(--border-color);">
+                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle border border-4 mb-2" id="resultScoreBorder" style="width: 90px; height: 90px; border-color: var(--primary) !important;">
+                                <span class="fs-2 fw-bold text-light" id="resultAtsScore">0%</span>
+                            </div>
+                            <h3 class="h6 text-secondary m-0">ATS Score Compatibility</h3>
+                        </div>
+
+                        <!-- Metadata -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: var(--border-color) !important;">
+                                <span class="text-secondary">File Name</span>
+                                <span class="fw-medium text-light text-truncate ms-2" style="max-width: 200px;" id="resultFileName">-</span>
+                            </div>
+                            <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: var(--border-color) !important;">
+                                <span class="text-secondary">File Size</span>
+                                <span class="fw-medium text-light" id="resultFileSize">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Extracted Skills -->
+                        <div>
+                            <h3 class="h6 text-secondary mb-2">AI-Extracted Skills</h3>
+                            <div class="d-flex flex-wrap gap-2" id="resultSkillsContainer">
+                                <!-- Tags dynamically generated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Resumes History List -->
+                <div class="col-lg-7">
+                    <div class="glass-panel p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2 class="h5 text-primary m-0">
+                                <i class="bi bi-file-earmark-text-fill me-2"></i>Resume Directory
+                            </h2>
+                            <span class="badge bg-secondary" id="resumeCountBadge">0 Total</span>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-dashboard align-middle m-0" style="--bs-table-border-color: var(--border-color);">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-secondary py-3">File Name</th>
+                                        <th scope="col" class="text-secondary py-3 text-center">ATS Score</th>
+                                        <th scope="col" class="text-secondary py-3 text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resumesTableBody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="text-center py-5 d-none" id="emptyState">
+                            <i class="bi bi-file-earmark-plus text-muted mb-3" style="font-size: 3.5rem; opacity: 0.5;"></i>
+                            <h3 class="h6 text-secondary">No Resumes Uploaded Yet</h3>
+                            <p class="text-muted small mb-0">Upload your resume to evaluate your ATS compatibility score.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteResumeModal" tabindex="-1" aria-labelledby="deleteResumeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-panel border-color text-light">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title text-danger" id="deleteResumeModalLabel">
+                        <i class="bi bi-trash3-fill me-2"></i> Delete Resume
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    Are you sure you want to delete this resume? This action cannot be undone.
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger px-4 py-2" id="confirmDeleteBtn">
+                        <i class="bi bi-trash3-fill me-1"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- API Client -->
+    <script src="../js/api.js"></script>
+
+    <!-- Reusable Sidebar -->
+    <script src="../js/components.js"></script>
+
+    <!-- Page Controller -->
+    <script src="../js/resume.js"></script>
+</body>
+</html>
