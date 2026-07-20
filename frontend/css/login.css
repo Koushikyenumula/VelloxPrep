@@ -5,11 +5,11 @@
 
 /* ── CSS Custom Properties ───────────────────────────────────────── */
 :root {
-    --primary:        hsl(190, 90%, 50%);
-    --primary-light:  hsl(190, 90%, 65%);
-    --primary-dark:   hsl(190, 90%, 35%);
-    --accent:         hsl(320, 90%, 55%);
-    --accent-light:   hsl(320, 90%, 65%);
+    --primary:        hsl(0, 0%, 40%);
+    --primary-light:  hsl(0, 0%, 55%);
+    --primary-dark:   hsl(0, 0%, 25%);
+    --accent:         hsl(0, 0%, 60%);
+    --accent-light:   hsl(0, 0%, 75%);
 
     --bg-dark:        hsl(0, 0%, 4%);
     --bg-card:        hsl(0, 0%, 8%);
@@ -20,7 +20,7 @@
     --text-muted:     hsl(0, 0%, 45%);
 
     --border-color:   hsla(0, 0%, 100%, 0.12);
-    --border-focus:   hsla(190, 90%, 50%, 0.50);
+    --border-focus:   hsla(0, 0%, 50%, 0.50);
 
     --success:        hsl(150, 80%, 40%);
     --danger:         hsl(350, 80%, 50%);

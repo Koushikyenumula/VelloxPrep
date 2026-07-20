@@ -5,12 +5,12 @@
 
 /* ── CSS Custom Properties ───────────────────────────────────────── */
 :root {
-    /* Vercel / Linear Ultra-Premium Dark Mode Palette */
-    --primary:        hsl(190, 90%, 50%); /* Neon Cyan */
-    --primary-light:  hsl(190, 90%, 65%);
-    --primary-dark:   hsl(190, 90%, 35%);
-    --accent:         hsl(320, 90%, 55%); /* Vivid Magenta */
-    --accent-light:   hsl(320, 90%, 65%);
+    /* Minimal Monochromatic Palette */
+    --primary:        hsl(0, 0%, 40%);
+    --primary-light:  hsl(0, 0%, 55%);
+    --primary-dark:   hsl(0, 0%, 25%);
+    --accent:         hsl(0, 0%, 60%);
+    --accent-light:   hsl(0, 0%, 75%);
 
     --bg-dark:        hsl(0, 0%, 4%); /* Almost pure black */
     --bg-card:        hsl(0, 0%, 8%); /* Solid dark gray, no transparency */
@@ -23,19 +23,19 @@
     --text-muted:     hsl(0, 0%, 45%);
 
     --border-color:   hsla(0, 0%, 100%, 0.12); /* Crisp thin borders */
-    --border-focus:   hsla(190, 90%, 50%, 0.50);
+    --border-focus:   hsla(0, 0%, 50%, 0.50);
 
     --success:        hsl(150, 80%, 40%);
     --danger:         hsl(350, 80%, 50%);
     --warning:        hsl(40, 90%, 50%);
     --info:           hsl(210, 90%, 50%);
 
-    --color-interviews:  hsl(190, 90%, 50%);
-    --color-average:     hsl(320, 90%, 55%);
-    --color-best:        hsl(40, 90%, 50%);
-    --color-accuracy:    hsl(150, 80%, 40%);
-    --color-resumes:     hsl(210, 90%, 50%);
-    --color-ats:         hsl(350, 80%, 50%);
+    --color-interviews:  hsl(0, 0%, 50%);
+    --color-average:     hsl(0, 0%, 60%);
+    --color-best:        hsl(40, 30%, 50%);
+    --color-accuracy:    hsl(150, 30%, 40%);
+    --color-resumes:     hsl(210, 30%, 50%);
+    --color-ats:         hsl(350, 30%, 50%);
 
     --font-family:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --radius-sm:      6px; /* Sharper corners */
