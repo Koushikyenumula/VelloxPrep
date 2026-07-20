@@ -5,12 +5,12 @@
 
 /* ── CSS Custom Properties ───────────────────────────────────────── */
 :root {
-    /* Minimal Monochromatic Palette */
-    --primary:        hsl(0, 0%, 40%);
-    --primary-light:  hsl(0, 0%, 55%);
-    --primary-dark:   hsl(0, 0%, 25%);
-    --accent:         hsl(0, 0%, 60%);
-    --accent-light:   hsl(0, 0%, 75%);
+    /* Ultra Minimal Monochromatic Palette */
+    --primary:        hsl(0, 0%, 25%);
+    --primary-light:  hsl(0, 0%, 40%);
+    --primary-dark:   hsl(0, 0%, 15%);
+    --accent:         hsl(0, 0%, 35%);
+    --accent-light:   hsl(0, 0%, 50%);
 
     --bg-dark:        hsl(0, 0%, 4%); /* Almost pure black */
     --bg-card:        hsl(0, 0%, 8%); /* Solid dark gray, no transparency */
@@ -30,12 +30,12 @@
     --warning:        hsl(40, 90%, 50%);
     --info:           hsl(210, 90%, 50%);
 
-    --color-interviews:  hsl(0, 0%, 50%);
-    --color-average:     hsl(0, 0%, 60%);
-    --color-best:        hsl(40, 30%, 50%);
-    --color-accuracy:    hsl(150, 30%, 40%);
-    --color-resumes:     hsl(210, 30%, 50%);
-    --color-ats:         hsl(350, 30%, 50%);
+    --color-interviews:  hsl(0, 0%, 100%);
+    --color-average:     hsl(0, 0%, 80%);
+    --color-best:        hsl(0, 0%, 60%);
+    --color-accuracy:    hsl(0, 0%, 40%);
+    --color-resumes:     hsl(0, 0%, 70%);
+    --color-ats:         hsl(0, 0%, 50%);
 
     --font-family:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --radius-sm:      6px; /* Sharper corners */
