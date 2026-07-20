@@ -76,7 +76,7 @@ async function handleEditProfile(event) {
             localStorage.setItem('name', result.name);
         }
         if (result.profileImageUrl) {
-            localStorage.setItem('profileImageUrl', 'http://localhost:8080' + result.profileImageUrl);
+            localStorage.setItem('profileImageUrl', 'https://velloxprep.onrender.com' + result.profileImageUrl);
         }
 
         // Hide modal
