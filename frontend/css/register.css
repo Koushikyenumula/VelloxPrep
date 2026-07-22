@@ -5,11 +5,11 @@
 
 /* ── CSS Custom Properties ───────────────────────────────────────── */
 :root {
-    --primary:        hsl(0, 0%, 25%);
-    --primary-light:  hsl(0, 0%, 40%);
-    --primary-dark:   hsl(0, 0%, 15%);
-    --accent:         hsl(0, 0%, 35%);
-    --accent-light:   hsl(0, 0%, 50%);
+    --primary:        hsl(250, 80%, 60%);
+    --primary-light:  hsl(250, 80%, 75%);
+    --primary-dark:   hsl(250, 80%, 45%);
+    --accent:         hsl(290, 80%, 60%);
+    --accent-light:   hsl(290, 80%, 75%);
 
     --bg-dark:        hsl(0, 0%, 4%);
     --bg-card:        hsl(0, 0%, 8%);
@@ -204,6 +204,13 @@ body {
     font-weight: 400;
 }
 
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: hsla(0, 0%, 12%, 0.6) !important;
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
 .form-control:hover {
     border-color: hsla(230, 30%, 50%, 0.40);
     background: hsla(225, 20%, 20%, 0.85);
@@ -224,15 +231,35 @@ body {
     color: var(--primary-light);
 }
 
+/* Fix for webkit autofill */
+.form-control:-webkit-autofill,
+.form-control:-webkit-autofill:hover,
+.form-control:-webkit-autofill:focus,
+.form-control:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--bg-input) inset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 /* ── Validation States ───────────────────────────────────────────── */
 .form-control.is-invalid {
     border-color: var(--danger);
     box-shadow: 0 0 0 3px hsla(0, 75%, 60%, 0.12);
+    background-image: none !important;
 }
 
 .form-control.is-valid {
     border-color: var(--success);
     box-shadow: 0 0 0 3px hsla(145, 65%, 45%, 0.12);
+    background-image: none !important;
+}
+
+.was-validated .form-control:invalid {
+    background-image: none !important;
+}
+
+.was-validated .form-control:valid {
+    background-image: none !important;
 }
 
 .invalid-feedback {
