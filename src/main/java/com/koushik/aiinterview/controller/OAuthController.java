@@ -1,6 +1,5 @@
 package com.koushik.aiinterview.controller;
 
-import com.koushik.aiinterview.entity.AuthProvider;
 import com.koushik.aiinterview.entity.Role;
 import com.koushik.aiinterview.entity.User;
 import com.koushik.aiinterview.repository.UserRepository;
@@ -177,7 +176,7 @@ public class OAuthController {
             log.info("Google OAuth user: email={}, name={}", email, name);
 
             // 3. Find or create user
-            User user = findOrCreateOAuthUser(email, name, picture, AuthProvider.GOOGLE);
+            User user = findOrCreateOAuthUser(email, name, picture);
 
             // 4. Generate JWT
             String jwt = jwtService.generateToken(user.getEmail(), user.getRole().name());
@@ -333,7 +332,7 @@ public class OAuthController {
             log.info("GitHub OAuth user: email={}, name={}", email, name);
 
             // 4. Find or create user
-            User user = findOrCreateOAuthUser(email, name, avatarUrl, AuthProvider.GITHUB);
+            User user = findOrCreateOAuthUser(email, name, avatarUrl);
 
             // 5. Generate JWT
             String jwt = jwtService.generateToken(user.getEmail(), user.getRole().name());
@@ -369,7 +368,7 @@ public class OAuthController {
      * If the user already exists (e.g., registered via email/password),
      * we simply return them — they can now also login via OAuth.
      */
-    private User findOrCreateOAuthUser(String email, String name, String picture, AuthProvider provider) {
+    private User findOrCreateOAuthUser(String email, String name, String picture) {
         Optional<User> existingUser = userRepository.findByEmail(email);
 
         if (existingUser.isPresent()) {
@@ -388,12 +387,11 @@ public class OAuthController {
                 .email(email)
                 .password(java.util.UUID.randomUUID().toString())
                 .role(Role.USER)
-                .authProvider(provider != null ? provider : AuthProvider.GOOGLE)
                 .profileImageUrl(picture)
                 .build();
 
         userRepository.save(newUser);
-        log.info("Created new OAuth user: email={}, provider={}", email, provider);
+        log.info("Created new OAuth user: email={}", email);
         return newUser;
     }
 

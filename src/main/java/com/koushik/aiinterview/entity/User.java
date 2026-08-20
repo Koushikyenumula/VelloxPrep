@@ -48,16 +48,6 @@ public class User {
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    /**
-     * The authentication provider used to create this account.
-     * Defaults to LOCAL (email + password).
-     * OAuth users (GOOGLE, GITHUB) may have a null password.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "auth_provider", nullable = false, length = 20)
-    @Builder.Default
-    private AuthProvider authProvider = AuthProvider.LOCAL;
-
     // ── Relationships ──────────────────────────────────────────────────
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
