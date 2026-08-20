@@ -200,7 +200,8 @@ public class OAuthController {
 
         } catch (Exception ex) {
             log.error("Google OAuth callback error", ex);
-            response.sendRedirect(finalReturnUrl + "?oauth_error=google_failed");
+            String errorDetail = ex.getMessage() != null ? ex.getMessage() : "Unknown error";
+            response.sendRedirect(finalReturnUrl + "?oauth_error=google_failed&details=" + encode(errorDetail));
         }
     }
 
@@ -381,13 +382,13 @@ public class OAuthController {
             return user;
         }
 
-        // Create a new OAuth user (no password needed)
+        // Create a new OAuth user (set random UUID password to satisfy NOT NULL DB constraint)
         User newUser = User.builder()
                 .name(name)
                 .email(email)
-                .password(null)
+                .password(java.util.UUID.randomUUID().toString())
                 .role(Role.USER)
-                .authProvider(provider)
+                .authProvider(provider != null ? provider : AuthProvider.GOOGLE)
                 .profileImageUrl(picture)
                 .build();
 

@@ -104,18 +104,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const oauthProvider = urlParams.get('provider');
     const oauthPicture = urlParams.get('picture');
     const oauthError = urlParams.get('oauth_error');
+    const oauthDetails = urlParams.get('details');
 
     // Handle OAuth error
     if (oauthError) {
-        // Clean URL
+        console.error('OAuth error from backend:', oauthError, oauthDetails);
         window.history.replaceState({}, '', window.location.pathname);
         setTimeout(() => {
             if (typeof Toast !== 'undefined') {
                 const errorMessages = {
                     'google_denied': 'Google sign-in was cancelled.',
                     'github_denied': 'GitHub sign-in was cancelled.',
-                    'google_failed': 'Google sign-in failed. Please try again.',
-                    'github_failed': 'GitHub sign-in failed. Please try again.',
+                    'google_failed': oauthDetails ? `Google sign-in failed: ${oauthDetails}` : 'Google sign-in failed. Please try again.',
+                    'github_failed': oauthDetails ? `GitHub sign-in failed: ${oauthDetails}` : 'GitHub sign-in failed. Please try again.',
                     'github_no_email': 'Could not retrieve email from GitHub. Please make your email public in GitHub settings.',
                     'github_token_failed': 'GitHub authorization failed. Please try again.'
                 };
@@ -138,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Clean the URL and redirect to dashboard
         window.history.replaceState({}, '', window.location.pathname);
-        window.location.href = 'dashboard.html';
+        const targetDashboard = window.location.pathname.replace(/login\.html.*/i, 'dashboard.html');
+        window.location.assign(targetDashboard.includes('dashboard.html') ? targetDashboard : 'dashboard.html');
         return;
     }
 
