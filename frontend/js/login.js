@@ -602,9 +602,10 @@ function initFormHandlers() {
             try {
                 const data = await API.login(email, password);
 
-                // Save authentication data
+                // Save authentication data based on Remember Me preference
+                const rememberMe = DOM.rememberMe ? DOM.rememberMe.checked : true;
                 if (typeof Auth !== 'undefined') {
-                    Auth.saveToken(data.token, data.email, data.role, data.name, data.createdAt, data.profileImageUrl);
+                    Auth.saveToken(data.token, data.email, data.role, data.name, data.createdAt, data.profileImageUrl, rememberMe);
                 }
 
                 // Success transition state

@@ -8,37 +8,60 @@
 const Auth = (() => {
     'use strict';
 
-    function saveToken(token, email, role, name, createdAt, profileImageUrl) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('email', email);
+    const AUTH_KEYS = ['token', 'email', 'role', 'name', 'createdAt', 'profileImageUrl'];
+
+    function saveToken(token, email, role, name, createdAt, profileImageUrl, rememberMe = true) {
+        // Clear both storages first to ensure clean state
+        removeToken();
+
+        const storage = rememberMe ? localStorage : sessionStorage;
+
+        storage.setItem('token', token);
+        storage.setItem('email', email);
         if (role) {
-            localStorage.setItem('role', role);
+            storage.setItem('role', role);
         }
         if (name) {
-            localStorage.setItem('name', name);
+            storage.setItem('name', name);
         }
         if (createdAt) {
-            localStorage.setItem('createdAt', createdAt);
+            storage.setItem('createdAt', createdAt);
         }
         if (profileImageUrl) {
             const finalImg = profileImageUrl.startsWith('http') 
                 ? profileImageUrl 
                 : ('https://velloxprep.onrender.com' + (profileImageUrl.startsWith('/') ? '' : '/') + profileImageUrl);
-            localStorage.setItem('profileImageUrl', finalImg);
+            storage.setItem('profileImageUrl', finalImg);
         }
     }
 
     function getToken() {
-        return localStorage.getItem('token');
+        return sessionStorage.getItem('token') || localStorage.getItem('token');
+    }
+
+    function getItem(key) {
+        return sessionStorage.getItem(key) || localStorage.getItem(key);
     }
 
     function removeToken() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-        localStorage.removeItem('role');
-        localStorage.removeItem('name');
-        localStorage.removeItem('createdAt');
-        localStorage.removeItem('profileImageUrl');
+        AUTH_KEYS.forEach(key => {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
+        });
+    }
+
+    // Proxy localStorage.getItem to transparently support session-only tokens across all app scripts
+    try {
+        const originalGetItem = localStorage.getItem.bind(localStorage);
+        localStorage.getItem = function(key) {
+            const sessionVal = sessionStorage.getItem(key);
+            if (sessionVal !== null) {
+                return sessionVal;
+            }
+            return originalGetItem(key);
+        };
+    } catch (e) {
+        console.warn('Storage proxy warning:', e);
     }
 
     function processOAuthCallback() {
