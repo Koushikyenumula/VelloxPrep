@@ -795,15 +795,26 @@ html, body {
     transition: transform var(--transition-fast);
 }
 
+.btn-content-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+}
+
 /* ── Elegant Orbit Loading Indicator ─────────────────────────────── */
 .btn-loader-orbit {
     display: none;
     align-items: center;
+    justify-content: center;
     gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #FFFFFF;
 }
 
 .btn-loader-orbit.visible {
-    display: inline-flex;
+    display: inline-flex !important;
 }
 
 .orbit-spinner {
