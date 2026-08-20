@@ -21,7 +21,10 @@ const Auth = (() => {
             localStorage.setItem('createdAt', createdAt);
         }
         if (profileImageUrl) {
-            localStorage.setItem('profileImageUrl', 'https://velloxprep.onrender.com' + profileImageUrl);
+            const finalImg = profileImageUrl.startsWith('http') 
+                ? profileImageUrl 
+                : ('https://velloxprep.onrender.com' + (profileImageUrl.startsWith('/') ? '' : '/') + profileImageUrl);
+            localStorage.setItem('profileImageUrl', finalImg);
         }
     }
 
@@ -38,7 +41,43 @@ const Auth = (() => {
         localStorage.removeItem('profileImageUrl');
     }
 
+    function processOAuthCallback() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            const email = params.get('email');
+            const name = params.get('name');
+            const role = params.get('role');
+            const picture = params.get('picture');
+
+            if (token && email) {
+                saveToken(
+                    token,
+                    email,
+                    role || 'USER',
+                    name || email.split('@')[0],
+                    new Date().toISOString(),
+                    picture || null
+                );
+                // Clean URL
+                window.history.replaceState({}, '', window.location.pathname);
+                // Immediately go to dashboard
+                const target = window.location.pathname.replace(/login\.html.*/i, 'dashboard.html');
+                window.location.replace(target.includes('dashboard.html') ? target : 'dashboard.html');
+                return true;
+            }
+        } catch (e) {
+            console.warn('OAuth callback extraction:', e);
+        }
+        return false;
+    }
+
     function checkGuard() {
+        // First, check if this is an incoming OAuth redirect with tokens
+        if (processOAuthCallback()) {
+            return;
+        }
+
         const path = window.location.pathname.toLowerCase();
         const hasToken = !!getToken();
         
@@ -55,7 +94,8 @@ const Auth = (() => {
         const isPublicPage = path.includes('login.html') || path.includes('register.html');
         
         if (isPublicPage && hasToken) {
-            window.location.href = 'dashboard.html';
+            const target = window.location.pathname.replace(/login\.html.*/i, 'dashboard.html');
+            window.location.replace(target.includes('dashboard.html') ? target : 'dashboard.html');
             return;
         }
 
