@@ -111,11 +111,20 @@ function renderUsers(users) {
         const role = user.role || 'USER';
         const badgeClass = role === 'ADMIN' ? 'role-admin' : 'role-user';
         
-        // Prevent deleting self
+        // Role Actions
         const isSelf = user.email === localStorage.getItem('email');
-        const actionBtn = isSelf 
-            ? `<button class="btn btn-sm btn-outline-secondary" disabled title="Cannot delete yourself">Delete</button>`
-            : `<button class="btn btn-sm btn-outline-danger" onclick="openDeleteModal(${user.id}, '${escapeHtml(user.name)}')">Delete</button>`;
+        let actionHtml = '';
+        
+        if (isSelf) {
+            actionHtml = `<button class="btn btn-sm btn-outline-secondary" disabled title="Cannot modify yourself">Current User</button>`;
+        } else {
+            const roleBtn = role === 'ADMIN'
+                ? `<button class="btn btn-sm btn-outline-warning me-2" onclick="handleRoleChange(${user.id}, 'USER')">Make User</button>`
+                : `<button class="btn btn-sm btn-outline-success me-2" onclick="handleRoleChange(${user.id}, 'ADMIN')">Make Admin</button>`;
+            
+            const delBtn = `<button class="btn btn-sm btn-outline-danger" onclick="openDeleteModal(${user.id}, '${escapeHtml(user.name)}')">Delete</button>`;
+            actionHtml = roleBtn + delBtn;
+        }
 
         tr.innerHTML = `
             <td class="fw-medium">${escapeHtml(user.name)}</td>
@@ -124,12 +133,24 @@ function renderUsers(users) {
             <td class="text-secondary">${dateStr}</td>
             <td class="text-center">${user.resumeCount || 0}</td>
             <td class="text-center">${user.sessionCount || 0}</td>
-            <td class="text-end">${actionBtn}</td>
+            <td class="text-end">${actionHtml}</td>
         `;
 
         usersListBody.appendChild(tr);
     });
 }
+
+// ── Update Role Logic ───────────────────────────────────────────────
+window.handleRoleChange = async function(userId, newRole) {
+    try {
+        await API.updateUserRole(userId, newRole);
+        Toast.show(`User role updated to ${newRole}`, 'success');
+        await loadAdminData();
+    } catch (error) {
+        console.error('Failed to update role:', error);
+        Toast.show(error.message || 'Failed to update user role', 'danger');
+    }
+};
 
 // ── Delete User Logic ───────────────────────────────────────────────
 function openDeleteModal(userId, userName) {

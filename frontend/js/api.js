@@ -206,6 +206,13 @@ const API = (() => {
         return handleResponse(response);
     }
 
+    async function updateUserRole(id, role) {
+        const response = await fetch(`${BASE_URL}/admin/users/${id}/role?role=${role}`, {
+            method: 'PUT'
+        });
+        return handleResponse(response);
+    }
+
     async function changePassword(oldPassword, newPassword) {
         const response = await fetch(`${BASE_URL}/users/password`, {
             method: 'PUT',
@@ -254,6 +261,7 @@ const API = (() => {
         submitMcqAnswer: submitMcqAnswer,
         getAdminStatistics: getAdminStatistics,
         getAdminUsers: getAdminUsers,
+        updateUserRole: updateUserRole,
         deleteUser: deleteUser
     };
 })();

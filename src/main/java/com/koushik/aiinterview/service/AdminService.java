@@ -36,4 +36,12 @@ public interface AdminService {
      * @param userId the ID of the user to delete
      */
     ApiResponse<Void> deleteUser(Long userId);
+
+    /**
+     * Update a user's role.
+     *
+     * @param userId the ID of the user
+     * @param role   the new role (e.g., ADMIN or USER)
+     */
+    ApiResponse<Void> updateUserRole(Long userId, String role);
 }

@@ -140,6 +140,27 @@ public class AdminServiceImpl implements AdminService {
         return ApiResponse.success("User deleted successfully");
     }
 
+    // ── Update User Role ────────────────────────────────────────────────
+
+    @Override
+    @Transactional
+    public ApiResponse<Void> updateUserRole(Long userId, String role) {
+        log.info("Admin: Updating user id={} to role={}", userId, role);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+
+        try {
+            com.koushik.aiinterview.entity.Role newRole = com.koushik.aiinterview.entity.Role.valueOf(role.toUpperCase());
+            user.setRole(newRole);
+            userRepository.save(user);
+            log.info("Admin: Successfully updated user '{}' to role '{}'", user.getEmail(), newRole);
+            return ApiResponse.success("User role updated successfully");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + role);
+        }
+    }
+
     // ── Private mapping helpers ─────────────────────────────────────────
 
     private AdminUserResponse toAdminUserResponse(User user) {

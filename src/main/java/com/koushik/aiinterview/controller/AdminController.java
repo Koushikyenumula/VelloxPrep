@@ -83,4 +83,16 @@ public class AdminController {
         ApiResponse<Void> response = adminService.deleteUser(id);
         return ResponseEntity.ok(response);
     }
+
+    // ── Update User Role ────────────────────────────────────────────────
+
+    /**
+     * PUT /api/admin/users/{id}/role?role=ADMIN
+     * Update a user's role (e.g., from USER to ADMIN).
+     */
+    @PutMapping("/users/{id}/role")
+    public ResponseEntity<ApiResponse<Void>> updateUserRole(@PathVariable Long id, @RequestParam String role) {
+        ApiResponse<Void> response = adminService.updateUserRole(id, role);
+        return ResponseEntity.ok(response);
+    }
 }
