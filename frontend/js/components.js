@@ -362,13 +362,26 @@ const Toast = (() => {
         container.insertAdjacentHTML('beforeend', toastHtml);
 
         const toastEl = document.getElementById(toastId);
-        const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
-        toast.show();
-
-        // Clear DOM when hidden
-        toastEl.addEventListener('hidden.bs.toast', () => {
-            toastEl.remove();
-        });
+        if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+            const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
+            toast.show();
+            toastEl.addEventListener('hidden.bs.toast', () => {
+                toastEl.remove();
+            });
+        } else {
+            // Standalone vanilla toast display
+            toastEl.style.display = 'block';
+            toastEl.style.opacity = '1';
+            toastEl.style.transition = 'opacity 0.3s ease';
+            const closeBtn = toastEl.querySelector('.btn-close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => toastEl.remove());
+            }
+            setTimeout(() => {
+                toastEl.style.opacity = '0';
+                setTimeout(() => toastEl.remove(), 300);
+            }, 3500);
+        }
     }
 
     return {

@@ -3,143 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Login to VelloxPrep — your AI-powered interview preparation and resume intelligence platform.">
-    <title>Login — VelloxPrep</title>
+    <meta name="description" content="VelloxPrep — The world-class AI-powered interview preparation and technical intelligence platform.">
+    <title>VelloxPrep — AI SaaS Authentication</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <!-- Custom Styles -->
+    <!-- Custom High-Craft Stylesheet -->
     <link rel="stylesheet" href="../css/login.css">
 
-    <!-- Auth Module -->
+    <!-- Global Auth Module -->
     <script src="../js/auth.js"></script>
+
+    <!-- Official Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
-    <!-- ── Animated Background Orbs ──────────────────────────────────── -->
-    <div class="bg-grid" aria-hidden="true"></div>
+    <!-- ── Canvas Neural Network Background ────────────────────────── -->
+    <div class="canvas-container" aria-hidden="true">
+        <canvas id="aiNetworkCanvas"></canvas>
+    </div>
 
-    <!-- ── Main Container ────────────────────────────────────────────── -->
-    <main class="login-wrapper d-flex align-items-center justify-content-center min-vh-100">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-11 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+    <!-- ── Atmospheric Desktop Cursor Glow & Vignette ──────────────── -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="bg-vignette" aria-hidden="true"></div>
 
-                    <!-- ── Login Card ────────────────────────────────── -->
-                    <div class="login-card" id="loginCard">
+    <!-- ── Top Brand Bar ───────────────────────────────────────────── -->
+    <header class="auth-top-bar">
+        <a href="login.html" class="brand-anchor" aria-label="VelloxPrep Home">
+            <div class="brand-logo-wrap">
+                <img src="../assets/logo.png" alt="VelloxPrep Logo" class="brand-logo-img">
+            </div>
+            <span class="brand-name">VelloxPrep</span>
+            <span class="brand-badge">AI Platform</span>
+        </a>
 
-                        <!-- Brand Header -->
-                        <div class="text-center mb-4">
-                            <div class="brand-icon mx-auto mb-3" style="overflow: hidden; background: none; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                                <img src="../assets/logo.png" alt="VelloxPrep Logo" style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
-                            </div>
-                            <h1 class="brand-title">VelloxPrep</h1>
-                            <p class="brand-subtitle">Sign in to your account</p>
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+            <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
+        </button>
+    </header>
+
+    <!-- ── Main Viewport Split Layout ──────────────────────────────── -->
+    <main class="auth-layout-wrapper">
+
+        <!-- ── Left 55%: Brand & Intelligence Hero ─────────────────── -->
+        <section class="brand-hero-section">
+            <div class="hero-content-block">
+                
+                <!-- Eyebrow Pill -->
+                <div class="hero-eyebrow">
+                    <i class="bi bi-stars hero-sparkle-icon"></i>
+                    <span>AI-Powered Interview Preparation</span>
+                </div>
+
+                <!-- Main Punchy Headline -->
+                <h1 class="hero-headline">
+                    Prepare smarter.<br>
+                    Perform better.<br>
+                    <span class="accent-line">Get hired faster.</span>
+                </h1>
+
+                <!-- Crisp Description -->
+                <p class="hero-description">
+                    AI-powered interview preparation built for ambitious candidates who want to master real-world engineering and domain assessments.
+                </p>
+
+                <!-- 3 Minimal Feature Indicators -->
+                <div class="hero-features-list">
+                    <div class="feature-row">
+                        <div class="feature-icon-box">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                        <div class="feature-body">
+                            <div class="feature-title">AI-GENERATED QUESTIONS</div>
+                            <div class="feature-desc">Personalized questions tailored to your skills and domain.</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row">
+                        <div class="feature-icon-box">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div class="feature-body">
+                            <div class="feature-title">REAL-TIME FEEDBACK</div>
+                            <div class="feature-desc">Understand your strengths and improve faster with deep analytics.</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-row">
+                        <div class="feature-icon-box">
+                            <i class="bi bi-chat-square-code"></i>
+                        </div>
+                        <div class="feature-body">
+                            <div class="feature-title">MOCK INTERVIEWS</div>
+                            <div class="feature-desc">Practice realistic technical interviews with adaptive AI agents.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ── Right 45%: Integrated Authentication Experience ───────── -->
+        <section class="auth-panel-section">
+            <div class="auth-panel-card" id="authCard">
+                <div class="auth-views-container">
+
+                    <!-- ════ VIEW 1: SIGN IN ════ -->
+                    <div class="auth-view view-active" id="viewLogin" role="region" aria-label="Sign in form">
+                        <div class="auth-header">
+                            <h2 class="auth-title">Welcome back</h2>
+                            <p class="auth-subtitle">Sign in to continue your preparation.</p>
                         </div>
 
-                        <!-- Alert Area -->
-                        <div id="alertContainer" class="mb-3" role="alert" aria-live="polite"></div>
-
-                        <!-- Login Form -->
                         <form id="loginForm" novalidate autocomplete="on">
-
-                            <!-- Email Field -->
-                            <div class="form-floating-custom mb-3">
-                                <div class="input-icon-wrapper">
-                                    <i class="bi bi-envelope input-icon"></i>
+                            <!-- Email -->
+                            <div class="form-group-custom">
+                                <label for="loginEmailInput" class="field-label">Email address</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-envelope field-icon-lead"></i>
                                     <input
                                         type="email"
-                                        class="form-control"
-                                        id="emailInput"
+                                        class="custom-input"
+                                        id="loginEmailInput"
                                         name="email"
-                                        placeholder="Email address"
+                                        placeholder="you@example.com"
                                         autocomplete="email"
                                         required
                                     >
                                 </div>
-                                <div class="invalid-feedback" id="emailError">
-                                    Please enter a valid email address.
+                                <div class="field-error-msg" id="loginEmailError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Enter a valid email address.</span>
                                 </div>
                             </div>
 
-                            <!-- Password Field -->
-                            <div class="form-floating-custom mb-4">
-                                <div class="input-icon-wrapper">
-                                    <i class="bi bi-lock input-icon"></i>
+                            <!-- Password -->
+                            <div class="form-group-custom">
+                                <label for="loginPasswordInput" class="field-label">Password</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-lock field-icon-lead"></i>
                                     <input
                                         type="password"
-                                        class="form-control"
-                                        id="passwordInput"
+                                        class="custom-input"
+                                        id="loginPasswordInput"
                                         name="password"
-                                        placeholder="Password"
+                                        placeholder="Enter your password"
                                         autocomplete="current-password"
                                         required
                                         minlength="6"
                                     >
                                     <button
                                         type="button"
-                                        class="btn-toggle-password"
-                                        id="togglePassword"
+                                        class="btn-toggle-eye"
+                                        id="toggleLoginPassword"
                                         aria-label="Toggle password visibility"
                                     >
-                                        <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
+                                        <i class="bi bi-eye-slash" id="toggleLoginPasswordIcon"></i>
                                     </button>
                                 </div>
-                                <div class="invalid-feedback" id="passwordError">
-                                    Password must be at least 6 characters.
+                                <div class="field-error-msg" id="loginPasswordError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Incorrect email or password.</span>
                                 </div>
                             </div>
 
-                            <!-- Login Button -->
-                            <button type="submit" class="btn btn-login w-100 mb-3" id="loginBtn">
-                                <span class="btn-text" id="btnText">Sign In</span>
-                                <span class="btn-loader d-none" id="btnLoader">
-                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                    Signing in…
+                            <!-- Aux Row: Remember & Forgot -->
+                            <div class="auth-aux-row">
+                                <label class="custom-checkbox-label">
+                                    <input type="checkbox" class="custom-checkbox-input" id="rememberMe">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#forgot" class="auth-link" id="linkToForgot">Forgot password?</a>
+                            </div>
+
+                            <!-- CTA Button -->
+                            <button type="submit" class="btn-primary-auth" id="loginBtn">
+                                <span class="btn-content-label" id="loginBtnLabel">
+                                    Continue <i class="bi bi-arrow-right btn-arrow-icon"></i>
+                                </span>
+                                <span class="btn-loader-orbit" id="loginBtnLoader">
+                                    <span class="orbit-spinner">
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                    </span>
+                                    <span>Signing you in...</span>
                                 </span>
                             </button>
                         </form>
 
                         <!-- Divider -->
-                        <div class="divider my-4">
-                            <span>or</span>
+                        <div class="auth-divider">
+                            <span>OR CONTINUE WITH</span>
                         </div>
 
-                        <!-- Register Link -->
-                        <p class="text-center register-link mb-0">
-                            Don't have an account?
-                            <a href="register.html" class="fw-semibold">Create one</a>
-                        </p>
+                        <!-- Social Auth -->
+                        <div class="social-grid">
+                            <button type="button" class="btn-social" id="btnGoogleLogin">
+                                <svg class="social-icon-svg" viewBox="0 0 24 24">
+                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                                </svg>
+                                <span>Google</span>
+                            </button>
+                            <button type="button" class="btn-social" id="btnGithubLogin">
+                                <svg class="social-icon-svg" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                                </svg>
+                                <span>GitHub</span>
+                            </button>
+                        </div>
+
+                        <!-- Switch to Signup -->
+                        <div class="auth-footer-prompt">
+                            Don't have an account? <a href="#signup" class="auth-link accent-link" id="linkToSignup">Create one</a>
+                        </div>
                     </div>
 
-                    <!-- Footer -->
-                    <p class="text-center footer-text mt-4">
-                        &copy; 2026 VelloxPrep. All rights reserved.
-                    </p>
+                    <!-- ════ VIEW 2: SIGN UP ════ -->
+                    <div class="auth-view" id="viewSignup" role="region" aria-label="Sign up form">
+                        <div class="auth-header">
+                            <h2 class="auth-title">Create your account</h2>
+                            <p class="auth-subtitle">Start your AI preparation journey today.</p>
+                        </div>
+
+                        <form id="signupForm" novalidate autocomplete="on">
+                            <!-- Full Name -->
+                            <div class="form-group-custom">
+                                <label for="signupNameInput" class="field-label">Full name</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-person field-icon-lead"></i>
+                                    <input
+                                        type="text"
+                                        class="custom-input"
+                                        id="signupNameInput"
+                                        name="name"
+                                        placeholder="Alex Mercer"
+                                        autocomplete="name"
+                                        required
+                                    >
+                                </div>
+                                <div class="field-error-msg" id="signupNameError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Full name is required.</span>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group-custom">
+                                <label for="signupEmailInput" class="field-label">Email address</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-envelope field-icon-lead"></i>
+                                    <input
+                                        type="email"
+                                        class="custom-input"
+                                        id="signupEmailInput"
+                                        name="email"
+                                        placeholder="you@example.com"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                </div>
+                                <div class="field-error-msg" id="signupEmailError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Enter a valid email address.</span>
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-group-custom">
+                                <label for="signupPasswordInput" class="field-label">Password</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-lock field-icon-lead"></i>
+                                    <input
+                                        type="password"
+                                        class="custom-input"
+                                        id="signupPasswordInput"
+                                        name="password"
+                                        placeholder="Create a strong password"
+                                        autocomplete="new-password"
+                                        required
+                                        minlength="6"
+                                    >
+                                    <button
+                                        type="button"
+                                        class="btn-toggle-eye"
+                                        id="toggleSignupPassword"
+                                        aria-label="Toggle password visibility"
+                                    >
+                                        <i class="bi bi-eye-slash" id="toggleSignupPasswordIcon"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Password Strength Indicator -->
+                                <div class="password-strength-container" id="passwordStrengthBox">
+                                    <div class="strength-bars-track">
+                                        <div class="strength-segment"></div>
+                                        <div class="strength-segment"></div>
+                                        <div class="strength-segment"></div>
+                                    </div>
+                                    <div class="strength-text" id="passwordStrengthLabel">Password strength</div>
+                                </div>
+
+                                <div class="field-error-msg" id="signupPasswordError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Password must be at least 6 characters.</span>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="form-group-custom">
+                                <label for="signupConfirmPasswordInput" class="field-label">Confirm password</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-shield-lock field-icon-lead"></i>
+                                    <input
+                                        type="password"
+                                        class="custom-input"
+                                        id="signupConfirmPasswordInput"
+                                        name="confirmPassword"
+                                        placeholder="Confirm your password"
+                                        autocomplete="new-password"
+                                        required
+                                    >
+                                    <button
+                                        type="button"
+                                        class="btn-toggle-eye"
+                                        id="toggleConfirmPassword"
+                                        aria-label="Toggle confirm password visibility"
+                                    >
+                                        <i class="bi bi-eye-slash" id="toggleConfirmPasswordIcon"></i>
+                                    </button>
+                                </div>
+                                <div class="field-error-msg" id="signupConfirmError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Passwords do not match.</span>
+                                </div>
+                            </div>
+
+                            <!-- Terms Agreement Checkbox -->
+                            <div class="auth-aux-row">
+                                <label class="custom-checkbox-label">
+                                    <input type="checkbox" class="custom-checkbox-input" id="termsCheck" required checked>
+                                    <span>I agree to the Terms of Service & Privacy Policy</span>
+                                </label>
+                            </div>
+
+                            <!-- CTA Button -->
+                            <button type="submit" class="btn-primary-auth" id="signupBtn">
+                                <span class="btn-content-label" id="signupBtnLabel">
+                                    Create account <i class="bi bi-arrow-right btn-arrow-icon"></i>
+                                </span>
+                                <span class="btn-loader-orbit" id="signupBtnLoader">
+                                    <span class="orbit-spinner">
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                    </span>
+                                    <span>Creating account...</span>
+                                </span>
+                            </button>
+                        </form>
+
+                        <!-- Divider -->
+                        <div class="auth-divider">
+                            <span>OR CONTINUE WITH</span>
+                        </div>
+
+                        <!-- Social Auth -->
+                        <div class="social-grid">
+                            <button type="button" class="btn-social" id="btnGoogleSignup">
+                                <svg class="social-icon-svg" viewBox="0 0 24 24">
+                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                                </svg>
+                                <span>Google</span>
+                            </button>
+                            <button type="button" class="btn-social" id="btnGithubSignup">
+                                <svg class="social-icon-svg" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                                </svg>
+                                <span>GitHub</span>
+                            </button>
+                        </div>
+
+                        <!-- Switch to Login -->
+                        <div class="auth-footer-prompt">
+                            Already have an account? <a href="#login" class="auth-link accent-link" id="linkToLogin">Sign in</a>
+                        </div>
+                    </div>
+
+                    <!-- ════ VIEW 3: FORGOT PASSWORD ════ -->
+                    <div class="auth-view" id="viewForgot" role="region" aria-label="Forgot password form">
+                        <div class="auth-header">
+                            <h2 class="auth-title">Reset your password</h2>
+                            <p class="auth-subtitle">Enter your email and we'll send you a reset link.</p>
+                        </div>
+
+                        <form id="forgotForm" novalidate autocomplete="on">
+                            <!-- Email -->
+                            <div class="form-group-custom">
+                                <label for="forgotEmailInput" class="field-label">Email address</label>
+                                <div class="input-wrapper">
+                                    <i class="bi bi-envelope field-icon-lead"></i>
+                                    <input
+                                        type="email"
+                                        class="custom-input"
+                                        id="forgotEmailInput"
+                                        name="email"
+                                        placeholder="you@example.com"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                </div>
+                                <div class="field-error-msg" id="forgotEmailError" role="alert">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Enter a valid email address.</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: var(--sp-6);"></div>
+
+                            <!-- Primary CTA -->
+                            <button type="submit" class="btn-primary-auth" id="forgotBtn">
+                                <span class="btn-content-label" id="forgotBtnLabel">
+                                    Send reset link <i class="bi bi-arrow-right btn-arrow-icon"></i>
+                                </span>
+                                <span class="btn-loader-orbit" id="forgotBtnLoader">
+                                    <span class="orbit-spinner">
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                        <span class="orbit-dot"></span>
+                                    </span>
+                                    <span>Sending instructions...</span>
+                                </span>
+                            </button>
+                        </form>
+
+                        <div style="margin-top: var(--sp-8);" class="auth-footer-prompt">
+                            <a href="#login" class="auth-link" id="linkBackFromForgot">
+                                <i class="bi bi-arrow-left me-1"></i> Back to sign in
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- ════ VIEW 4: RESET SUCCESS ════ -->
+                    <div class="auth-view" id="viewResetSuccess" role="region" aria-label="Reset link sent confirmation">
+                        <div class="success-visual-box">
+                            <div class="success-check-circle">
+                                <i class="bi bi-check2"></i>
+                            </div>
+                            <h2 class="auth-title">Check your inbox</h2>
+                            <p class="auth-subtitle" style="margin-bottom: var(--sp-6);">
+                                Reset instructions have been sent if an account exists for that email. Please check your spam folder if it doesn't arrive within a few minutes.
+                            </p>
+                            
+                            <a href="#login" class="btn-primary-auth" style="text-decoration: none;" id="linkBackFromSuccess">
+                                <span>Back to sign in</span>
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
+        </section>
+
     </main>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- API Client -->
-    <script src="../js/api.js"></script>
-
-    <!-- App Components -->
-    <script src="../js/components.js"></script>
-
-    <!-- Login Script -->
-    <script src="../js/login.js"></script>
+    <!-- Global App Modules -->
+    <script src="../js/api.js?v=2026"></script>
+    <script src="../js/components.js?v=2026"></script>
+    <script src="../js/login.js?v=2026"></script>
 </body>
 </html>
+

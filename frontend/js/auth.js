@@ -101,12 +101,13 @@ const Auth = (() => {
         try {
             const response = await originalFetch(url, options);
 
-            // Clear credentials and redirect on authorization failure
+            // Clear credentials and redirect on authorization failure (excluding social auth sessions)
             if (response.status === 401 || response.status === 403) {
                 const path = window.location.pathname.toLowerCase();
                 const isPublicPage = path.includes('login.html') || path.includes('register.html');
+                const isSocialToken = token && (token.startsWith('google-') || token.startsWith('demo-'));
 
-                if (!isPublicPage) {
+                if (!isPublicPage && !isSocialToken) {
                     Auth.removeToken();
                     window.location.href = 'login.html';
                 }
