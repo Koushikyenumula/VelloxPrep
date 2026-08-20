@@ -763,8 +763,9 @@ function initSocialHandlers() {
                 // Show loading state
                 btn.disabled = true;
                 btn.innerHTML = '<span class="orbit-spinner" style="display:inline-flex"><span class="orbit-dot"></span><span class="orbit-dot"></span><span class="orbit-dot"></span></span> Redirecting to Google...';
-                // Redirect entire browser to backend OAuth endpoint
-                window.location.href = BACKEND_URL + '/auth/google';
+                // Redirect entire browser to backend OAuth endpoint with current page return URL
+                const returnUrl = window.location.origin + window.location.pathname;
+                window.location.href = BACKEND_URL + '/auth/google?redirect_to=' + encodeURIComponent(returnUrl);
             });
         }
     });
@@ -777,8 +778,9 @@ function initSocialHandlers() {
                 // Show loading state
                 btn.disabled = true;
                 btn.innerHTML = '<span class="orbit-spinner" style="display:inline-flex"><span class="orbit-dot"></span><span class="orbit-dot"></span><span class="orbit-dot"></span></span> Redirecting to GitHub...';
-                // Redirect entire browser to backend OAuth endpoint
-                window.location.href = BACKEND_URL + '/auth/github';
+                // Redirect entire browser to backend OAuth endpoint with current page return URL
+                const returnUrl = window.location.origin + window.location.pathname;
+                window.location.href = BACKEND_URL + '/auth/github?redirect_to=' + encodeURIComponent(returnUrl);
             });
         }
     });

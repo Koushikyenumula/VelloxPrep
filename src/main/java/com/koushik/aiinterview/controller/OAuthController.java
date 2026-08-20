@@ -92,14 +92,20 @@ public class OAuthController {
      * Redirects the browser to Google's official OAuth consent / account chooser.
      */
     @GetMapping("/google")
-    public void redirectToGoogle(HttpServletResponse response) throws IOException {
+    public void redirectToGoogle(
+            @RequestParam(value = "redirect_to", required = false) String redirectTo,
+            HttpServletResponse response) throws IOException {
+
+        String returnTarget = (redirectTo != null && !redirectTo.isBlank()) ? redirectTo : frontendUrl;
+
         String authUrl = "https://accounts.google.com/o/oauth2/v2/auth"
                 + "?client_id=" + encode(googleClientId)
                 + "&redirect_uri=" + encode(googleRedirectUri)
                 + "&response_type=code"
                 + "&scope=" + encode("openid email profile")
                 + "&access_type=offline"
-                + "&prompt=select_account";
+                + "&prompt=select_account"
+                + "&state=" + encode(returnTarget);
 
         log.info("Redirecting to Google OAuth: {}", authUrl);
         response.sendRedirect(authUrl);
@@ -114,12 +120,17 @@ public class OAuthController {
     @GetMapping("/callback/google")
     public void handleGoogleCallback(
             @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "error", required = false) String error,
             HttpServletResponse response) throws IOException {
 
+        String targetBase = (state != null && !state.isBlank()) ? state : frontendUrl;
+        // Strip trailing slash or duplicate filenames if present
+        String finalReturnUrl = targetBase.endsWith(".html") ? targetBase : (targetBase + "/login.html");
+
         if (error != null || code == null) {
             log.warn("Google OAuth error or no code: error={}", error);
-            response.sendRedirect(frontendUrl + "/login.html?oauth_error=google_denied");
+            response.sendRedirect(finalReturnUrl + "?oauth_error=google_denied");
             return;
         }
 
@@ -172,8 +183,10 @@ public class OAuthController {
             String jwt = jwtService.generateToken(user.getEmail(), user.getRole().name());
 
             // 5. Redirect to frontend with token
-            String redirectUrl = frontendUrl + "/login.html"
-                    + "?token=" + encode(jwt)
+            String separator = finalReturnUrl.contains("?") ? "&" : "?";
+            String redirectUrl = finalReturnUrl
+                    + separator
+                    + "token=" + encode(jwt)
                     + "&email=" + encode(user.getEmail())
                     + "&name=" + encode(user.getName())
                     + "&role=" + encode(user.getRole().name())
@@ -187,7 +200,7 @@ public class OAuthController {
 
         } catch (Exception ex) {
             log.error("Google OAuth callback error", ex);
-            response.sendRedirect(frontendUrl + "/login.html?oauth_error=google_failed");
+            response.sendRedirect(finalReturnUrl + "?oauth_error=google_failed");
         }
     }
 
@@ -200,11 +213,17 @@ public class OAuthController {
      * Redirects the browser to GitHub's official OAuth authorization page.
      */
     @GetMapping("/github")
-    public void redirectToGitHub(HttpServletResponse response) throws IOException {
+    public void redirectToGitHub(
+            @RequestParam(value = "redirect_to", required = false) String redirectTo,
+            HttpServletResponse response) throws IOException {
+
+        String returnTarget = (redirectTo != null && !redirectTo.isBlank()) ? redirectTo : frontendUrl;
+
         String authUrl = "https://github.com/login/oauth/authorize"
                 + "?client_id=" + encode(githubClientId)
                 + "&redirect_uri=" + encode(githubRedirectUri)
-                + "&scope=" + encode("user:email read:user");
+                + "&scope=" + encode("user:email read:user")
+                + "&state=" + encode(returnTarget);
 
         log.info("Redirecting to GitHub OAuth: {}", authUrl);
         response.sendRedirect(authUrl);
@@ -219,12 +238,16 @@ public class OAuthController {
     @GetMapping("/callback/github")
     public void handleGitHubCallback(
             @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "error", required = false) String error,
             HttpServletResponse response) throws IOException {
 
+        String targetBase = (state != null && !state.isBlank()) ? state : frontendUrl;
+        String finalReturnUrl = targetBase.endsWith(".html") ? targetBase : (targetBase + "/login.html");
+
         if (error != null || code == null) {
             log.warn("GitHub OAuth error or no code: error={}", error);
-            response.sendRedirect(frontendUrl + "/login.html?oauth_error=github_denied");
+            response.sendRedirect(finalReturnUrl + "?oauth_error=github_denied");
             return;
         }
 
@@ -302,7 +325,7 @@ public class OAuthController {
 
             if (email == null) {
                 log.error("Could not retrieve email from GitHub");
-                response.sendRedirect(frontendUrl + "/login.html?oauth_error=github_no_email");
+                response.sendRedirect(finalReturnUrl + "?oauth_error=github_no_email");
                 return;
             }
 
@@ -315,8 +338,10 @@ public class OAuthController {
             String jwt = jwtService.generateToken(user.getEmail(), user.getRole().name());
 
             // 6. Redirect to frontend with token
-            String redirectUrl = frontendUrl + "/login.html"
-                    + "?token=" + encode(jwt)
+            String separator = finalReturnUrl.contains("?") ? "&" : "?";
+            String redirectUrl = finalReturnUrl
+                    + separator
+                    + "token=" + encode(jwt)
                     + "&email=" + encode(user.getEmail())
                     + "&name=" + encode(user.getName())
                     + "&role=" + encode(user.getRole().name())
@@ -330,7 +355,7 @@ public class OAuthController {
 
         } catch (Exception ex) {
             log.error("GitHub OAuth callback error", ex);
-            response.sendRedirect(frontendUrl + "/login.html?oauth_error=github_failed");
+            response.sendRedirect(finalReturnUrl + "?oauth_error=github_failed");
         }
     }
 
