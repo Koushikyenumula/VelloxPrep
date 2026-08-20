@@ -7,12 +7,12 @@ spring:
   application:
     name: ai-interview-prep
 
-  # ── Datasource (MySQL) ──────────────────────────────────────────────
+  # ── Datasource (PostgreSQL) ─────────────────────────────────────────
   datasource:
-    url: jdbc:mysql://tokaido.proxy.rlwy.net:57675/railway?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME:root}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/velloxprep}
+    username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:password}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.postgresql.Driver
 
   # ── JPA / Hibernate ────────────────────────────────────────────────
   jpa:
@@ -22,7 +22,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
   # ── Jackson ─────────────────────────────────────────────────────────
