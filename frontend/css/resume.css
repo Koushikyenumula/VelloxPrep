@@ -1,1 +1,231 @@
-/* Resume management page styles */
+/**
+ * ═══════════════════════════════════════════════════════════════════
+ *  RESUME MANAGEMENT — Design System & Tight Layout Spacing
+ *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
+/* ── Upload Dropzone ─────────────────────────────────────────────── */
+.upload-dropzone {
+    border: 1.5px dashed rgba(124, 92, 255, 0.24) !important;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.015);
+    padding: 2.2rem 1.25rem;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.drag-active {
+    background: radial-gradient(circle at 50% 50%, rgba(124, 92, 255, 0.08) 0%, rgba(124, 92, 255, 0.02) 100%) !important;
+    border-color: var(--accent) !important;
+    box-shadow: inset 0 0 24px rgba(124, 92, 255, 0.06), 0 8px 24px -8px var(--accent-glow);
+}
+
+.upload-icon-wrapper {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 0.9rem auto;
+    border-radius: 50%;
+    background: var(--accent-subtle);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.65rem;
+    color: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    animation: iconFloat 4s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.upload-dropzone:hover .upload-icon-wrapper {
+    transform: translateY(-4px) scale(1.08);
+    color: #FFF;
+    background: var(--accent);
+    box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.upload-title {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.upload-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.1rem;
+}
+
+.btn-browse {
+    background: var(--accent-subtle);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+    font-weight: 600;
+    padding: 0.5rem 1.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow-btn);
+}
+
+.btn-browse:hover,
+.upload-dropzone:hover .btn-browse {
+    background: var(--accent);
+    color: #FFF;
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* ── Analysis Result View ─────────────────────────────────────────── */
+.analysis-result-view {
+    animation: fadeSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.score-display-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.score-circle-gauge {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 0.6rem auto;
+    border-radius: 50%;
+    border: 4px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-subtle);
+    box-shadow: 0 0 20px var(--accent-glow);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.score-value-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+}
+
+.score-title-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.metadata-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 0.84rem;
+}
+
+.metadata-label {
+    color: var(--text-secondary);
+}
+
+.metadata-val {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* ── Skill Badges ─────────────────────────────────────────────────── */
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: var(--radius-full);
+    background: var(--accent-subtle);
+    border: 1px solid var(--accent-border);
+    color: #C4B5FD;
+    font-size: 0.74rem;
+    font-weight: 600;
+    transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.skill-tag:hover {
+    background: var(--accent);
+    color: #FFF;
+    border-color: var(--accent);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+/* ── Resume Table & Actions ───────────────────────────────────────── */
+.btn-table-action {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+    background: transparent;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.btn-table-action.action-practice {
+    color: #38BDF8;
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.btn-table-action.action-practice:hover {
+    background: #38BDF8;
+    color: #08090C;
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+}
+
+.btn-table-action.action-delete {
+    color: var(--danger);
+    background: var(--danger-subtle);
+    border-color: var(--danger-border);
+}
+
+.btn-table-action.action-delete:hover {
+    background: var(--danger);
+    color: #FFF;
+    transform: scale(1.1);
+    box-shadow: 0 0 12px var(--danger-glow);
+}
+
+/* Upload Loader Animation */
+.upload-analyzing-spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid var(--accent-subtle);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spinLoader 0.9s linear infinite;
+    margin: 0 auto 0.85rem auto;
+}
+
+@keyframes spinLoader {
+    to { transform: rotate(360deg); }
+}

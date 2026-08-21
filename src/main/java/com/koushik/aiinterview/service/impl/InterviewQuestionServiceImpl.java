@@ -66,13 +66,13 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
             """;
 
     private static final String RESUME_PROMPT_TEMPLATE = """
-            You are conducting a tailored interview for a candidate based on their resume.
-            Generate exactly 10 technical interview questions for the role/skill "%s" at "%s" difficulty level.
-            
-            Please strongly tailor the questions to the candidate's experience and projects listed in their resume:
-            --- RESUME CONTENT START ---
+            You are conducting a specialized technical interview for a candidate based strictly on their resume.
+            Generate exactly 10 interview questions at "%s" difficulty level based on the topics, technologies, and skills found in their resume:
+            --- RESUME EXTRACTED TOPICS & SKILLS ---
             %s
-            --- RESUME CONTENT END ---
+            --- RESUME TOPICS END ---
+            
+            Formulate targeted technical, architectural, and project-based questions that test the candidate directly on the technologies and experiences mentioned in their resume.
             
             Respond with a JSON array of 10 objects. Example format:
             [
@@ -90,32 +90,48 @@ public class InterviewQuestionServiceImpl implements InterviewQuestionService {
 
         // 1. Validate difficulty
         Difficulty difficulty = parseDifficulty(request.getDifficulty());
-        String skill = request.getSkill().trim();
 
         // 2. Find the authenticated user
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
 
-        // 3. Create an interview session
-        InterviewSession session = InterviewSession.builder()
-                .skill(skill)
-                .difficulty(difficulty)
-                .status(SessionStatus.IN_PROGRESS)
-                .user(user)
-                .build();
-
-        // 4. Call Gemini API
+        // 3. Resolve skill and prompt
+        String skill = request.getSkill() != null ? request.getSkill().trim() : "";
         String prompt;
+
         if (request.getResumeId() != null) {
             com.koushik.aiinterview.entity.Resume resume = resumeRepository.findById(request.getResumeId())
                     .orElseThrow(() -> new ResourceNotFoundException("Resume", "id", request.getResumeId().toString()));
             if (!resume.getUser().getId().equals(user.getId())) {
                 throw new RuntimeException("Unauthorized to access this resume");
             }
-            prompt = String.format(RESUME_PROMPT_TEMPLATE, skill, difficulty.name(), resume.getExtractedSkills());
+
+            String resumeSkills = resume.getExtractedSkills();
+            if (resumeSkills == null || resumeSkills.isBlank()) {
+                resumeSkills = resume.getFileName();
+            }
+
+            if (skill.isBlank()) {
+                skill = (resume.getExtractedSkills() != null && !resume.getExtractedSkills().isBlank())
+                        ? resume.getExtractedSkills()
+                        : "Resume Profile (" + resume.getFileName() + ")";
+            }
+
+            prompt = String.format(RESUME_PROMPT_TEMPLATE, difficulty.name(), resumeSkills);
         } else {
+            if (skill.isBlank()) {
+                throw new IllegalArgumentException("Skill is required when not generating from a resume");
+            }
             prompt = String.format(PROMPT_TEMPLATE, skill, difficulty.name());
         }
+
+        // 4. Create an interview session
+        InterviewSession session = InterviewSession.builder()
+                .skill(skill)
+                .difficulty(difficulty)
+                .status(SessionStatus.IN_PROGRESS)
+                .user(user)
+                .build();
 
         String geminiResponse = geminiService.generateContent(SYSTEM_INSTRUCTION, prompt);
 

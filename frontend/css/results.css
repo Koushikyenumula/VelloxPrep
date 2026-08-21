@@ -1,8 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════════
-   RESULTS PAGE — Page-Specific Custom Styling
+   RESULTS & INTERVIEW HISTORY — Page-Specific Luxury Styling
+   VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── Back to List Link ───────────────────────────────────────────── */
+/* ── Back to List Navigation ─────────────────────────────────────── */
 .btn-back-list {
     display: inline-flex;
     align-items: center;
@@ -11,18 +12,20 @@
     text-decoration: none;
     font-size: 0.88rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    padding: 0.55rem 1.15rem;
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-md);
-    transition: var(--transition);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--transition-fast);
 }
 
 .btn-back-list:hover {
     color: var(--text-primary);
-    border-color: var(--primary-light);
+    border-color: var(--accent);
     transform: translateX(-4px);
-    box-shadow: 0 4px 12px hsla(230, 80%, 60%, 0.15);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
 }
 
 /* ── Session Meta Badge ─────────────────────────────────────────── */
@@ -30,10 +33,12 @@
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.5rem 1.25rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    padding: 0.55rem 1.25rem;
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-md);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     font-size: 0.88rem;
 }
 
@@ -50,104 +55,179 @@
     font-weight: 600;
 }
 
+/* ── History Filter Tabs ─────────────────────────────────────────── */
+.history-filter-tabs {
+    display: inline-flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 3px;
+    gap: 4px;
+}
+
+.history-filter-tab {
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.history-filter-tab:hover {
+    color: var(--text-primary);
+}
+
+.history-filter-tab.active {
+    background: var(--accent-subtle);
+    color: #A78BFA;
+    border: 1px solid var(--accent-border);
+}
+
 /* ── Table Cell Wrap & Spacing ──────────────────────────────────── */
 .table-dashboard tbody td {
     white-space: normal;
     word-break: break-word;
     line-height: 1.5;
+    vertical-align: middle;
+}
+
+.table-dashboard tbody tr {
+    transition: all var(--transition-fast);
+}
+
+.table-dashboard tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 /* ── Score Badge ────────────────────────────────────────────────── */
 .badge-score {
-    display: inline-block;
-    padding: 0.35em 0.65em;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: var(--radius-sm);
-}
-
-.badge-score.success {
-    background-color: hsla(145, 65%, 45%, 0.15);
-    color: var(--success);
-    border: 1px solid hsla(145, 65%, 45%, 0.3);
-}
-
-.badge-score.warning {
-    background-color: hsla(38, 92%, 55%, 0.15);
-    color: var(--warning);
-    border: 1px solid hsla(38, 92%, 55%, 0.3);
-}
-
-.badge-score.danger {
-    background-color: hsla(0, 75%, 60%, 0.15);
-    color: var(--danger);
-    border: 1px solid hsla(0, 75%, 60%, 0.3);
-}
-
-/* ── Text Areas in Feedback Table ───────────────────────────────── */
-.text-block {
-    max-height: 250px;
-    overflow-y: auto;
-    font-size: 0.85rem;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
-}
-
-.text-block::-webkit-scrollbar {
-    width: 6px;
-}
-
-.text-block::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.text-block::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 3px;
-}
-
-/* ── Difficulty Badges ──────────────────────────────────────────── */
-.difficulty-badge {
     display: inline-flex;
     align-items: center;
-    padding: 0.25rem 0.65rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    border-radius: 12px;
+    justify-content: center;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+}
+
+.badge-score.score-high,
+.badge-score.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-score.score-mid,
+.badge-score.warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-score.score-low,
+.badge-score.danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* ── Evaluation Item Cards ───────────────────────────────────────── */
+.eval-card {
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.eval-card:hover {
+    border-color: var(--accent-border);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-panel);
+}
+
+.eval-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.eval-card:hover::before {
+    opacity: 1;
+}
+
+/* ── Question & Answer Blocks ───────────────────────────────────── */
+.eval-q-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.45;
+}
+
+.eval-box {
+    background: rgba(13, 17, 28, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.eval-box-label {
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
-.difficulty-badge.easy {
-    background: hsla(145, 65%, 45%, 0.15);
-    color: var(--success);
+.eval-user-ans {
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent);
 }
 
-.difficulty-badge.medium {
-    background: hsla(38, 92%, 55%, 0.15);
-    color: var(--warning);
+.eval-ai-feedback {
+    color: var(--text-primary);
+    border-left: 3px solid #10B981;
+    background: rgba(16, 185, 129, 0.04);
 }
 
-.difficulty-badge.hard {
-    background: hsla(0, 75%, 60%, 0.15);
-    color: var(--danger);
+/* ── Skeleton Loading ───────────────────────────────────────────── */
+.skeleton-card {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite;
+    border-radius: var(--radius-md);
 }
 
-/* ── Search Input ───────────────────────────────────────────────── */
-.search-box .form-control {
-    color: var(--text-primary) !important;
+.skeleton-table {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite;
+    border-radius: var(--radius-lg);
 }
 
-.search-box .form-control::placeholder {
-    color: var(--text-muted);
-}
-
-.search-box .form-control:focus {
-    background-color: var(--bg-input) !important;
-    border-color: var(--border-focus);
-    box-shadow: none;
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }

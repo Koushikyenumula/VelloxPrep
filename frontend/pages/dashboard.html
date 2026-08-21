@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VelloxPrep Dashboard — track your interview performance, scores, and resume analytics.">
-    <title>Dashboard — VelloxPrep</title>
+    <meta name="description" content="VelloxPrep Dashboard — AI-powered technical interview preparation, performance analytics, and ATS intelligence.">
+    <title>Dashboard — VelloxPrep AI Platform</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,17 +17,23 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/sidebar.css">
+    <!-- Custom High-Craft Stylesheet -->
+    <link rel="stylesheet" href="../css/dashboard.css?v=2026.2">
+    <link rel="stylesheet" href="../css/sidebar.css?v=2026.2">
 
-    <!-- Auth Guard and Fetch Interceptor -->
-    <script src="../js/auth.js"></script>
+    <!-- Global Auth Module -->
+    <script src="../js/auth.js?v=2026.2"></script>
 </head>
 <body>
 
-    <!-- ── Animated Background Orbs ──────────────────────────────────── -->
-    <div class="bg-grid" aria-hidden="true"></div>
+    <!-- ── Canvas Neural Network Background ────────────────────────── -->
+    <div class="canvas-container" aria-hidden="true">
+        <canvas id="aiNetworkCanvas"></canvas>
+    </div>
+
+    <!-- ── Atmospheric Desktop Cursor Glow & Vignette ──────────────── -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+    <div class="bg-vignette" aria-hidden="true"></div>
 
     <!-- ── Sidebar ───────────────────────────────────────────────────── -->
     <aside class="sidebar" id="sidebar"></aside>
@@ -44,13 +50,26 @@
                 <button class="topbar-toggle d-lg-none" id="sidebarToggleBtn" aria-label="Toggle sidebar">
                     <i class="bi bi-list"></i>
                 </button>
-                <div>
+                <div class="topbar-brand-title">
                     <h1 class="topbar-title">Dashboard</h1>
-                    <p class="topbar-subtitle">Welcome back! Here's your overview.</p>
+                    <p class="topbar-subtitle">Real-time interview telemetry & performance overview.</p>
                 </div>
             </div>
+
             <div class="topbar-right">
+                <!-- AI Engine Live Status Badge -->
+                <div class="ai-status-pill" title="AI Intelligence Core Active">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text">AI Core Online</span>
+                </div>
+
+                <!-- Live Date Badge -->
                 <span class="topbar-date" id="currentDate"></span>
+
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
+                    <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
+                </button>
             </div>
         </header>
 
@@ -59,6 +78,10 @@
 
             <!-- ── Loading Skeleton ──────────────────────────────────── -->
             <div id="loadingSkeleton">
+                <!-- Skeleton Hero -->
+                <div class="skeleton-hero mb-4"></div>
+
+                <!-- Skeleton Cards -->
                 <div class="row g-4 mb-4">
                     <div class="col-12 col-sm-6 col-xl-4" aria-hidden="true">
                         <div class="skeleton-card"></div>
@@ -79,18 +102,74 @@
                         <div class="skeleton-card"></div>
                     </div>
                 </div>
+
+                <!-- Skeleton Table -->
                 <div class="skeleton-table"></div>
             </div>
 
             <!-- ── Dashboard Content (hidden until data loads) ───────── -->
             <div id="dashboardContent" class="d-none">
 
-                <!-- ── Section: Statistics Cards ─────────────────────── -->
+                <!-- ── Hero Intelligence Section ─────────────────────── -->
+                <section class="dashboard-hero-banner mb-4 scroll-reveal" aria-label="Welcome Overview">
+                    <div class="hero-banner-content">
+                        <div class="hero-banner-left reveal-from-left">
+                            <div class="hero-eyebrow">
+                                <i class="bi bi-stars hero-sparkle-icon"></i>
+                                <span>AI Technical Intelligence Hub</span>
+                            </div>
+                            <h2 class="hero-banner-title" id="welcomeUserHeading">
+                                Welcome back, <span class="accent-line" id="userNameHighlight">Engineer</span>
+                            </h2>
+                            <p class="hero-banner-desc">
+                                Track your mock interview progress, improve technical response accuracy, and accelerate your engineering hiring pipeline with adaptive AI analytics.
+                            </p>
+                        </div>
+
+                        <!-- Quick Actions Grid -->
+                        <div class="hero-quick-actions reveal-from-right delay-1">
+                            <a href="interview-generate.html" class="quick-action-card">
+                                <div class="action-icon-box action-icon-primary">
+                                    <i class="bi bi-cpu-fill"></i>
+                                </div>
+                                <div class="action-info">
+                                    <span class="action-label">Mock Interview</span>
+                                    <span class="action-sub">Start AI simulation</span>
+                                </div>
+                                <i class="bi bi-arrow-right action-arrow"></i>
+                            </a>
+
+                            <a href="coding-generate.html" class="quick-action-card">
+                                <div class="action-icon-box action-icon-code">
+                                    <i class="bi bi-code-square"></i>
+                                </div>
+                                <div class="action-info">
+                                    <span class="action-label">Coding Assessment</span>
+                                    <span class="action-sub">Solve live problems</span>
+                                </div>
+                                <i class="bi bi-arrow-right action-arrow"></i>
+                            </a>
+
+                            <a href="resume.html" class="quick-action-card">
+                                <div class="action-icon-box action-icon-resume">
+                                    <i class="bi bi-file-earmark-check-fill"></i>
+                                </div>
+                                <div class="action-info">
+                                    <span class="action-label">Resume ATS Scanner</span>
+                                    <span class="action-sub">Optimize match score</span>
+                                </div>
+                                <i class="bi bi-arrow-right action-arrow"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ── Section: Statistics Metric Cards ──────────────── -->
                 <section class="mb-4" aria-label="Statistics">
                     <div class="row g-4">
 
                         <!-- Total Interviews -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-left delay-1">
                             <div class="stat-card" id="cardTotalInterviews">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -102,12 +181,12 @@
                                         <i class="bi bi-mic-fill"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-interviews"></div>
+                                <div class="stat-card-glow-bar bar-interviews"></div>
                             </div>
                         </div>
 
                         <!-- Average Score -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-bottom delay-2">
                             <div class="stat-card" id="cardAverageScore">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -119,12 +198,12 @@
                                         <i class="bi bi-graph-up-arrow"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-average"></div>
+                                <div class="stat-card-glow-bar bar-average"></div>
                             </div>
                         </div>
 
                         <!-- Best Score -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-right delay-3">
                             <div class="stat-card" id="cardBestScore">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -136,29 +215,29 @@
                                         <i class="bi bi-trophy-fill"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-best"></div>
+                                <div class="stat-card-glow-bar bar-best"></div>
                             </div>
                         </div>
 
                         <!-- Accuracy -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-left delay-2">
                             <div class="stat-card" id="cardAccuracy">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
                                         <p class="stat-card-label">Accuracy</p>
                                         <h2 class="stat-card-value"><span id="accuracy">0</span><span class="stat-unit">%</span></h2>
-                                        <p class="stat-card-description">Response accuracy</p>
+                                        <p class="stat-card-description">Response precision</p>
                                     </div>
                                     <div class="stat-card-icon stat-icon-accuracy">
                                         <i class="bi bi-bullseye"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-accuracy"></div>
+                                <div class="stat-card-glow-bar bar-accuracy"></div>
                             </div>
                         </div>
 
                         <!-- Total Resumes -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-bottom delay-3">
                             <div class="stat-card" id="cardTotalResumes">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -170,43 +249,46 @@
                                         <i class="bi bi-file-earmark-text-fill"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-resumes"></div>
+                                <div class="stat-card-glow-bar bar-resumes"></div>
                             </div>
                         </div>
 
                         <!-- ATS Score -->
-                        <div class="col-12 col-sm-6 col-xl-4">
+                        <div class="col-12 col-sm-6 col-xl-4 reveal-from-right delay-4">
                             <div class="stat-card" id="cardAtsScore">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
-                                        <p class="stat-card-label">ATS Score</p>
+                                        <p class="stat-card-label">ATS Match Score</p>
                                         <h2 class="stat-card-value"><span id="latestAtsScore">0</span><span class="stat-unit">%</span></h2>
-                                        <p class="stat-card-description">Latest resume score</p>
+                                        <p class="stat-card-description">Latest resume evaluation</p>
                                     </div>
                                     <div class="stat-card-icon stat-icon-ats">
                                         <i class="bi bi-clipboard2-data-fill"></i>
                                     </div>
                                 </div>
-                                <div class="stat-card-bar bar-ats"></div>
+                                <div class="stat-card-glow-bar bar-ats"></div>
                             </div>
                         </div>
 
                     </div>
                 </section>
 
-                <!-- ── Section: Recent Activities & Performance ──────── -->
+                <!-- ── Section: Recent Activities & Performance Overview ─ -->
                 <div class="row g-4">
 
                     <!-- Recent Activities Table -->
-                    <div class="col-12 col-xl-7">
+                    <div class="col-12 col-xl-7 reveal-from-left delay-1">
                         <section class="glass-panel" aria-label="Recent Activities">
                             <div class="panel-header">
-                                <h2 class="panel-title">
-                                    <i class="bi bi-clock-history me-2"></i>Recent Activities
-                                </h2>
+                                <div class="panel-title-wrap">
+                                    <h2 class="panel-title">
+                                        <i class="bi bi-clock-history me-2"></i>Recent Activities
+                                    </h2>
+                                    <span class="panel-badge">Live Log</span>
+                                </div>
                             </div>
                             <div class="panel-body">
-                                <div class="table-responsive">
+                                <div class="table-responsive" id="activitiesTableContainer">
                                     <table class="table table-dashboard" id="activitiesTable">
                                         <thead>
                                             <tr>
@@ -218,26 +300,31 @@
                                             </tr>
                                         </thead>
                                         <tbody id="activitiesBody">
-                                            <!-- Populated by JS -->
+                                            <!-- Populated dynamically by JS -->
                                         </tbody>
                                     </table>
                                 </div>
                                 <div class="empty-state d-none" id="emptyActivities">
-                                    <i class="bi bi-inbox"></i>
-                                    <p>No recent activities yet</p>
-                                    <span>Start an interview or upload a resume to get started.</span>
+                                    <div class="empty-icon-box">
+                                        <i class="bi bi-clock-history"></i>
+                                    </div>
+                                    <p class="empty-title">No recent activities yet</p>
+                                    <span class="empty-desc">Launch an AI mock interview or analyze your resume to populate real-time intelligence.</span>
                                 </div>
                             </div>
                         </section>
                     </div>
 
                     <!-- Performance Overview -->
-                    <div class="col-12 col-xl-5">
+                    <div class="col-12 col-xl-5 reveal-from-right delay-2">
                         <section class="glass-panel" aria-label="Performance Overview">
                             <div class="panel-header">
-                                <h2 class="panel-title">
-                                    <i class="bi bi-speedometer2 me-2"></i>Performance Overview
-                                </h2>
+                                <div class="panel-title-wrap">
+                                    <h2 class="panel-title">
+                                        <i class="bi bi-speedometer2 me-2"></i>Performance Overview
+                                    </h2>
+                                    <span class="panel-badge">Composite</span>
+                                </div>
                             </div>
                             <div class="panel-body">
 
@@ -251,12 +338,12 @@
                                         </svg>
                                         <div class="ring-value">
                                             <span class="ring-number" id="ringNumber">0</span>
-                                            <span class="ring-label">Overall</span>
+                                            <span class="ring-label">Overall Index</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Performance Metrics -->
+                                <!-- Performance Metrics Breakdown -->
                                 <div class="perf-metrics">
                                     <div class="perf-metric-item">
                                         <div class="perf-metric-info">
@@ -314,10 +401,10 @@
             <div id="errorState" class="d-none">
                 <div class="error-panel">
                     <i class="bi bi-exclamation-triangle"></i>
-                    <h3>Failed to load dashboard</h3>
-                    <p>Unable to connect to the server. Please try again.</p>
+                    <h3>Failed to load dashboard intelligence</h3>
+                    <p>Unable to synchronize with the backend engine. Please check your connection and retry.</p>
                     <button class="btn btn-retry" id="retryBtn">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Retry
+                        <i class="bi bi-arrow-clockwise me-2"></i>Retry Connection
                     </button>
                 </div>
             </div>
@@ -328,12 +415,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- App Components -->
-    <script src="../js/components.js"></script>
+    <script src="../js/components.js?v=2026.2"></script>
 
     <!-- API Client -->
-    <script src="../js/api.js"></script>
+    <script src="../js/api.js?v=2026.2"></script>
 
-    <!-- Dashboard Script -->
-    <script src="../js/dashboard.js"></script>
+    <!-- Dashboard Script & Neural Canvas Engine -->
+    <script src="../js/dashboard.js?v=2026.2"></script>
 </body>
 </html>

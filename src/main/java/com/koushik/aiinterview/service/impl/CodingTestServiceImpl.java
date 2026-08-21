@@ -30,6 +30,67 @@ public class CodingTestServiceImpl implements CodingTestService {
     private final GeminiService geminiService;
     private final ObjectMapper objectMapper;
 
+    private static final Map<String, List<String>> DOMAIN_SUBTHEMES = Map.of(
+            "Java", List.of(
+                    "String Parsing & Lexical Tokenization",
+                    "Custom Thread-Safe Bounded Blocking Queue & Concurrency",
+                    "Streams API Data Transformation & Aggregation",
+                    "LRU / LFU Cache Design with O(1) Operations",
+                    "Transaction Rollback Simulation & Stack-based State",
+                    "Custom HashMap Implementation with Collision Resolution",
+                    "Interval Scheduling & Resource Allocation",
+                    "Binary Tree Serialization & Deserialization",
+                    "Graph Dependency Resolver & Topological Sort",
+                    "Dynamic Memory / Matrix Garbage Collection Simulation"
+            ),
+            "DSA", List.of(
+                    "Sliding Window Dynamic Subarray Extremes",
+                    "Monotonic Stack & Next Greater Element Variations",
+                    "Trie-based Auto-complete & Wildcard Prefix Search",
+                    "Graph Shortest Path with Dijkstra / BFS on 2D Grids",
+                    "Two-Pointer Cycle Detection & Fast-Slow Inversions",
+                    "Binary Search on Answer Space / Capacity Optimization",
+                    "Segment Tree / Fenwick Tree Range Sum Queries",
+                    "Dynamic Programming 2D Grid Knapsack & State Transitions",
+                    "Disjoint Set Union (DSU) Connected Components in Networks",
+                    "Median of Stream with Dual Heaps (Min/Max Heap)"
+            ),
+            "Spring Boot", List.of(
+                    "Rate Limiter & Token Bucket Filter Simulation",
+                    "Circuit Breaker State Machine & Fallback Mechanism",
+                    "JWT Token Claims Validator & Expiration Parser",
+                    "Event Dispatcher & Observer Pattern with Priority Queues",
+                    "Custom Dependency Injection Container Resolution",
+                    "REST Request Payload Query Filter & Dynamic Predicates",
+                    "Idempotency Key Deduplication Cache Store",
+                    "Retry Mechanism with Exponential Backoff Algorithm"
+            ),
+            "MySQL", List.of(
+                    "Query Execution Plan Cost Estimator Simulation",
+                    "B+ Tree Index Range Scan & Leaf Node Traversal",
+                    "Deadlock Detection in Transaction Dependency Graph",
+                    "Database Buffer Pool Eviction with Clock Algorithm",
+                    "SQL Parser & Lexer for WHERE Clause Filtering",
+                    "Row-Level Lock Manager with Shared & Exclusive Locks",
+                    "Write-Ahead Logging (WAL) Log Record Recovery Replay"
+            ),
+            "React", List.of(
+                    "Virtual DOM Diffing & Reconciliation Algorithm",
+                    "Custom Hooks State Management & Dependency Array Comparator",
+                    "Event Batching & Scheduler Priority Queue",
+                    "Fiber Tree Traversal & Work In Progress Rebuilding",
+                    "Component Memoization Cache with Shallow Equality Check",
+                    "Flux / Redux Action Reducer State Tree Cloner"
+            ),
+            "Hibernate", List.of(
+                    "First-Level / Second-Level Cache Dirty Checking Tracker",
+                    "Entity State Transitions (Transient, Persistent, Detached)",
+                    "N+1 Query Detection & Batch Fetch Optimizer",
+                    "Optimistic Locking Version Conflict Resolver",
+                    "Lazy Loading Proxy Interceptor & Bytecode Enhancer"
+            )
+    );
+
     @Override
     @Transactional
     public CodingSession generateCodingSession(String email, String domain) {
@@ -42,10 +103,43 @@ public class CodingTestServiceImpl implements CodingTestService {
         
         session = codingSessionRepository.save(session);
 
-        String systemInstruction = "You are an expert technical interviewer.";
-        String prompt = "Generate 4 coding interview questions for the domain: " + domain + ". " +
-                "The questions should consist of exactly 1 Easy, 2 Medium, and 1 Hard difficulty. " +
-                "Return ONLY a JSON array of objects with the keys: 'title', 'description' (include the problem statement), 'difficulty' (EASY, MEDIUM, or HARD), 'baseCode' (a Java class and method skeleton with proper \\n newline characters and indentation), and 'testCases' (an array of exactly 3 objects with 'input' and 'expectedOutput' keys representing standard test cases).";
+        // 1. Pick 4 random sub-themes to ensure uniqueness on every run
+        List<String> themePool = new java.util.ArrayList<>(DOMAIN_SUBTHEMES.getOrDefault(domain, DOMAIN_SUBTHEMES.get("DSA")));
+        java.util.Collections.shuffle(themePool);
+        
+        String theme1 = themePool.size() > 0 ? themePool.get(0) : "Algorithmic Logic";
+        String theme2 = themePool.size() > 1 ? themePool.get(1) : "Data Structure Manipulation";
+        String theme3 = themePool.size() > 2 ? themePool.get(2) : "Optimization & Search";
+        String theme4 = themePool.size() > 3 ? themePool.get(3) : "Complex System / Graph Architecture";
+
+        String sessionSeed = java.util.UUID.randomUUID().toString().substring(0, 8);
+        long timestamp = System.currentTimeMillis();
+
+        String systemInstruction = """
+                You are a senior technical interviewer creating a fresh, novel, and highly creative coding assessment.
+                You must NEVER generate repetitive, boilerplate, or textbook questions (e.g. do NOT generate basic Two Sum, Reverse String, or Fibonnaci).
+                Each question must have an engaging, realistic storyline (such as financial systems, server metric processing, drone navigation, packet routing, cloud task scheduling, or gaming leaderboards).
+                """;
+
+        String prompt = String.format("""
+                Generate exactly 4 distinct, completely unique coding interview questions for the domain "%s".
+                Session Randomization Seed: %s-%d.
+                
+                Target sub-themes for this session:
+                - Question 1 (Difficulty: EASY): Theme "%s"
+                - Question 2 (Difficulty: MEDIUM): Theme "%s"
+                - Question 3 (Difficulty: MEDIUM): Theme "%s"
+                - Question 4 (Difficulty: HARD): Theme "%s"
+                
+                REQUIREMENTS:
+                1. Return ONLY a valid JSON array of 4 objects.
+                2. Each object must contain:
+                   - "title": (String) A creative, descriptive problem title.
+                   - "description": (String) Problem statement with background context, input/output specifications, constraints, and 1 example with explanation (formatted with clean markdown).
+                   - "difficulty": (String) Exactly "EASY", "MEDIUM", or "HARD".
+                   - "baseCode": (String) Valid starter code skeleton in Java (public class Solution with method signature and helpful comments using proper \\n newlines).
+                   - "testCases": (Array of exactly 3 objects) Each object must have "input" (String) and "expectedOutput" (String).
+                """, domain, sessionSeed, timestamp, theme1, theme2, theme3, theme4);
 
         String jsonResponse = geminiService.generateContent(systemInstruction, prompt);
 

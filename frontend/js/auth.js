@@ -134,6 +134,7 @@ const Auth = (() => {
     return {
         saveToken: saveToken,
         getToken: getToken,
+        getItem: getItem,
         removeToken: removeToken,
         checkGuard: checkGuard
     };
@@ -164,13 +165,20 @@ const Auth = (() => {
         try {
             const response = await originalFetch(url, options);
 
-            // Clear credentials and redirect on authorization failure (excluding social auth sessions)
+            // Clear credentials and redirect on authorization failure (excluding social auth sessions and credential validation endpoints)
             if (response.status === 401 || response.status === 403) {
                 const path = window.location.pathname.toLowerCase();
                 const isPublicPage = path.includes('login.html') || path.includes('register.html');
                 const isSocialToken = token && (token.startsWith('google-') || token.startsWith('demo-'));
 
-                if (!isPublicPage && !isSocialToken) {
+                // Do not auto-logout when user is actively submitting credential forms or updating profile/password
+                const urlStr = (typeof url === 'string' ? url : (url.url || '')).toLowerCase();
+                const isExcludedEndpoint = urlStr.includes('password') || 
+                                           urlStr.includes('change-password') || 
+                                           urlStr.includes('/auth/') || 
+                                           urlStr.includes('/users/');
+
+                if (!isPublicPage && !isSocialToken && !isExcludedEndpoint) {
                     Auth.removeToken();
                     window.location.href = 'login.html';
                 }

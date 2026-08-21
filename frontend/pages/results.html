@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VelloxPrep Results — review detailed AI feedback, score metrics, and answers for your practice sessions.">
-    <title>Results — VelloxPrep</title>
+    <meta name="description" content="VelloxPrep Interview History — review detailed AI feedback, score metrics, and performance breakdowns for all your practice sessions.">
+    <title>Interview History & Results — VelloxPrep</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,6 +20,7 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/interview.css">
     <link rel="stylesheet" href="../css/results.css">
 
     <!-- Auth Guard and Fetch Interceptor -->
@@ -27,10 +28,16 @@
 </head>
 <body>
 
-    <!-- ── Animated Background Orbs ──────────────────────────────────── -->
-    <div class="bg-grid" aria-hidden="true"></div>
+    <!-- ── Canvas Neural Network Background ──────────────────────────── -->
+    <canvas id="aiNetworkCanvas" class="ai-network-canvas" aria-hidden="true"></canvas>
 
-    <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+    <!-- ── Desktop Cursor Ambient Glow ───────────────────────────────── -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- ── Atmospheric Vignette ──────────────────────────────────────── -->
+    <div class="bg-vignette" aria-hidden="true"></div>
+
+    <!-- ── Reusable Sidebar ──────────────────────────────────────────── -->
     <aside class="sidebar" id="sidebar"></aside>
 
     <!-- ── Sidebar Overlay (Mobile) ──────────────────────────────────── -->
@@ -46,11 +53,18 @@
                     <i class="bi bi-list"></i>
                 </button>
                 <div>
-                    <h1 class="topbar-title" id="pageTitle">Interview Results</h1>
-                    <p class="topbar-subtitle" id="pageSubtitle">Track your performance and read detailed AI feedback.</p>
+                    <h1 class="topbar-title" id="pageTitle">Interview History</h1>
+                    <p class="topbar-subtitle" id="pageSubtitle">Track your performance trajectory and read detailed AI evaluations.</p>
                 </div>
             </div>
             <div class="topbar-right">
+                <div class="ai-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span>Telemetry Active</span>
+                </div>
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+                    <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
+                </button>
                 <span class="topbar-date" id="currentDate"></span>
             </div>
         </header>
@@ -58,21 +72,45 @@
         <!-- ── Page Content ──────────────────────────────────────────── -->
         <div class="page-content">
 
+            <!-- ── Hero Banner Overview ──────────────────────────────── -->
+            <section class="dashboard-hero-banner mb-4 scroll-reveal" aria-label="Interview History Overview">
+                <div class="hero-banner-content">
+                    <div class="hero-banner-left reveal-from-left">
+                        <div class="hero-eyebrow">
+                            <i class="bi bi-graph-up-arrow hero-sparkle-icon"></i>
+                            <span>Performance Telemetry</span>
+                        </div>
+                        <h2 class="hero-banner-title">
+                            Continuous <span class="accent-line">Growth & History</span>
+                        </h2>
+                        <p class="hero-banner-desc">
+                            Review your complete practice archive across Standard Interviews, MCQ Sessions, Resume-Tailored Assessments, and Mock Coding Tests.
+                        </p>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="hero-quick-actions reveal-from-right delay-1">
+                        <a href="interview-generate.html" class="quick-action-card">
+                            <div class="action-icon-box action-icon-primary">
+                                <i class="bi bi-play-circle-fill"></i>
+                            </div>
+                            <div class="action-info">
+                                <span class="action-label">New Practice</span>
+                                <span class="action-sub">Start session</span>
+                            </div>
+                            <i class="bi bi-arrow-right action-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <!-- ── Loading Skeleton ──────────────────────────────────── -->
             <div id="loadingSkeleton">
                 <div class="row g-4 mb-4">
-                    <div class="col-12 col-sm-6 col-xl-3" aria-hidden="true">
-                        <div class="skeleton-card" style="height: 120px;"></div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3" aria-hidden="true">
-                        <div class="skeleton-card" style="height: 120px;"></div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3" aria-hidden="true">
-                        <div class="skeleton-card" style="height: 120px;"></div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-xl-3" aria-hidden="true">
-                        <div class="skeleton-card" style="height: 120px;"></div>
-                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3"><div class="skeleton-card" style="height: 120px;"></div></div>
+                    <div class="col-12 col-sm-6 col-xl-3"><div class="skeleton-card" style="height: 120px;"></div></div>
+                    <div class="col-12 col-sm-6 col-xl-3"><div class="skeleton-card" style="height: 120px;"></div></div>
+                    <div class="col-12 col-sm-6 col-xl-3"><div class="skeleton-card" style="height: 120px;"></div></div>
                 </div>
                 <div class="skeleton-table" style="height: 350px;"></div>
             </div>
@@ -80,13 +118,13 @@
             <!-- ── Error State ───────────────────────────────────────── -->
             <div id="errorState" class="d-none">
                 <div class="glass-panel text-center py-5">
-                    <div class="error-icon mb-3">
-                        <i class="bi bi-exclamation-triangle-fill text-danger fs-1"></i>
+                    <div class="action-icon-box action-icon-primary mx-auto mb-3" style="width: 64px; height: 64px; font-size: 2rem; background: rgba(239, 68, 68, 0.15); color: #EF4444; border-color: rgba(239, 68, 68, 0.3);">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
                     </div>
-                    <h2 class="h4 text-primary">Failed to load results</h2>
-                    <p class="text-secondary" id="errorMessage">Could not connect to the server. Please try again.</p>
-                    <button class="btn btn-primary px-4 mt-2" id="retryBtn">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Retry
+                    <h3 class="fw-bold text-white mb-2">Failed to Load Archive</h3>
+                    <p class="text-secondary mb-4" id="errorMessage">Could not connect to the server. Please try again.</p>
+                    <button class="btn btn-session-submit px-4" id="retryBtn">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Retry Connection
                     </button>
                 </div>
             </div>
@@ -94,72 +132,86 @@
             <!-- ── Content Panels ────────────────────────────────────── -->
             <div id="resultsContent" class="d-none">
 
-                <!-- ── STATE 1: List Mode (No ID in URL) ──────────────── -->
+                <!-- ── STATE 1: List Mode (Archive Table) ────────────── -->
                 <div id="listModeContainer" class="d-none">
-                    <div class="glass-panel">
-                        <div class="panel-header d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
-                            <h2 class="panel-title">
-                                <i class="bi bi-journal-check me-2"></i>Completed Sessions
-                            </h2>
-                            <div class="search-box">
-                                <div class="input-group">
-                                    <span class="input-group-text bg-transparent border-end-0 border-color text-muted">
-                                        <i class="bi bi-search"></i>
-                                    </span>
-                                    <input type="text" id="sessionSearch" class="form-control bg-transparent border-start-0 border-color text-light" placeholder="Filter by skill..." style="border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+                    <div class="glass-panel p-0 overflow-hidden reveal-from-bottom delay-1">
+                        
+                        <!-- Panel Header & Search Filter -->
+                        <div class="p-3 p-md-4 border-bottom border-color d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                            <div>
+                                <h3 class="panel-title mb-1">
+                                    <i class="bi bi-clock-history text-accent me-2"></i>Session History Log
+                                </h3>
+                                <p class="text-secondary small mb-0">Complete historical evaluation records across all interview modes</p>
+                            </div>
+                            
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="search-box">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0 border-color text-secondary">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input type="text" id="sessionSearch" class="form-control bg-transparent border-start-0 border-color text-light" placeholder="Search by topic or skill…" style="border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-dashboard">
-                                    <thead>
-                                        <tr>
-                                            <th>Skill / Domain</th>
-                                            <th>Difficulty</th>
-                                            <th>Average Score</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th class="text-end">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="sessionsListBody">
-                                        <!-- Dynamic rows -->
-                                    </tbody>
-                                </table>
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-dashboard mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Interview Type</th>
+                                        <th>Skill / Topic</th>
+                                        <th>Difficulty</th>
+                                        <th>Score</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sessionsListBody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div class="empty-state py-5 text-center d-none" id="emptySessions">
+                            <div class="action-icon-box action-icon-primary mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.6rem;">
+                                <i class="bi bi-inbox-fill"></i>
                             </div>
-                            <div class="empty-state py-5 text-center d-none" id="emptySessions">
-                                <i class="bi bi-inbox fs-1 text-muted d-block mb-3"></i>
-                                <p class="text-light mb-1">No interview sessions found</p>
-                                <span class="text-secondary fs-7">Generate and finish an interview practice session to view feedback here.</span>
-                            </div>
+                            <h5 class="fw-bold text-white mb-1">No Practice Sessions Yet</h5>
+                            <p class="text-secondary small mb-3">Launch a practice session to start building your evaluation dossier.</p>
+                            <a href="interview-generate.html" class="btn btn-session-submit px-4">Start Interview</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- ── STATE 2: Detail Mode (ID in URL) ───────────────── -->
+                <!-- ── STATE 2: Detail Mode (Single Session Breakdown) ─ -->
                 <div id="detailModeContainer" class="d-none">
                     
                     <!-- Back Button Row -->
-                    <div class="mb-4 d-flex justify-content-between align-items-center">
+                    <div class="mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3 reveal-from-top">
                         <a href="results.html" class="btn-back-list">
-                            <i class="bi bi-arrow-left"></i> Back to all results
+                            <i class="bi bi-arrow-left"></i> Back to History Log
                         </a>
                         <div class="session-meta-badge" id="sessionMetaBadge">
                             <!-- Populated dynamically -->
                         </div>
                     </div>
 
-                    <!-- Statistics Cards -->
-                    <section class="row g-4 mb-4" aria-label="Score Metrics">
+                    <!-- Statistics Cards Grid -->
+                    <section class="row g-3 mb-4" aria-label="Score Metrics">
                         <!-- Card 1: Total Questions -->
-                        <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="col-12 col-sm-6 col-xl-3 reveal-from-bottom">
                             <div class="stat-card" id="cardTotalQuestions">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
                                         <p class="stat-card-label">Total Questions</p>
                                         <h2 class="stat-card-value" id="totalQuestions">0</h2>
-                                        <p class="stat-card-description">Questions in session</p>
+                                        <p class="stat-card-description">Questions evaluated</p>
                                     </div>
                                     <div class="stat-card-icon stat-icon-interviews">
                                         <i class="bi bi-question-circle-fill"></i>
@@ -170,7 +222,7 @@
                         </div>
 
                         <!-- Card 2: Average Score -->
-                        <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="col-12 col-sm-6 col-xl-3 reveal-from-bottom delay-1">
                             <div class="stat-card" id="cardAverageScore">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -187,7 +239,7 @@
                         </div>
 
                         <!-- Card 3: Best Answer Score -->
-                        <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="col-12 col-sm-6 col-xl-3 reveal-from-bottom delay-2">
                             <div class="stat-card" id="cardBestScore">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -204,7 +256,7 @@
                         </div>
 
                         <!-- Card 4: Accuracy -->
-                        <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="col-12 col-sm-6 col-xl-3 reveal-from-bottom delay-3">
                             <div class="stat-card" id="cardAccuracy">
                                 <div class="stat-card-body">
                                     <div class="stat-card-info">
@@ -221,35 +273,22 @@
                         </div>
                     </section>
 
-                    <!-- Feedback Detail Panel -->
-                    <div class="glass-panel">
-                        <div class="panel-header">
-                            <h2 class="panel-title">
-                                <i class="bi bi-chat-left-quote me-2"></i>Detailed Question & Answer Evaluations
-                            </h2>
-                        </div>
-                        <div class="panel-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-dashboard align-top">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 25%;">Question</th>
-                                            <th style="width: 30%;">Your Answer</th>
-                                            <th style="width: 35%;">AI Feedback</th>
-                                            <th style="width: 10%;" class="text-end">Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="detailedEvaluationsBody">
-                                        <!-- Dynamic feedback rows -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="empty-state py-5 text-center d-none" id="emptyEvaluations">
-                                <i class="bi bi-chat-square-x fs-1 text-muted d-block mb-3"></i>
-                                <p class="text-light mb-1">No evaluations available</p>
-                                <span class="text-secondary fs-7">No answers have been evaluated for this session yet.</span>
-                            </div>
-                        </div>
+                    <!-- Detailed Evaluation Header -->
+                    <div class="d-flex align-items-center justify-content-between mb-3 reveal-from-left">
+                        <h4 class="fw-bold text-white mb-0">
+                            <i class="bi bi-journal-text text-accent me-2"></i>Question-by-Question Dossier
+                        </h4>
+                    </div>
+
+                    <!-- Detailed Evaluations List -->
+                    <div id="detailedEvaluationsBody" class="reveal-from-bottom delay-1">
+                        <!-- Dynamic Evaluation Cards -->
+                    </div>
+
+                    <!-- Empty Evaluations -->
+                    <div class="glass-panel py-5 text-center d-none" id="emptyEvaluations">
+                        <i class="bi bi-inbox fs-1 text-secondary mb-2"></i>
+                        <p class="text-secondary small mb-0">No question evaluations recorded for this session.</p>
                     </div>
 
                 </div>
@@ -264,11 +303,9 @@
 
     <!-- App Components -->
     <script src="../js/components.js"></script>
-
-    <!-- API Client -->
     <script src="../js/api.js"></script>
 
-    <!-- Custom Logic -->
+    <!-- Results Controller -->
     <script src="../js/results.js"></script>
 </body>
 </html>

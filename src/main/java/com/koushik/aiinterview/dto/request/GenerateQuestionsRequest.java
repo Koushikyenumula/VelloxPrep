@@ -1,7 +1,6 @@
 package com.koushik.aiinterview.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GenerateQuestionsRequest {
 
-    @NotBlank(message = "Skill is required")
-    private String skill;
+    private String skill; // Optional if resumeId is provided (inferred from resume skills)
 
     @NotBlank(message = "Difficulty is required")
     private String difficulty;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="AI Resume Analyzer — upload your resume, receive ATS optimization feedback, and extract key skills.">
-    <title>Resume Management — VelloxPrep</title>
+    <title>Resume Intelligence & ATS Scanner — VelloxPrep</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,117 +20,186 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/resume.css">
 
     <!-- Auth Guard and Fetch Interceptor -->
     <script src="../js/auth.js"></script>
 </head>
 <body>
 
-    <!-- ── Animated Background Orbs ──────────────────────────────────── -->
-    <div class="bg-grid" aria-hidden="true"></div>
+    <!-- ── Canvas Neural Network Background ──────────────────────────── -->
+    <canvas id="aiNetworkCanvas" class="ai-network-canvas" aria-hidden="true"></canvas>
 
-    <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+    <!-- ── Desktop Cursor Ambient Glow ───────────────────────────────── -->
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <!-- ── Atmospheric Vignette ──────────────────────────────────────── -->
+    <div class="bg-vignette" aria-hidden="true"></div>
+
+    <!-- ── Reusable Sidebar Container ────────────────────────────────── -->
     <aside class="sidebar" id="sidebar"></aside>
 
     <!-- ── Sidebar Overlay (Mobile) ──────────────────────────────────── -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ── Main Content ──────────────────────────────────────────────── -->
+    <!-- ── Main Content Area ─────────────────────────────────────────── -->
     <div class="main-content" id="mainContent">
 
-        <!-- ── Top Navbar ────────────────────────────────────────────── -->
+        <!-- ── Topbar ────────────────────────────────────────────────── -->
         <header class="topbar">
             <div class="topbar-left">
                 <button class="topbar-toggle d-lg-none" id="sidebarToggleBtn" aria-label="Toggle sidebar">
                     <i class="bi bi-list"></i>
                 </button>
                 <div>
-                    <h1 class="topbar-title">Resume Management</h1>
+                    <h1 class="topbar-title">Resume Intelligence</h1>
                     <p class="topbar-subtitle">Analyze and optimize your resume for applicant tracking systems (ATS).</p>
                 </div>
             </div>
             <div class="topbar-right">
+                <div class="ai-status-pill">
+                    <span class="pulse-dot"></span>
+                    <span>ATS Core Online</span>
+                </div>
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+                    <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
+                </button>
                 <span class="topbar-date" id="currentDate"></span>
             </div>
         </header>
 
         <!-- ── Page Content ──────────────────────────────────────────── -->
         <div class="page-content">
-            <div class="row g-4">
-                <!-- Left Column: Upload Dropzone & Analysis Results -->
-                <div class="col-lg-5">
-                    <!-- Upload Box -->
-                    <div class="glass-panel p-4 mb-4">
-                        <h2 class="h5 text-primary mb-3">
-                            <i class="bi bi-cloud-arrow-up-fill me-2"></i>Upload Resume
-                        </h2>
-                        <div class="upload-dropzone text-center p-5 border border-2 border-dashed rounded-3" id="uploadDropzone" style="cursor: pointer; border-color: var(--border-color) !important; transition: var(--transition);">
-                            <input type="file" id="fileInput" accept=".pdf" class="d-none">
-                            <i class="bi bi-file-earmark-pdf-fill text-secondary mb-3" style="font-size: 3.5rem; opacity: 0.7;"></i>
-                            <h3 class="h6 mb-2">Drag & Drop your Resume</h3>
-                            <p class="text-muted small mb-3">Only PDF files are supported (Max 10MB)</p>
-                            <button type="button" class="btn btn-outline-primary btn-sm px-4" id="browseBtn">
-                                Browse File
-                            </button>
+
+            <!-- ── Hero Intelligence Banner ──────────────────────────── -->
+            <section class="dashboard-hero-banner mb-3 scroll-reveal" aria-label="ATS Overview">
+                <div class="hero-banner-content">
+                    <div class="hero-banner-left reveal-from-left">
+                        <div class="hero-eyebrow">
+                            <i class="bi bi-stars hero-sparkle-icon"></i>
+                            <span>ATS Intelligence Engine</span>
                         </div>
+                        <h2 class="hero-banner-title">
+                            Resume Compatibility <span class="accent-line">& Skill Extraction</span>
+                        </h2>
+                        <p class="hero-banner-desc">
+                            Upload your resume to benchmark keyword density, extract technical competencies, and instantly generate targeted AI mock interviews tailored to your exact profile.
+                        </p>
                     </div>
 
-                    <!-- Analysis Result Panel (Hidden by default) -->
-                    <div class="glass-panel p-4 d-none" id="analysisResultPanel">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="h5 text-primary m-0">
-                                <i class="bi bi-clipboard-data-fill me-2"></i>Analysis Results
-                            </h2>
-                            <button type="button" class="btn-close btn-close-white" id="closeResultBtn" aria-label="Close"></button>
+                    <!-- Quick Actions Grid -->
+                    <div class="hero-quick-actions reveal-from-right delay-1">
+                        <a href="interview-generate.html" class="quick-action-card">
+                            <div class="action-icon-box action-icon-primary">
+                                <i class="bi bi-cpu-fill"></i>
+                            </div>
+                            <div class="action-info">
+                                <span class="action-label">Mock Interview</span>
+                                <span class="action-sub">Start AI simulation</span>
+                            </div>
+                            <i class="bi bi-arrow-right action-arrow"></i>
+                        </a>
+
+                        <a href="dashboard.html" class="quick-action-card">
+                            <div class="action-icon-box action-icon-code">
+                                <i class="bi bi-speedometer2"></i>
+                            </div>
+                            <div class="action-info">
+                                <span class="action-label">Analytics Dashboard</span>
+                                <span class="action-sub">View telemetry</span>
+                            </div>
+                            <i class="bi bi-arrow-right action-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="row g-3">
+                <!-- Left Column: Unified Upload & Analysis Container -->
+                <div class="col-12 col-lg-5 reveal-from-left delay-1">
+                    <div class="glass-panel p-3.5">
+                        
+                        <!-- Panel Header -->
+                        <div class="panel-header mb-2.5 d-flex justify-content-between align-items-center">
+                            <div class="panel-title-wrap">
+                                <h2 class="panel-title" id="uploadPanelTitle">
+                                    <i class="bi bi-cloud-arrow-up-fill me-2"></i>Upload Resume
+                                </h2>
+                                <span class="panel-badge" id="uploadPanelBadge">PDF Scanner</span>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary d-none" id="reUploadBtn" title="Upload another resume">
+                                <i class="bi bi-arrow-clockwise me-1"></i> New Upload
+                            </button>
+                        </div>
+                        
+                        <!-- Upload Dropzone View -->
+                        <div class="upload-dropzone" id="uploadDropzone">
+                            <input type="file" id="fileInput" accept=".pdf" class="d-none">
+                            <div class="upload-icon-wrapper">
+                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                            </div>
+                            <h3 class="upload-title">Drag & Drop your Resume</h3>
+                            <p class="upload-subtitle">Only PDF files are supported (Max 10MB)</p>
+                            <button type="button" class="btn btn-browse" id="browseBtn">
+                                <i class="bi bi-folder2-open me-1"></i> Browse File
+                            </button>
                         </div>
 
-                        <!-- Score card -->
-                        <div class="text-center py-4 mb-4 rounded-3" style="background: rgba(0, 0, 0, 0.15); border: 1px solid var(--border-color);">
-                            <div class="d-inline-flex align-items-center justify-content-center rounded-circle border border-4 mb-2" id="resultScoreBorder" style="width: 90px; height: 90px; border-color: var(--primary) !important;">
-                                <span class="fs-2 fw-bold text-light" id="resultAtsScore">0%</span>
+                        <!-- Analysis Result View (Toggled inside same card) -->
+                        <div class="d-none analysis-result-view" id="analysisResultPanel">
+                            <!-- Score card -->
+                            <div class="score-display-card mb-3">
+                                <div class="score-circle-gauge" id="resultScoreBorder">
+                                    <span class="score-value-text" id="resultAtsScore">0%</span>
+                                </div>
+                                <h3 class="score-title-text">ATS Compatibility Score</h3>
                             </div>
-                            <h3 class="h6 text-secondary m-0">ATS Score Compatibility</h3>
+
+                            <!-- Metadata -->
+                            <div class="mb-3">
+                                <div class="metadata-item">
+                                    <span class="metadata-label">File Name</span>
+                                    <span class="metadata-val text-truncate ms-2" style="max-width: 190px;" id="resultFileName">-</span>
+                                </div>
+                                <div class="metadata-item">
+                                    <span class="metadata-label">File Size</span>
+                                    <span class="metadata-val" id="resultFileSize">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Extracted Skills -->
+                            <div>
+                                <h3 class="panel-title fs-6 mb-2">
+                                    <i class="bi bi-cpu me-1"></i> AI-Extracted Skills
+                                </h3>
+                                <div class="d-flex flex-wrap gap-1.5 pt-1" id="resultSkillsContainer">
+                                    <!-- Tags dynamically generated -->
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Metadata -->
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: var(--border-color) !important;">
-                                <span class="text-secondary">File Name</span>
-                                <span class="fw-medium text-light text-truncate ms-2" style="max-width: 200px;" id="resultFileName">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between py-2 border-bottom" style="border-color: var(--border-color) !important;">
-                                <span class="text-secondary">File Size</span>
-                                <span class="fw-medium text-light" id="resultFileSize">-</span>
-                            </div>
-                        </div>
-
-                        <!-- Extracted Skills -->
-                        <div>
-                            <h3 class="h6 text-secondary mb-2">AI-Extracted Skills</h3>
-                            <div class="d-flex flex-wrap gap-2" id="resultSkillsContainer">
-                                <!-- Tags dynamically generated -->
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Resumes History List -->
-                <div class="col-lg-7">
-                    <div class="glass-panel p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h2 class="h5 text-primary m-0">
-                                <i class="bi bi-file-earmark-text-fill me-2"></i>Resume Directory
-                            </h2>
-                            <span class="badge bg-secondary" id="resumeCountBadge">0 Total</span>
+                <!-- Right Column: Resumes Directory List -->
+                <div class="col-12 col-lg-7 reveal-from-right delay-2">
+                    <div class="glass-panel p-3.5">
+                        <div class="panel-header mb-2.5">
+                            <div class="panel-title-wrap">
+                                <h2 class="panel-title">
+                                    <i class="bi bi-file-earmark-text-fill me-2"></i>Resume Directory
+                                </h2>
+                                <span class="panel-badge" id="resumeCountBadge">0 Total</span>
+                            </div>
                         </div>
 
-                        <div class="table-responsive">
-                            <table class="table table-dashboard align-middle m-0" style="--bs-table-border-color: var(--border-color);">
+                        <div class="table-responsive" id="resumesTableContainer">
+                            <table class="table table-dashboard align-middle m-0" id="resumesTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="text-secondary py-3">File Name</th>
-                                        <th scope="col" class="text-secondary py-3 text-center">ATS Score</th>
-                                        <th scope="col" class="text-secondary py-3 text-end">Action</th>
+                                        <th scope="col">File Name</th>
+                                        <th scope="col" class="text-center">ATS Score</th>
+                                        <th scope="col" class="text-end">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="resumesTableBody">
@@ -140,10 +209,12 @@
                         </div>
 
                         <!-- Empty State -->
-                        <div class="text-center py-5 d-none" id="emptyState">
-                            <i class="bi bi-file-earmark-plus text-muted mb-3" style="font-size: 3.5rem; opacity: 0.5;"></i>
-                            <h3 class="h6 text-secondary">No Resumes Uploaded Yet</h3>
-                            <p class="text-muted small mb-0">Upload your resume to evaluate your ATS compatibility score.</p>
+                        <div class="empty-state d-none" id="emptyState">
+                            <div class="empty-icon-box">
+                                <i class="bi bi-file-earmark-plus"></i>
+                            </div>
+                            <p class="empty-title">No resumes uploaded yet</p>
+                            <span class="empty-desc">Upload your resume above to evaluate your ATS compatibility score and extract key skills.</span>
                         </div>
                     </div>
                 </div>
@@ -154,19 +225,26 @@
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteResumeModal" tabindex="-1" aria-labelledby="deleteResumeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-panel border-color text-light">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title text-danger" id="deleteResumeModalLabel">
-                        <i class="bi bi-trash3-fill me-2"></i> Delete Resume
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content premium-modal modal-danger">
+                <!-- Glowing Icon Badge -->
+                <div class="modal-icon-badge badge-danger">
+                    <i class="bi bi-trash3-fill"></i>
                 </div>
-                <div class="modal-body py-4">
-                    Are you sure you want to delete this resume? This action cannot be undone.
+                
+                <!-- Modal Content Header & Text -->
+                <div class="modal-header-clean">
+                    <h3 class="modal-title-clean" id="deleteResumeModalLabel">Delete Resume</h3>
+                    <p class="modal-desc-clean">
+                        Are you sure you want to permanently delete this resume from your directory? This action cannot be undone.
+                    </p>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger px-4 py-2" id="confirmDeleteBtn">
+
+                <!-- Modal Actions -->
+                <div class="modal-actions-clean">
+                    <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn-modal-confirm-danger" id="confirmDeleteBtn">
                         <i class="bi bi-trash3-fill me-1"></i> Delete
                     </button>
                 </div>

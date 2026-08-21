@@ -78,8 +78,16 @@ const API = (() => {
 
     // ── Interview Operations ────────────────────────────────────────────
     async function generateInterview(skill, difficulty, resumeId = null) {
-        const body = { skill, difficulty };
+        const resolvedSkill = (skill && skill.trim().length > 0) 
+            ? skill.trim() 
+            : (resumeId ? 'Resume Profile' : 'General');
+
+        const body = { 
+            skill: resolvedSkill, 
+            difficulty: difficulty || 'Medium' 
+        };
         if (resumeId) body.resumeId = resumeId;
+
         const response = await fetch(`${BASE_URL}/interviews/generate`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

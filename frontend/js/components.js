@@ -286,19 +286,26 @@ const Sidebar = (() => {
         const modalHtml = `
             <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content glass-panel border-color text-light">
-                        <div class="modal-header border-0 pb-0">
-                            <h5 class="modal-title text-primary" id="logoutConfirmModalLabel">
-                                <i class="bi bi-box-arrow-right me-2"></i> Confirm Logout
-                            </h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content premium-modal">
+                        <!-- Glowing Icon Badge -->
+                        <div class="modal-icon-badge badge-primary">
+                            <i class="bi bi-box-arrow-right"></i>
                         </div>
-                        <div class="modal-body py-4">
-                            Are you sure you want to log out of your practice session?
+
+                        <!-- Modal Header & Content -->
+                        <div class="modal-header-clean">
+                            <h3 class="modal-title-clean" id="logoutConfirmModalLabel">Confirm Logout</h3>
+                            <p class="modal-desc-clean">
+                                Are you sure you want to end your practice session and securely log out of VelloxPrep?
+                            </p>
                         </div>
-                        <div class="modal-footer border-0 pt-0">
-                            <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary px-4 py-2" id="confirmLogoutBtn">
+
+                        <!-- Modal Actions -->
+                        <div class="modal-actions-clean">
+                            <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button type="button" class="btn-modal-confirm-primary" id="confirmLogoutBtn">
                                 <i class="bi bi-box-arrow-right me-1"></i> Log Out
                             </button>
                         </div>
@@ -321,7 +328,7 @@ const Toast = (() => {
     function injectToastContainer() {
         if (document.getElementById('toastContainer')) return;
         const containerHtml = `
-            <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer" style="z-index: 1080;"></div>
+            <div class="toast-container" id="toastContainer"></div>
         `;
         document.body.insertAdjacentHTML('beforeend', containerHtml);
     }
@@ -331,57 +338,54 @@ const Toast = (() => {
         const container = document.getElementById('toastContainer');
 
         const iconMap = {
-            success: 'bi-check-circle-fill',
-            danger: 'bi-exclamation-triangle-fill',
+            success: 'bi-check-lg',
+            danger:  'bi-exclamation-triangle-fill',
             warning: 'bi-exclamation-circle-fill',
-            info: 'bi-info-circle-fill'
-        };
-
-        const typeColorMap = {
-            success: 'var(--success)',
-            danger: 'var(--danger)',
-            warning: 'var(--warning)',
-            info: 'var(--info)'
+            info:    'bi-info-circle-fill'
         };
 
         const icon = iconMap[type] || 'bi-info-circle-fill';
-        const color = typeColorMap[type] || 'var(--primary)';
-        const toastId = 'toast_' + Date.now();
+        const toastId = 'toast_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
         const toastHtml = `
-            <div class="toast align-items-center text-light border-0" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true" style="background: var(--bg-card); min-width: 300px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); border-left: 4px solid ${color} !important;">
-                <div class="d-flex">
-                    <div class="toast-body d-flex align-items-center gap-3 py-3 px-3">
-                        <i class="bi ${icon} fs-5" style="color: ${color};"></i>
-                        <span style="font-size: 0.9rem; font-weight: 500;">${message}</span>
+            <div class="custom-toast" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-content-wrap">
+                    <div class="toast-icon-badge badge-toast-${type}">
+                        <i class="bi ${icon}"></i>
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-3 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <div class="toast-text-wrap">
+                        ${message}
+                    </div>
+                    <button type="button" class="toast-close-btn" aria-label="Close">
+                        <i class="bi bi-x"></i>
+                    </button>
                 </div>
+                <div class="toast-countdown-bar countdown-${type}"></div>
             </div>
         `;
         container.insertAdjacentHTML('beforeend', toastHtml);
 
         const toastEl = document.getElementById(toastId);
-        if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
-            const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
-            toast.show();
-            toastEl.addEventListener('hidden.bs.toast', () => {
-                toastEl.remove();
-            });
-        } else {
-            // Standalone vanilla toast display
-            toastEl.style.display = 'block';
-            toastEl.style.opacity = '1';
-            toastEl.style.transition = 'opacity 0.3s ease';
-            const closeBtn = toastEl.querySelector('.btn-close');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => toastEl.remove());
-            }
+        if (!toastEl) return;
+
+        const closeBtn = toastEl.querySelector('.toast-close-btn');
+        let removeTimeout;
+
+        const dismiss = () => {
+            clearTimeout(removeTimeout);
+            toastEl.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            toastEl.style.opacity = '0';
+            toastEl.style.transform = 'translateX(40px) scale(0.92)';
             setTimeout(() => {
-                toastEl.style.opacity = '0';
-                setTimeout(() => toastEl.remove(), 300);
-            }, 3500);
+                toastEl.remove();
+            }, 300);
+        };
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', dismiss);
         }
+
+        removeTimeout = setTimeout(dismiss, 3800);
     }
 
     return {

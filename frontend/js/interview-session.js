@@ -1,19 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * INTERVIEW SESSION PAGE — JavaScript
- * VelloxPrep Platform
- *
- * Handles:
- *  - Auth guard
- *  - GET /api/interview-sessions/{id} to load questions
- *  - One-at-a-time question display with navigation
- *  - POST /api/interview/answer to submit each answer
- *  - 30-minute countdown timer
- *  - Progress tracking and question dot navigation
- *  - Session complete state
- *  - Sidebar toggle and logout
+ *  SUBJECTIVE AI INTERVIEW SESSION — Controller & Physics Engine
+ *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */
+
+'use strict';
 
 // ── Configuration ───────────────────────────────────────────────────
 const SESSION_MINUTES = 30;
@@ -26,8 +18,14 @@ let answers           = {};       // { questionId: userAnswer }
 let evaluations       = {};       // { questionId: { score, aiFeedback } }
 let timerInterval     = null;
 let remainingSeconds  = SESSION_MINUTES * 60;
+let isReducedMotion   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ── DOM Elements ────────────────────────────────────────────────────
+const canvas             = document.getElementById('aiNetworkCanvas');
+const cursorGlow         = document.getElementById('cursorGlow');
+const themeToggleBtn     = document.getElementById('themeToggleBtn');
+const themeToggleIcon    = document.getElementById('themeToggleIcon');
+
 const loadingSkeleton    = document.getElementById('loadingSkeleton');
 const sessionContent     = document.getElementById('sessionContent');
 const sessionComplete    = document.getElementById('sessionComplete');
@@ -65,283 +63,507 @@ const timerValue         = document.getElementById('timerValue');
 
 const completeSubtitle   = document.getElementById('completeSubtitle');
 
-
-
 // ── Initialization ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    // Auth guard
+    // 1. Auth Guard
     if (!localStorage.getItem('token')) {
         window.location.href = 'login.html';
         return;
     }
 
-    // Initialize reusable sidebar
-    Sidebar.init();
+    // 2. Initialize Common Sidebar
+    if (typeof Sidebar !== 'undefined' && typeof Sidebar.init === 'function') {
+        Sidebar.init();
+    }
 
-    // Navigation buttons
-    prevBtn.addEventListener('click', goToPrevious);
-    nextBtn.addEventListener('click', goToNext);
-    submitAnswerBtn.addEventListener('click', () => AnswerSubmission.submit());
+    // 3. Visual Engine
+    initTheme();
+    initCanvasNetwork();
+    initCursorGlow();
+    initCardSpotlights();
 
-    // Character counter
-    answerTextarea.addEventListener('input', updateCharCount);
+    // 4. Navigation & Input bindings
+    if (prevBtn) prevBtn.addEventListener('click', goToPrevious);
+    if (nextBtn) nextBtn.addEventListener('click', goToNext);
+    if (submitAnswerBtn && typeof AnswerSubmission !== 'undefined') {
+        submitAnswerBtn.addEventListener('click', () => AnswerSubmission.submit());
+    }
 
-    // Initialise the AnswerSubmission module
-    AnswerSubmission.init({
-        getSessionId:       () => getSessionIdFromUrl(),
-        getCurrentQuestion: () => questions[currentIndex] || null,
-        getAnswerText:      () => answerTextarea.value,
-        submitBtn:          submitAnswerBtn,
-        submitBtnText:      submitBtnText,
-        submitBtnLoader:    submitBtnLoader,
-        answerTextarea:     answerTextarea,
+    if (answerTextarea) {
+        answerTextarea.addEventListener('input', updateCharCount);
+    }
 
-        onEvaluationReceived: (questionId, evaluation) => {
-            // Store evaluation
-            answers[questionId] = evaluation.userAnswer || answerTextarea.value;
-            evaluations[questionId] = {
-                score:      evaluation.score,
-                aiFeedback: evaluation.aiFeedback
-            };
+    // 5. Initialize AnswerSubmission module
+    if (typeof AnswerSubmission !== 'undefined') {
+        AnswerSubmission.init({
+            getSessionId:       () => getSessionIdFromUrl(),
+            getCurrentQuestion: () => questions[currentIndex] || null,
+            getAnswerText:      () => answerTextarea.value,
+            submitBtn:          submitAnswerBtn,
+            submitBtnText:      submitBtnText,
+            submitBtnLoader:    submitBtnLoader,
+            answerTextarea:     answerTextarea,
 
-            // Show inline feedback
-            showEvaluation(evaluations[questionId]);
+            onEvaluationReceived: (questionId, evaluation) => {
+                evaluations[questionId] = evaluation;
+                answers[questionId] = answerTextarea.value;
+                displayEvaluation(evaluation);
+                updateProgress();
+                updateQuestionDots();
+                checkAllAnswered();
+            },
 
-            // Update progress & dots
-            updateProgress();
-            updateDotStates();
-
-            // Check if all answered
-            const allAnswered = questions.every(q => evaluations[q.id]);
-            if (allAnswered && currentIndex === questions.length - 1) {
-                nextBtn.innerHTML = '<i class="bi bi-check2-all"></i> Finish';
-                nextBtn.classList.add('btn-submit-answer', 'btn-finish');
-                nextBtn.classList.remove('btn-nav');
-                nextBtn.disabled = false;
-                nextBtn.onclick = finishSession;
-            } else if (currentIndex < questions.length - 1) {
-                nextBtn.disabled = false;
+            onError: (message) => {
+                showAlert(message, 'danger');
             }
+        });
+    }
 
-            clearAlert();
-        },
-
-        onAdvanceNext: () => {
-            // Auto-move to next question
-            if (currentIndex < questions.length - 1) {
-                goToNext();
-            } else {
-                // Last question — check if all done
-                const allAnswered = questions.every(q => evaluations[q.id]);
-                if (allAnswered) {
-                    finishSession();
-                }
-            }
-        },
-
-        onAllAnswered: () => {
-            finishSession();
-        }
-    });
-
-    // Load session
+    // 6. Load Session
     loadSession();
 });
 
-// ── Load Session Data ───────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+// 1. THEME ENGINE & SYNCHRONIZATION
+// ═══════════════════════════════════════════════════════════════════
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            const next = current === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+        });
+    }
+}
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        if (themeToggleIcon) themeToggleIcon.className = 'bi bi-sun-fill';
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (themeToggleIcon) themeToggleIcon.className = 'bi bi-moon-stars';
+    }
+    localStorage.setItem('theme', theme);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// 2. ATMOSPHERIC NEURAL NETWORK CANVAS
+// ═══════════════════════════════════════════════════════════════════
+function initCanvasNetwork() {
+    if (!canvas || isReducedMotion) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let width = 0;
+    let height = 0;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    let nodes = [];
+    let pulses = [];
+    const MAX_NODES = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 14000), 85);
+    const CONNECT_DIST = 140;
+
+    const mouse = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+        targetX: window.innerWidth / 2,
+        targetY: window.innerHeight / 2
+    };
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.scale(dpr, dpr);
+        initNodes();
+    }
+
+    function initNodes() {
+        nodes = [];
+        for (let i = 0; i < MAX_NODES; i++) {
+            const depth = 0.4 + Math.random() * 0.6;
+            nodes.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.22 * depth,
+                vy: (Math.random() - 0.5) * 0.22 * depth,
+                radius: (1.2 + Math.random() * 1.5) * depth,
+                depth: depth,
+                alpha: 0.15 + depth * 0.45
+            });
+        }
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.targetX = e.clientX;
+        mouse.targetY = e.clientY;
+    }, { passive: true });
+
+    function spawnPulse(nodeA, nodeB) {
+        if (pulses.length > 8) return;
+        pulses.push({
+            startX: nodeA.x,
+            startY: nodeA.y,
+            endX: nodeB.x,
+            endY: nodeB.y,
+            progress: 0,
+            speed: 0.015 + Math.random() * 0.015
+        });
+    }
+
+    let isVisible = true;
+    document.addEventListener('visibilitychange', () => {
+        isVisible = !document.hidden;
+    });
+
+    function render() {
+        requestAnimationFrame(render);
+        if (!isVisible) return;
+
+        mouse.x += (mouse.targetX - mouse.x) * 0.04;
+        mouse.y += (mouse.targetY - mouse.y) * 0.04;
+
+        const offsetX = (mouse.x - width / 2) / (width / 2);
+        const offsetY = (mouse.y - height / 2) / (height / 2);
+
+        ctx.clearRect(0, 0, width, height);
+
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const nodeColor = isLight ? 'rgba(70, 85, 125,' : 'rgba(180, 195, 235,';
+        const lineColor = isLight ? 'rgba(100, 120, 170,' : 'rgba(140, 160, 215,';
+
+        // Lines
+        for (let i = 0; i < nodes.length; i++) {
+            const na = nodes[i];
+            const posX = na.x + offsetX * 15 * na.depth;
+            const posY = na.y + offsetY * 15 * na.depth;
+
+            for (let j = i + 1; j < nodes.length; j++) {
+                const nb = nodes[j];
+                const pbx = nb.x + offsetX * 15 * nb.depth;
+                const pby = nb.y + offsetY * 15 * nb.depth;
+
+                const dx = posX - pbx;
+                const dy = posY - pby;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < CONNECT_DIST) {
+                    const alpha = (1 - dist / CONNECT_DIST) * 0.18 * na.depth * nb.depth;
+                    ctx.beginPath();
+                    ctx.moveTo(posX, posY);
+                    ctx.lineTo(pbx, pby);
+                    ctx.strokeStyle = `${lineColor} ${alpha})`;
+                    ctx.lineWidth = 0.75;
+                    ctx.stroke();
+
+                    if (Math.random() < 0.0003) {
+                        spawnPulse(na, nb);
+                    }
+                }
+            }
+        }
+
+        // Pulses
+        for (let i = pulses.length - 1; i >= 0; i--) {
+            const p = pulses[i];
+            p.progress += p.speed;
+
+            if (p.progress >= 1) {
+                pulses.splice(i, 1);
+                continue;
+            }
+
+            const curX = p.startX + (p.endX - p.startX) * p.progress;
+            const curY = p.startY + (p.endY - p.startY) * p.progress;
+
+            ctx.beginPath();
+            ctx.arc(curX, curY, 2.2, 0, Math.PI * 2);
+            ctx.fillStyle = isLight ? 'rgba(99, 102, 241, 0.9)' : 'rgba(167, 139, 250, 0.95)';
+            ctx.shadowColor = isLight ? '#6366f1' : '#a78bfa';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        // Nodes
+        for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            n.x += n.vx;
+            n.y += n.vy;
+
+            if (n.x < 0) n.x = width;
+            else if (n.x > width) n.x = 0;
+            if (n.y < 0) n.y = height;
+            else if (n.y > height) n.y = 0;
+
+            const posX = n.x + offsetX * 15 * n.depth;
+            const posY = n.y + offsetY * 15 * n.depth;
+
+            ctx.beginPath();
+            ctx.arc(posX, posY, n.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `${nodeColor} ${n.alpha})`;
+            ctx.fill();
+        }
+    }
+
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+    requestAnimationFrame(render);
+}
+
+// ── Desktop Cursor Ambient Glow ─────────────────────────────────────
+function initCursorGlow() {
+    if (!cursorGlow || isReducedMotion || window.innerWidth < 1024) return;
+
+    let glowX = window.innerWidth / 2;
+    let glowY = window.innerHeight / 2;
+    let targetX = glowX;
+    let targetY = glowY;
+    let isVisible = false;
+
+    window.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (!isVisible) {
+            isVisible = true;
+            cursorGlow.style.opacity = '1';
+        }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+        isVisible = false;
+        cursorGlow.style.opacity = '0';
+    });
+
+    function updateGlow() {
+        glowX += (targetX - glowX) * 0.12;
+        glowY += (targetY - glowY) * 0.12;
+        cursorGlow.style.left = `${glowX}px`;
+        cursorGlow.style.top  = `${glowY}px`;
+        requestAnimationFrame(updateGlow);
+    }
+    requestAnimationFrame(updateGlow);
+}
+
+// ── Interactive Card Mouse Follower Spotlight ───────────────────────
+function initCardSpotlights() {
+    if (isReducedMotion || window.innerWidth < 992) return;
+
+    const cards = document.querySelectorAll('.question-card, .glass-panel, .evaluation-panel');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        }, { passive: true });
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// 3. LOAD SESSION DATA
+// ═══════════════════════════════════════════════════════════════════
 async function loadSession() {
     const sessionId = getSessionIdFromUrl();
+
     if (!sessionId) {
-        showAlert('No session ID provided. Redirecting…', 'warning');
-        setTimeout(() => { window.location.href = 'interview-generate.html'; }, 1500);
+        showView('error');
         return;
     }
 
     showView('loading');
 
     try {
-        sessionData = await API.getInterviewSession(sessionId);
-        questions = sessionData.questions || [];
+        const data = await API.getInterviewSession(sessionId);
+        sessionData = data;
+        questions = data.questions || [];
 
         if (questions.length === 0) {
-            showAlert('This session has no questions.', 'warning');
+            showAlert('No questions found for this session.', 'warning');
             showView('error');
             return;
         }
 
-        // Pre-populate answers from existing evaluations
-        if (sessionData.evaluations && sessionData.evaluations.length > 0) {
-            sessionData.evaluations.forEach(ev => {
-                if (ev.questionId) {
-                    answers[ev.questionId] = ev.userAnswer || '';
-                    evaluations[ev.questionId] = {
-                        score: ev.score,
-                        aiFeedback: ev.aiFeedback
-                    };
-                }
-            });
-        }
-
-        // Render session
-        renderSessionMeta();
+        renderSessionMeta(data);
         renderQuestionDots();
-        displayQuestion(0);
         updateProgress();
         startTimer();
 
-        topbarSubtitle.textContent = `${sessionData.skill} · ${sessionData.difficulty} · ${questions.length} Questions`;
+        // Restore any existing answers/evaluations
+        questions.forEach((q, idx) => {
+            if (q.userAnswer) {
+                answers[q.id] = q.userAnswer;
+            }
+            if (q.score !== null && q.score !== undefined) {
+                evaluations[q.id] = {
+                    score: q.score,
+                    aiFeedback: q.aiFeedback || ''
+                };
+            }
+        });
 
+        // Jump to first unanswered question
+        const firstUnanswered = questions.findIndex(q => !evaluations[q.id]);
+        currentIndex = firstUnanswered !== -1 ? firstUnanswered : 0;
+
+        displayQuestion(currentIndex);
         showView('session');
 
+        // If all were already answered
+        checkAllAnswered();
+
     } catch (error) {
-        console.error('Load session error:', error);
+        console.error('Failed to load session:', error);
         showView('error');
     }
 }
 
-// ── Render Session Meta Badges ──────────────────────────────────────
-function renderSessionMeta() {
-    const diffClass = getDifficultyBadgeClass(sessionData.difficulty);
+// ── Render Session Meta ─────────────────────────────────────────────
+function renderSessionMeta(data) {
+    const skill = data.skill || 'General';
+    const difficulty = data.difficulty || 'Medium';
+
+    topbarSubtitle.textContent = `${skill} • ${difficulty} Track`;
+
+    const diffClass = `badge-difficulty-${difficulty.toLowerCase()}`;
     sessionMeta.innerHTML = `
         <span class="session-badge badge-skill">
-            <i class="bi bi-code-slash me-1"></i>${escapeHtml(sessionData.skill)}
+            <i class="bi bi-code-slash"></i> ${escapeHtml(skill)}
         </span>
         <span class="session-badge ${diffClass}">
-            <i class="bi bi-sliders me-1"></i>${escapeHtml(sessionData.difficulty)}
-        </span>
-        <span class="session-badge badge-skill">
-            <i class="bi bi-list-ol me-1"></i>${questions.length} Questions
+            <i class="bi bi-bar-chart-line-fill"></i> ${escapeHtml(difficulty)}
         </span>
     `;
 }
 
-function getDifficultyBadgeClass(difficulty) {
-    const d = (difficulty || '').toLowerCase();
-    if (d === 'easy')   return 'badge-difficulty-easy';
-    if (d === 'medium') return 'badge-difficulty-medium';
-    if (d === 'hard')   return 'badge-difficulty-hard';
-    return 'badge-skill';
-}
-
 // ── Render Question Dots ────────────────────────────────────────────
 function renderQuestionDots() {
-    questionDots.innerHTML = questions.map((q, i) => {
-        const answeredClass = evaluations[q.id] ? 'answered' : '';
-        return `<button class="q-dot ${answeredClass}" data-index="${i}" title="Question ${i + 1}">${i + 1}</button>`;
-    }).join('');
+    questionDots.innerHTML = '';
 
-    // Attach click listeners
-    questionDots.querySelectorAll('.q-dot').forEach(dot => {
+    questions.forEach((q, idx) => {
+        const dot = document.createElement('button');
+        dot.className = 'q-dot';
+        dot.textContent = idx + 1;
+        dot.setAttribute('aria-label', `Go to question ${idx + 1}`);
+
+        if (idx === currentIndex) dot.classList.add('active');
+        if (evaluations[q.id]) dot.classList.add('answered');
+
         dot.addEventListener('click', () => {
-            const index = parseInt(dot.dataset.index);
             saveCurrentAnswer();
-            displayQuestion(index);
+            displayQuestion(idx);
         });
+
+        questionDots.appendChild(dot);
     });
 }
 
-function updateDotStates() {
+function updateQuestionDots() {
     const dots = questionDots.querySelectorAll('.q-dot');
-    dots.forEach((dot, i) => {
+    dots.forEach((dot, idx) => {
+        const q = questions[idx];
         dot.classList.remove('active', 'answered');
-        if (i === currentIndex) dot.classList.add('active');
-        if (evaluations[questions[i].id]) dot.classList.add('answered');
+
+        if (idx === currentIndex) dot.classList.add('active');
+        if (q && evaluations[q.id]) dot.classList.add('answered');
     });
 }
 
 // ── Display Question ────────────────────────────────────────────────
 function displayQuestion(index) {
+    if (index < 0 || index >= questions.length) return;
+
     currentIndex = index;
     const q = questions[index];
 
-    // Animate card
-    questionCard.style.animation = 'none';
-    questionCard.offsetHeight; // trigger reflow
-    questionCard.style.animation = 'cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both';
-
-    // Update question content
     questionBadge.textContent = index + 1;
     questionCurrent.textContent = index + 1;
     questionTotal.textContent = questions.length;
-    questionText.textContent = q.question;
+    questionText.textContent = q.questionText || q.question || '';
 
-    // Restore saved answer
+    // Restore answer
     answerTextarea.value = answers[q.id] || '';
     updateCharCount();
 
-    // Show/hide evaluation if already answered
-    const ev = evaluations[q.id];
-    if (ev) {
-        showEvaluation(ev);
+    // Evaluation feedback state
+    const evalData = evaluations[q.id];
+    if (evalData) {
+        displayEvaluation(evalData);
         answerTextarea.disabled = true;
         submitAnswerBtn.disabled = true;
-        submitBtnText.innerHTML = '<i class="bi bi-check-circle-fill"></i> Answered';
+        submitAnswerBtn.classList.add('d-none');
     } else {
         hideEvaluation();
         answerTextarea.disabled = false;
         submitAnswerBtn.disabled = false;
-        submitBtnText.innerHTML = '<i class="bi bi-send-fill"></i> Submit Answer';
+        submitAnswerBtn.classList.remove('d-none');
     }
 
-    // Update navigation buttons
-    prevBtn.disabled = index === 0;
-
-    // If last question and all answered, show "Finish" style
-    if (index === questions.length - 1) {
-        const allAnswered = questions.every(q => evaluations[q.id]);
-        if (allAnswered) {
-            nextBtn.innerHTML = '<i class="bi bi-check2-all"></i> Finish';
-            nextBtn.classList.add('btn-submit-answer', 'btn-finish');
-            nextBtn.classList.remove('btn-nav');
-            nextBtn.onclick = finishSession;
-        } else {
-            nextBtn.disabled = true;
-            nextBtn.innerHTML = 'Next <i class="bi bi-chevron-right"></i>';
-        }
+    // Update Navigation Buttons
+    prevBtn.disabled = (currentIndex === 0);
+    
+    if (currentIndex === questions.length - 1) {
+        nextBtn.innerHTML = 'Finish <i class="bi bi-check2-all ms-1"></i>';
     } else {
-        nextBtn.disabled = false;
-        nextBtn.innerHTML = 'Next <i class="bi bi-chevron-right"></i>';
-        nextBtn.classList.add('btn-nav');
-        nextBtn.classList.remove('btn-submit-answer', 'btn-finish');
-        nextBtn.onclick = goToNext;
+        nextBtn.innerHTML = 'Next <i class="bi bi-chevron-right ms-1"></i>';
     }
 
-    // Update dots
-    updateDotStates();
+    updateQuestionDots();
+    initCardSpotlights();
 }
 
-// ── Submit Answer (delegated to AnswerSubmission module) ────────────
-// The submit logic lives in answer-submission.js.
-// Callbacks wired via AnswerSubmission.init() handle evaluation,
-// progress updates, and auto-advance to the next question.
-
 // ── Evaluation Display ──────────────────────────────────────────────
-function showEvaluation(ev) {
-    evaluationPanel.classList.remove('d-none');
-    const score = ev.score != null ? Math.round(ev.score) : 0;
+function displayEvaluation(evaluation) {
+    const score = evaluation.score || 0;
+    const feedback = evaluation.aiFeedback || evaluation.feedback || 'No feedback provided.';
+
     evalScoreBadge.textContent = `${score}%`;
-    evalScoreBadge.className = `eval-score-badge ${getScoreClass(score)}`;
-    evalFeedback.textContent = ev.aiFeedback || 'No feedback available.';
+    evalScoreBadge.className = 'eval-score-badge';
+
+    if (score >= 70) {
+        evalScoreBadge.classList.add('score-high');
+    } else if (score >= 45) {
+        evalScoreBadge.classList.add('score-mid');
+    } else {
+        evalScoreBadge.classList.add('score-low');
+    }
+
+    evalFeedback.textContent = feedback;
+    evaluationPanel.classList.remove('d-none');
 }
 
 function hideEvaluation() {
     evaluationPanel.classList.add('d-none');
+    evalScoreBadge.textContent = '0%';
+    evalFeedback.textContent = '';
 }
 
-function getScoreClass(score) {
-    if (score >= 70) return 'score-high';
-    if (score >= 40) return 'score-mid';
-    return 'score-low';
-}
-
-// ── Navigation ──────────────────────────────────────────────────────
+// ── Save Answer in Memory ───────────────────────────────────────────
 function saveCurrentAnswer() {
     const q = questions[currentIndex];
-    if (q && !evaluations[q.id]) {
+    if (q) {
         answers[q.id] = answerTextarea.value;
     }
 }
 
+// ── Check All Questions Answered ────────────────────────────────────
+function checkAllAnswered() {
+    const allAnswered = questions.every(q => evaluations[q.id]);
+    if (allAnswered && questions.length > 0) {
+        setTimeout(() => {
+            finishSession();
+        }, 1200);
+    }
+}
+
+// ── Navigation ──────────────────────────────────────────────────────
 function goToPrevious() {
     if (currentIndex > 0) {
         saveCurrentAnswer();
@@ -353,6 +575,8 @@ function goToNext() {
     if (currentIndex < questions.length - 1) {
         saveCurrentAnswer();
         displayQuestion(currentIndex + 1);
+    } else {
+        checkAllAnswered();
     }
 }
 
@@ -387,7 +611,6 @@ function updateTimerDisplay() {
     const seconds = remainingSeconds % 60;
     timerValue.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-    // Color states
     timerDisplay.classList.remove('warning', 'danger');
     if (remainingSeconds <= 120) {
         timerDisplay.classList.add('danger');
@@ -397,18 +620,16 @@ function updateTimerDisplay() {
 }
 
 function handleTimeUp() {
-    showAlert('⏱ Time is up! Your session has ended.', 'warning');
+    showAlert('⏱ Time is up! Your interview simulation has completed.', 'warning');
 
-    // Disable interactions
     answerTextarea.disabled = true;
     submitAnswerBtn.disabled = true;
     prevBtn.disabled = true;
     nextBtn.disabled = true;
 
-    // Show finish after a moment
     setTimeout(() => {
         finishSession();
-    }, 2500);
+    }, 2000);
 }
 
 // ── Finish Session ──────────────────────────────────────────────────
@@ -418,14 +639,13 @@ function finishSession() {
     const answered = questions.filter(q => evaluations[q.id]).length;
     const total = questions.length;
 
-    // Calculate average score
     let avgScore = 0;
     const scores = Object.values(evaluations).map(e => e.score || 0);
     if (scores.length > 0) {
         avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
     }
 
-    completeSubtitle.textContent = `You answered ${answered} of ${total} questions with an average score of ${avgScore}%.`;
+    completeSubtitle.textContent = `You answered ${answered} of ${total} questions with an overall score of ${avgScore}%.`;
 
     const viewResultsBtn = document.getElementById('viewResultsBtn');
     const sessionId = getSessionIdFromUrl();
@@ -451,9 +671,6 @@ function showView(view) {
     }
 }
 
-// ── Loading State ───────────────────────────────────────────────────
-// Submit loading state is now managed by the AnswerSubmission module.
-
 // ── Character Counter ───────────────────────────────────────────────
 function updateCharCount() {
     charCount.textContent = answerTextarea.value.length;
@@ -461,11 +678,9 @@ function updateCharCount() {
 
 // ── Alert Display ───────────────────────────────────────────────────
 function showAlert(message, type = 'danger') {
-    Toast.show(message, type);
-}
-
-function clearAlert() {
-    // No-op with stackable toasts
+    if (typeof Toast !== 'undefined' && typeof Toast.show === 'function') {
+        Toast.show(message, type);
+    }
 }
 
 // ── Utility ─────────────────────────────────────────────────────────
@@ -475,9 +690,8 @@ function getSessionIdFromUrl() {
 }
 
 function escapeHtml(str) {
+    if (!str) return '';
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
 }
-
-
