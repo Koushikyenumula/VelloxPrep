@@ -282,7 +282,7 @@ function switchView(targetView, animate = true) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// 2. ATMOSPHERIC NEURAL NETWORK CANVAS (CANVAS PARTICLES & SYNAPSES)
+// 2. ATMOSPHERIC NEURAL NETWORK CANVAS (MOBILE & DESKTOP ACCELERATED)
 // ═══════════════════════════════════════════════════════════════════
 function initCanvasNetwork() {
     const canvas = DOM.canvas;
@@ -291,12 +291,14 @@ function initCanvasNetwork() {
     const ctx = canvas.getContext('2d', { alpha: true });
     let width = 0;
     let height = 0;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth < 768);
+    const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
     let nodes = [];
     let pulses = [];
-    const MAX_NODES = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 12000), 120);
-    const CONNECT_DIST = 150;
+    const MAX_NODES = isMobile ? 14 : Math.min(Math.floor((window.innerWidth * window.innerHeight) / 14000), 80);
+    const CONNECT_DIST = isMobile ? 80 : 145;
+    const MAX_PULSES = isMobile ? 0 : 8;
 
     // Mouse parallax tracking
     const mouse = {
@@ -309,24 +311,26 @@ function initCanvasNetwork() {
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
+        const mobileNow = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth < 768);
+        const curDpr = mobileNow ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = width * curDpr;
+        canvas.height = height * curDpr;
         canvas.style.width = width + 'px';
         canvas.style.height = height + 'px';
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(curDpr, 0, 0, curDpr, 0, 0);
         initNodes();
     }
 
     function initNodes() {
         nodes = [];
         for (let i = 0; i < MAX_NODES; i++) {
-            const depth = 0.4 + Math.random() * 0.6; // 0.4 (far) to 1.0 (near)
+            const depth = 0.4 + Math.random() * 0.6;
             nodes.push({
                 x: Math.random() * width,
                 y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.25 * depth,
-                vy: (Math.random() - 0.5) * 0.25 * depth,
-                radius: (1.2 + Math.random() * 1.6) * depth,
+                vx: (Math.random() - 0.5) * (isMobile ? 0.12 : 0.22) * depth,
+                vy: (Math.random() - 0.5) * (isMobile ? 0.12 : 0.22) * depth,
+                radius: (1.2 + Math.random() * 1.5) * depth,
                 depth: depth,
                 alpha: 0.15 + depth * 0.45,
                 pulseTimer: Math.random() * 100
@@ -334,15 +338,15 @@ function initCanvasNetwork() {
         }
     }
 
-    // Track mouse for gentle parallax
-    window.addEventListener('mousemove', (e) => {
-        mouse.targetX = e.clientX;
-        mouse.targetY = e.clientY;
-    }, { passive: true });
+    if (!isMobile) {
+        window.addEventListener('mousemove', (e) => {
+            mouse.targetX = e.clientX;
+            mouse.targetY = e.clientY;
+        }, { passive: true });
+    }
 
-    // Synaptic pulse spawning
     function spawnPulse(nodeA, nodeB) {
-        if (pulses.length > 10) return;
+        if (pulses.length >= MAX_PULSES) return;
         pulses.push({
             startX: nodeA.x,
             startY: nodeA.y,
@@ -359,17 +363,27 @@ function initCanvasNetwork() {
         isVisible = !document.hidden;
     });
 
-    let lastTime = 0;
-    function render(currentTime) {
+    let isScrolling = false;
+    let scrollTimeout = null;
+    if (isMobile) {
+        window.addEventListener('scroll', () => {
+            isScrolling = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => { isScrolling = false; }, 90);
+        }, { passive: true });
+    }
+
+    function render() {
         requestAnimationFrame(render);
-        if (!isVisible) return;
+        if (!isVisible || isScrolling) return;
 
-        // Smooth mouse damping (lerp)
-        mouse.x += (mouse.targetX - mouse.x) * 0.04;
-        mouse.y += (mouse.targetY - mouse.y) * 0.04;
+        if (!isMobile) {
+            mouse.x += (mouse.targetX - mouse.x) * 0.04;
+            mouse.y += (mouse.targetY - mouse.y) * 0.04;
+        }
 
-        const offsetX = (mouse.x - width / 2) / (width / 2);
-        const offsetY = (mouse.y - height / 2) / (height / 2);
+        const offsetX = isMobile ? 0 : (mouse.x - width / 2) / (width / 2);
+        const offsetY = isMobile ? 0 : (mouse.y - height / 2) / (height / 2);
 
         ctx.clearRect(0, 0, width, height);
 
@@ -377,18 +391,16 @@ function initCanvasNetwork() {
         const nodeColor = isLight ? 'rgba(70, 85, 125,' : 'rgba(180, 195, 235,';
         const lineColor = isLight ? 'rgba(100, 120, 170,' : 'rgba(140, 160, 215,';
 
-        // 1. Update and draw connections
+        // 1. Lines
         for (let i = 0; i < nodes.length; i++) {
             const na = nodes[i];
-
-            // Parallax position
-            const posX = na.x + offsetX * 16 * na.depth;
-            const posY = na.y + offsetY * 16 * na.depth;
+            const posX = na.x + offsetX * 15 * na.depth;
+            const posY = na.y + offsetY * 15 * na.depth;
 
             for (let j = i + 1; j < nodes.length; j++) {
                 const nb = nodes[j];
-                const pbx = nb.x + offsetX * 16 * nb.depth;
-                const pby = nb.y + offsetY * 16 * nb.depth;
+                const pbx = nb.x + offsetX * 15 * nb.depth;
+                const pby = nb.y + offsetY * 15 * nb.depth;
 
                 const dx = posX - pbx;
                 const dy = posY - pby;
@@ -403,49 +415,47 @@ function initCanvasNetwork() {
                     ctx.lineTo(pbx, pby);
                     ctx.stroke();
 
-                    // Random synaptic trigger
-                    if (Math.random() < 0.0003 && dist < 120) {
+                    if (!isMobile && Math.random() < 0.0003 && dist < 120) {
                         spawnPulse(na, nb);
                     }
                 }
             }
         }
 
-        // 2. Update and draw pulses
-        for (let p = pulses.length - 1; p >= 0; p--) {
-            const pulse = pulses[p];
-            pulse.progress += pulse.speed;
+        // 2. Pulses
+        if (!isMobile && MAX_PULSES > 0) {
+            for (let p = pulses.length - 1; p >= 0; p--) {
+                const pulse = pulses[p];
+                pulse.progress += pulse.speed;
 
-            if (pulse.progress >= 1) {
-                pulses.splice(p, 1);
-                continue;
+                if (pulse.progress >= 1) {
+                    pulses.splice(p, 1);
+                    continue;
+                }
+
+                const currentX = pulse.startX + (pulse.endX - pulse.startX) * pulse.progress + offsetX * 14;
+                const currentY = pulse.startY + (pulse.endY - pulse.startY) * pulse.progress + offsetY * 14;
+
+                ctx.beginPath();
+                ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
+                ctx.fillStyle = isLight ? 'rgba(109, 74, 255, 0.75)' : 'rgba(140, 120, 255, 0.9)';
+                ctx.fill();
             }
-
-            const currentX = pulse.startX + (pulse.endX - pulse.startX) * pulse.progress + offsetX * 14;
-            const currentY = pulse.startY + (pulse.endY - pulse.startY) * pulse.progress + offsetY * 14;
-
-            ctx.beginPath();
-            ctx.arc(currentX, currentY, 2, 0, Math.PI * 2);
-            ctx.fillStyle = isLight ? 'rgba(109, 74, 255, 0.75)' : 'rgba(140, 120, 255, 0.9)';
-            ctx.fill();
         }
 
-        // 3. Draw nodes
+        // 3. Nodes
         for (let i = 0; i < nodes.length; i++) {
             const n = nodes[i];
-
-            // Motion & subtle drift
-            n.x += n.vx + 0.05 * n.depth; // Gentle horizontal flow
+            n.x += n.vx + (isMobile ? 0.02 : 0.05) * n.depth;
             n.y += n.vy;
 
-            // Wrap around edges seamlessly
             if (n.x < -20) n.x = width + 20;
             if (n.x > width + 20) n.x = -20;
             if (n.y < -20) n.y = height + 20;
             if (n.y > height + 20) n.y = -20;
 
-            const px = n.x + offsetX * 16 * n.depth;
-            const py = n.y + offsetY * 16 * n.depth;
+            const px = n.x + offsetX * 15 * n.depth;
+            const py = n.y + offsetY * 15 * n.depth;
 
             ctx.beginPath();
             ctx.arc(px, py, n.radius, 0, Math.PI * 2);
@@ -464,7 +474,8 @@ function initCanvasNetwork() {
 // ═══════════════════════════════════════════════════════════════════
 function initCursorGlow() {
     const glow = DOM.cursorGlow;
-    if (!glow || window.innerWidth < 768) return;
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth < 1024;
+    if (!glow || isTouch) return;
 
     let targetX = -500;
     let targetY = -500;

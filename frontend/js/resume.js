@@ -66,12 +66,16 @@
             Sidebar.init();
         }
 
-        // 3. Initialize Visual Engine
-        initTheme();
-        initCanvasNetwork();
-        initCursorGlow();
-        initCardSpotlights();
-        initScrollReveal();
+        // 3. Initialize Visual Engine (Mobile & Desktop Accelerated)
+        if (typeof VisualEngine !== 'undefined') {
+            VisualEngine.initAll();
+        } else {
+            initTheme();
+            initCanvasNetwork();
+            initCursorGlow();
+            initCardSpotlights();
+            initScrollReveal();
+        }
 
         // 4. Set Current Live Date
         setCurrentDate();

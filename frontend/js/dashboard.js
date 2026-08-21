@@ -82,11 +82,16 @@ document.addEventListener('DOMContentLoaded', () => {
         Sidebar.init();
     }
 
-    // 3. Initialize Visual Engine
-    initTheme();
-    initCanvasNetwork();
-    initCursorGlow();
-    initCardSpotlights();
+    // 3. Initialize Visual Engine (Mobile & Desktop Accelerated)
+    if (typeof VisualEngine !== 'undefined') {
+        VisualEngine.initAll();
+    } else {
+        initTheme();
+        initCanvasNetwork();
+        initCursorGlow();
+        initCardSpotlights();
+        initScrollReveal();
+    }
 
     // 4. Set Dynamic User Information & Live Date
     setupUserIdentity();

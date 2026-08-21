@@ -50,12 +50,16 @@
             Sidebar.init();
         }
 
-        // 3. Visual Engine
-        initTheme();
-        initCanvasNetwork();
-        initCursorGlow();
-        initCardSpotlights();
-        initScrollReveal();
+        // 3. Visual Engine (Mobile & Desktop Accelerated)
+        if (typeof VisualEngine !== 'undefined') {
+            VisualEngine.initAll();
+        } else {
+            initTheme();
+            initCanvasNetwork();
+            initCursorGlow();
+            initCardSpotlights();
+            initScrollReveal();
+        }
 
         // 4. Set Dynamic User Information & Live Date
         setCurrentDate();

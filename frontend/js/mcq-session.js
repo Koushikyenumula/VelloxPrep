@@ -87,11 +87,15 @@
             Sidebar.init();
         }
 
-        // 3. Visual Engine
-        initTheme();
-        initCanvasNetwork();
-        initCursorGlow();
-        initCardSpotlights();
+        // 3. Visual Engine (Mobile & Desktop Accelerated)
+        if (typeof VisualEngine !== 'undefined') {
+            VisualEngine.initAll();
+        } else {
+            initTheme();
+            initCanvasNetwork();
+            initCursorGlow();
+            initCardSpotlights();
+        }
 
         // 4. Parse Session ID
         const urlParams = new URLSearchParams(window.location.search);

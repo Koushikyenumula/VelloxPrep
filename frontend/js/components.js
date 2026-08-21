@@ -392,3 +392,311 @@ const Toast = (() => {
         show: show
     };
 })();
+
+// ═══════════════════════════════════════════════════════════════════
+// GLOBAL VISUAL & NEURAL PHYSICS ENGINE (HIGH-PERFORMANCE / MOBILE OPTIMIZED)
+// ═══════════════════════════════════════════════════════════════════
+const VisualEngine = (() => {
+    'use strict';
+
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth < 768);
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function initTheme(toggleBtnId = 'themeToggleBtn', toggleIconId = 'themeToggleIcon') {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(savedTheme, toggleIconId);
+
+        const btn = document.getElementById(toggleBtnId);
+        if (btn) {
+            btn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                const next = current === 'light' ? 'dark' : 'light';
+                applyTheme(next, toggleIconId);
+            });
+        }
+    }
+
+    function applyTheme(theme, toggleIconId = 'themeToggleIcon') {
+        const icon = document.getElementById(toggleIconId);
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            if (icon) icon.className = 'bi bi-sun-fill';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            if (icon) icon.className = 'bi bi-moon-stars';
+        }
+        localStorage.setItem('theme', theme);
+    }
+
+    function initCanvasNetwork(canvasId = 'aiNetworkCanvas') {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas || isReducedMotion) return;
+
+        const ctx = canvas.getContext('2d', { alpha: true });
+        let width = 0;
+        let height = 0;
+        const mobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth < 768);
+        const dpr = mobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
+
+        let nodes = [];
+        let pulses = [];
+        const MAX_NODES = mobile ? 14 : Math.min(Math.floor((window.innerWidth * window.innerHeight) / 14000), 80);
+        const CONNECT_DIST = mobile ? 80 : 140;
+        const MAX_PULSES = mobile ? 0 : 8;
+
+        const mouse = {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            targetX: window.innerWidth / 2,
+            targetY: window.innerHeight / 2
+        };
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            initNodes();
+        }
+
+        function initNodes() {
+            nodes = [];
+            for (let i = 0; i < MAX_NODES; i++) {
+                const depth = 0.4 + Math.random() * 0.6;
+                nodes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * (mobile ? 0.12 : 0.22) * depth,
+                    vy: (Math.random() - 0.5) * (mobile ? 0.12 : 0.22) * depth,
+                    radius: (1.2 + Math.random() * 1.5) * depth,
+                    depth: depth,
+                    alpha: 0.15 + depth * 0.45
+                });
+            }
+        }
+
+        if (!mobile) {
+            window.addEventListener('mousemove', (e) => {
+                mouse.targetX = e.clientX;
+                mouse.targetY = e.clientY;
+            }, { passive: true });
+        }
+
+        function spawnPulse(nodeA, nodeB) {
+            if (pulses.length >= MAX_PULSES) return;
+            pulses.push({
+                startX: nodeA.x,
+                startY: nodeA.y,
+                endX: nodeB.x,
+                endY: nodeB.y,
+                progress: 0,
+                speed: 0.015 + Math.random() * 0.015
+            });
+        }
+
+        let isVisible = true;
+        document.addEventListener('visibilitychange', () => {
+            isVisible = !document.hidden;
+        });
+
+        let isScrolling = false;
+        let scrollTimeout = null;
+        if (mobile) {
+            window.addEventListener('scroll', () => {
+                isScrolling = true;
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => { isScrolling = false; }, 90);
+            }, { passive: true });
+        }
+
+        function render() {
+            requestAnimationFrame(render);
+            if (!isVisible || isScrolling) return;
+
+            if (!mobile) {
+                mouse.x += (mouse.targetX - mouse.x) * 0.04;
+                mouse.y += (mouse.targetY - mouse.y) * 0.04;
+            }
+
+            const offsetX = mobile ? 0 : (mouse.x - width / 2) / (width / 2);
+            const offsetY = mobile ? 0 : (mouse.y - height / 2) / (height / 2);
+
+            ctx.clearRect(0, 0, width, height);
+
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            const nodeColor = isLight ? 'rgba(70, 85, 125,' : 'rgba(180, 195, 235,';
+            const lineColor = isLight ? 'rgba(100, 120, 170,' : 'rgba(140, 160, 215,';
+
+            // Lines
+            for (let i = 0; i < nodes.length; i++) {
+                const na = nodes[i];
+                const posX = na.x + offsetX * 15 * na.depth;
+                const posY = na.y + offsetY * 15 * na.depth;
+
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const nb = nodes[j];
+                    const pbx = nb.x + offsetX * 15 * nb.depth;
+                    const pby = nb.y + offsetY * 15 * nb.depth;
+
+                    const dx = posX - pbx;
+                    const dy = posY - pby;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < CONNECT_DIST) {
+                        const alpha = (1 - dist / CONNECT_DIST) * 0.18 * na.depth * nb.depth;
+                        ctx.beginPath();
+                        ctx.moveTo(posX, posY);
+                        ctx.lineTo(pbx, pby);
+                        ctx.strokeStyle = `${lineColor} ${alpha})`;
+                        ctx.lineWidth = 0.75;
+                        ctx.stroke();
+
+                        if (!mobile && Math.random() < 0.0003) {
+                            spawnPulse(na, nb);
+                        }
+                    }
+                }
+            }
+
+            // Pulses
+            if (!mobile && MAX_PULSES > 0) {
+                for (let i = pulses.length - 1; i >= 0; i--) {
+                    const p = pulses[i];
+                    p.progress += p.speed;
+
+                    if (p.progress >= 1) {
+                        pulses.splice(i, 1);
+                        continue;
+                    }
+
+                    const curX = p.startX + (p.endX - p.startX) * p.progress;
+                    const curY = p.startY + (p.endY - p.startY) * p.progress;
+
+                    ctx.beginPath();
+                    ctx.arc(curX, curY, 2.2, 0, Math.PI * 2);
+                    ctx.fillStyle = isLight ? 'rgba(99, 102, 241, 0.9)' : 'rgba(167, 139, 250, 0.95)';
+                    ctx.fill();
+                }
+            }
+
+            // Nodes
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                n.x += n.vx;
+                n.y += n.vy;
+
+                if (n.x < 0) n.x = width;
+                else if (n.x > width) n.x = 0;
+                if (n.y < 0) n.y = height;
+                else if (n.y > height) n.y = 0;
+
+                const posX = n.x + offsetX * 15 * n.depth;
+                const posY = n.y + offsetY * 15 * n.depth;
+
+                ctx.beginPath();
+                ctx.arc(posX, posY, n.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `${nodeColor} ${n.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        window.addEventListener('resize', resize, { passive: true });
+        resize();
+        requestAnimationFrame(render);
+    }
+
+    function initCursorGlow(glowId = 'cursorGlow') {
+        const glow = document.getElementById(glowId);
+        if (!glow || isReducedMotion || isTouchDevice || window.innerWidth < 1024) return;
+
+        let glowX = window.innerWidth / 2;
+        let glowY = window.innerHeight / 2;
+        let targetX = glowX;
+        let targetY = glowY;
+        let isVisible = false;
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+            if (!isVisible) {
+                isVisible = true;
+                glow.style.opacity = '1';
+            }
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            isVisible = false;
+            glow.style.opacity = '0';
+        });
+
+        function updateGlow() {
+            glowX += (targetX - glowX) * 0.12;
+            glowY += (targetY - glowY) * 0.12;
+            glow.style.left = `${glowX}px`;
+            glow.style.top  = `${glowY}px`;
+            requestAnimationFrame(updateGlow);
+        }
+        requestAnimationFrame(updateGlow);
+    }
+
+    function initCardSpotlights(selector = '.stat-card, .quick-action-card, .glass-panel, .eval-card, .stat-mini-box') {
+        if (isReducedMotion || isTouchDevice || window.innerWidth < 992) return;
+
+        const cards = document.querySelectorAll(selector);
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }, { passive: true });
+        });
+    }
+
+    function initScrollReveal(selector = '.scroll-reveal, .reveal-from-left, .reveal-from-right, .reveal-from-bottom') {
+        const revealElements = document.querySelectorAll(selector);
+        if (!revealElements.length) return;
+
+        if (isReducedMotion || isTouchDevice || !('IntersectionObserver' in window)) {
+            revealElements.forEach(el => el.classList.add('revealed'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+    }
+
+    function initAll() {
+        initTheme();
+        initCanvasNetwork();
+        initCursorGlow();
+        initCardSpotlights();
+        initScrollReveal();
+    }
+
+    return {
+        initAll: initAll,
+        initTheme: initTheme,
+        initCanvasNetwork: initCanvasNetwork,
+        initCursorGlow: initCursorGlow,
+        initCardSpotlights: initCardSpotlights,
+        initScrollReveal: initScrollReveal,
+        isTouchDevice: isTouchDevice
+    };
+})();
+
