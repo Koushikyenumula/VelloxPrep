@@ -130,7 +130,7 @@ const Sidebar = (() => {
                         <span class="sidebar-user-email">${email}</span>
                     </div>
                 </div>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 mb-2">
                     <button class="sidebar-logout-btn flex-grow-1" id="sidebarLogoutBtn" aria-label="Logout">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Logout</span>
@@ -138,6 +138,10 @@ const Sidebar = (() => {
                     <button class="btn btn-outline-secondary sidebar-theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme" style="border-radius: var(--radius-sm); border-color: var(--border-color); color: var(--text-secondary);">
                         <i class="bi bi-moon-stars-fill" id="themeToggleIcon"></i>
                     </button>
+                </div>
+                <div class="sidebar-creator">
+                    <i class="bi bi-code-slash"></i>
+                    <span>Created by <strong>Koushik Yenumula</strong></span>
                 </div>
             </div>
         `;

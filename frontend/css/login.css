@@ -418,6 +418,41 @@ html, body {
     line-height: 1.4;
 }
 
+/* Creator Credit Badge */
+.hero-creator-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-2);
+    margin-top: var(--sp-6);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 0.01em;
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeSlideUp 600ms var(--ease-out) 580ms forwards;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.hero-creator-badge:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--card-border-hover);
+}
+
+.hero-creator-badge i {
+    color: var(--accent);
+    font-size: 13px;
+}
+
+.hero-creator-badge strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 /* ── Right Authentication Experience (48%) ───────────────────────── */
 .auth-panel-section {
     flex: 0 0 48%;
