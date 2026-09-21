@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /pages/dashboard.html
+Disallow: /pages/profile.html
+Disallow: /pages/coding-session.html
+Disallow: /pages/interview-session.html
+Disallow: /pages/mcq-session.html
+
+Sitemap: https://www.velloxprep.com/sitemap.xml
