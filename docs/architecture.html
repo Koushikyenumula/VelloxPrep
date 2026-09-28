@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelloxPrep - Interactive Architecture Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0B1120;
+            --sidebar-bg: rgba(17, 24, 39, 0.8);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(51, 65, 85, 0.5);
+            
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            
+            --primary: #38BDF8;
+            --secondary: #8B5CF6;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        /* --- Global Animations --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+            z-index: 100;
+        }
+
+        .sidebar h2 { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-bottom: 2rem; text-align: center; }
+
+        .nav-item {
+            display: flex; align-items: center; padding: 0.75rem 1rem; color: var(--text-muted);
+            text-decoration: none; border-radius: 8px; margin-bottom: 0.5rem; transition: all 0.3s;
+            font-size: 0.9rem; font-weight: 500;
+            animation: slideInLeft 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        /* Stagger sidebar items */
+        .nav-item:nth-child(2) { animation-delay: 0.1s; }
+        .nav-item:nth-child(3) { animation-delay: 0.2s; }
+        .nav-item:nth-child(4) { animation-delay: 0.3s; }
+        .nav-item:nth-child(5) { animation-delay: 0.4s; }
+        .nav-item:nth-child(6) { animation-delay: 0.5s; }
+        .nav-item:nth-child(7) { animation-delay: 0.6s; }
+
+        .nav-item i { margin-right: 10px; font-size: 1.1rem; transition: transform 0.3s; }
+        .nav-item:hover { background-color: rgba(56, 189, 248, 0.1); color: var(--primary); transform: translateX(5px); }
+        .nav-item:hover i { transform: scale(1.2); }
+        .nav-item.active { background-color: rgba(56, 189, 248, 0.15); color: var(--primary); border-left: 3px solid var(--primary); }
+
+        /* --- Main Content Area --- */
+        .content {
+            flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 1400px;
+        }
+
+        .section {
+            margin-bottom: 8rem; opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s;
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+
+        .section-header { margin-bottom: 3rem; }
+        .section-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -1px; background: linear-gradient(90deg, #fff, #94A3B8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* --- Top Bar (Toggles) --- */
+        .topbar { display: flex; justify-content: flex-end; margin-bottom: 3rem; gap: 1rem; }
+        .toggle-btn {
+            background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+        }
+        .toggle-btn.active { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+
+        body.mode-beginner .dev-only { display: none !important; }
+        body.mode-developer .beginner-only { display: none !important; }
+
+        /* --- Animated Data Flow Architecture --- */
+        .network-container { position: relative; width: 100%; height: 500px; margin: 40px 0; background: rgba(0,0,0,0.2); border-radius: 20px; border: 1px solid var(--border-color); overflow: hidden; }
+        
+        .network-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .path-line { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 4; }
+        .path-glow { fill: none; stroke-width: 4; stroke-dasharray: 15, 15; animation: dashAnim 20s linear infinite; opacity: 0.7; }
+        
+        @keyframes dashAnim { to { stroke-dashoffset: -1000; } }
+
+        .data-packet {
+            position: absolute; width: 12px; height: 12px; border-radius: 50%;
+            offset-path: var(--path);
+            animation: packetMove var(--duration) infinite linear;
+            z-index: 5;
+            top:0; left:0;
+        }
+
+        @keyframes packetMove {
+            0% { offset-distance: 0%; opacity: 0; transform: scale(0.5); }
+            10% { opacity: 1; transform: scale(1.2); }
+            90% { opacity: 1; transform: scale(1.2); }
+            100% { offset-distance: 100%; opacity: 0; transform: scale(0.5); }
+        }
+
+        .net-node {
+            position: absolute; background: var(--sidebar-bg); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 25px; border-radius: 12px; z-index: 10;
+            transform: translate(-50%, -50%);
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+            animation: float 6s ease-in-out infinite;
+        }
+        .net-node:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 20; }
+        .net-icon { font-size: 2rem; }
+        .net-text h4 { margin:0; font-size:1rem; }
+        .net-text p { margin:0; font-size:0.75rem; color:var(--text-muted); font-family: var(--font-code);}
+
+        #net-client { top: 50%; left: 15%; animation-delay: 0s; border-left: 4px solid var(--primary); }
+        #net-api { top: 50%; left: 50%; animation-delay: -1s; border-left: 4px solid var(--warning); }
+        #net-db { top: 20%; left: 85%; animation-delay: -2s; border-left: 4px solid var(--success); }
+        #net-ai { top: 80%; left: 85%; animation-delay: -3s; border-left: 4px solid var(--secondary); }
+
+        /* --- Interactive Request Lifecycle --- */
+        .lifecycle-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .lifecycle-step {
+            display: flex; gap: 1.5rem; opacity: 0.4; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 1.5rem; border-radius: 12px; border: 1px solid transparent; cursor: pointer;
+            transform: translateX(-20px);
+        }
+        .lifecycle-step.active {
+            opacity: 1; background: rgba(255, 255, 255, 0.02); border-color: var(--border-color);
+            transform: translateX(0) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .step-number {
+            width: 45px; height: 45px; background: var(--sidebar-bg); border: 2px solid var(--border-color);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.2rem; flex-shrink: 0; transition: all 0.4s;
+        }
+        .lifecycle-step.active .step-number { border-color: var(--primary); color: var(--primary); animation: pulseGlow 2s infinite; }
+        
+        .step-title { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .step-details { margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.4); border-radius: 8px; font-family: var(--font-code); font-size: 0.85rem; border-left: 3px solid var(--primary); display: none; }
+        .lifecycle-step.active .step-details.dev-only { display: block; animation: fadeUp 0.4s forwards; }
+
+        .btn-start-flow { background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);}
+        .btn-start-flow:hover { background: #0284C7; transform: translateY(-2px); box-shadow: 0 15px 25px rgba(56, 189, 248, 0.4);}
+        .btn-start-flow i { transition: transform 0.3s; }
+        .btn-start-flow:hover i { transform: translateX(5px); }
+
+        /* --- Database Schema Cards (Animated) --- */
+        .db-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .db-table { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: all 0.4s; position: relative; }
+        .db-table:hover { transform: translateY(-10px) rotate(1deg); border-color: var(--success); box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15); z-index: 10;}
+        
+        /* Shimmer effect on hover */
+        .db-table::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+        .db-table:hover::after { left: 150%; transition: 0.8s; }
+
+        .db-header { background: rgba(16, 185, 129, 0.1); padding: 1.2rem; font-family: var(--font-code); font-weight: 700; color: var(--success); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;}
+        .db-header i { font-size: 1.5rem; opacity: 0.5; }
+        
+        .db-row { display: flex; justify-content: space-between; padding: 0.8rem 1.2rem; font-family: var(--font-code); font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); transition: background 0.2s; }
+        .db-row:hover { background: rgba(255,255,255,0.05); }
+        .db-row:last-child { border-bottom: none; }
+        .type-pk { color: var(--warning); font-weight: bold; background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px;}
+        .type-fk { color: var(--secondary); font-style: italic; }
+
+    </style>
+</head>
+<body class="mode-developer">
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <h2>VelloxPrep<br><span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">Architecture Portal</span></h2>
+        <a href="#overview" class="nav-item active"><i class="bi bi-compass"></i> Overview</a>
+        <a href="#architecture" class="nav-item"><i class="bi bi-diagram-3"></i> System Architecture</a>
+        <a href="#lifecycle" class="nav-item"><i class="bi bi-play-circle"></i> Request Lifecycle</a>
+        <a href="#database" class="nav-item"><i class="bi bi-database"></i> Database Schema</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+
+        <!-- Top Toggles -->
+        <div class="topbar">
+            <button class="toggle-btn" id="btn-beginner"><i class="bi bi-emoji-smile"></i> Beginner Mode</button>
+            <button class="toggle-btn active" id="btn-developer"><i class="bi bi-code-slash"></i> Developer Mode</button>
+        </div>
+
+        <!-- 1. Overview -->
+        <section id="overview" class="section">
+            <div class="section-header">
+                <h1 class="section-title">System Overview</h1>
+                <p class="section-subtitle">High-level understanding of the VelloxPrep ecosystem.</p>
+            </div>
+            
+            <div style="background: var(--card-bg); padding: 2rem; border-radius: 16px; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(56,189,248,0.1);">
+                <div class="beginner-only">
+                    VelloxPrep is an application that acts like a robot recruiter. You (the user) talk to the website through your browser. The website sends your requests to our backend server. Our server stores your info safely, and talks to Google's Gemini AI to grade your answers.
+                </div>
+                <div class="dev-only">
+                    VelloxPrep utilizes a decoupled client-server architecture. The Client is a static Vanilla JS frontend. The Backend is a monolithic Spring Boot API (Java 21) handling RESTful communications. Data persistence is managed via Hibernate JPA into a serverless Neon PostgreSQL database. Logic is heavily delegated to the Google Gemini 1.5 Flash LLM.
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Animated Architecture -->
+        <section id="architecture" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Animated Data Flow</h1>
+                <p class="section-subtitle">Real-time visualization of data moving through the stack.</p>
+            </div>
+
+            <div class="network-container">
+                <!-- SVG Paths -->
+                <svg class="network-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+                    <!-- Client to API -->
+                    <path id="p1" class="path-line" d="M 150 250 L 500 250" />
+                    <path class="path-glow" stroke="#38BDF8" d="M 150 250 L 500 250" />
+                    
+                    <!-- API to DB -->
+                    <path id="p2" class="path-line" d="M 500 250 Q 675 100 850 100" />
+                    <path class="path-glow" stroke="#10B981" d="M 500 250 Q 675 100 850 100" />
+                    
+                    <!-- API to AI -->
+                    <path id="p3" class="path-line" d="M 500 250 Q 675 400 850 400" />
+                    <path class="path-glow" stroke="#8B5CF6" d="M 500 250 Q 675 400 850 400" />
+                </svg>
+
+                <!-- Data Packets -->
+                <!-- Client <-> API -->
+                <div class="data-packet" style="--path: path('M 150 250 L 500 250'); --duration: 2s; background: #38BDF8; box-shadow: 0 0 20px #38BDF8;"></div>
+                <div class="data-packet" style="--path: path('M 500 250 L 150 250'); --duration: 2.2s; background: #38BDF8; box-shadow: 0 0 20px #38BDF8; animation-delay: 1s;"></div>
+                
+                <!-- API <-> DB -->
+                <div class="data-packet" style="--path: path('M 500 250 Q 675 100 850 100'); --duration: 1.5s; background: #10B981; box-shadow: 0 0 20px #10B981; animation-delay: 0.5s;"></div>
+                <div class="data-packet" style="--path: path('M 850 100 Q 675 100 500 250'); --duration: 1.5s; background: #10B981; box-shadow: 0 0 20px #10B981; animation-delay: 1.2s;"></div>
+
+                <!-- API <-> AI -->
+                <div class="data-packet" style="--path: path('M 500 250 Q 675 400 850 400'); --duration: 2s; background: #8B5CF6; box-shadow: 0 0 20px #8B5CF6; animation-delay: 0.2s;"></div>
+                <div class="data-packet" style="--path: path('M 850 400 Q 675 400 500 250'); --duration: 2s; background: #8B5CF6; box-shadow: 0 0 20px #8B5CF6; animation-delay: 1.8s;"></div>
+
+                <!-- Nodes -->
+                <div class="net-node" id="net-client">
+                    <div class="net-icon" style="color:var(--primary)">💻</div>
+                    <div class="net-text"><h4>Client UI</h4><p>Vanilla JS</p></div>
+                </div>
+                <div class="net-node" id="net-api">
+                    <div class="net-icon" style="color:var(--warning)">⚙️</div>
+                    <div class="net-text"><h4>Spring Boot API</h4><p>REST Controller</p></div>
+                </div>
+                <div class="net-node" id="net-db">
+                    <div class="net-icon" style="color:var(--success)">🐘</div>
+                    <div class="net-text"><h4>Neon Postgres</h4><p>Serverless DB</p></div>
+                </div>
+                <div class="net-node" id="net-ai">
+                    <div class="net-icon" style="color:var(--secondary)">✨</div>
+                    <div class="net-text"><h4>Gemini AI</h4><p>Flash 1.5 LLM</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Request Lifecycle -->
+        <section id="lifecycle" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Request Lifecycle</h1>
+                <p class="section-subtitle">What happens when a user clicks "Start Interview"?</p>
+            </div>
+
+            <button class="btn-start-flow" id="start-animation-btn">
+                <span>Play Animation Flow</span> <i class="bi bi-arrow-right-circle-fill"></i>
+            </button>
+
+            <div class="lifecycle-container">
+                <div class="lifecycle-step" id="step-1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Frontend Button Click</div>
+                        <div class="beginner-only">Website catches the click and prepares the user's resume data.</div>
+                        <div class="step-details dev-only"><strong>File:</strong> interview.js<br><strong>Action:</strong> <code>fetch('/api/interview/start', { headers: {'Authorization': 'Bearer ' + token} })</code></div>
+                    </div>
+                </div>
+
+                <div class="lifecycle-step" id="step-2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Spring Boot Authentication Filter</div>
+                        <div class="beginner-only">Backend checks the user's VIP pass (token) to ensure they are allowed in.</div>
+                        <div class="step-details dev-only"><strong>Class:</strong> JwtAuthenticationFilter.java<br><strong>Action:</strong> Intercepts request, validates JWT signature, sets SecurityContext.</div>
+                    </div>
+                </div>
+
+                <div class="lifecycle-step" id="step-3">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Controller & Service Logic</div>
+                        <div class="beginner-only">The backend creates a new empty interview session in the database.</div>
+                        <div class="step-details dev-only"><strong>Class:</strong> InterviewController.java -> InterviewSessionServiceImpl.java<br><strong>Action:</strong> <code>sessionRepo.save(newSession)</code></div>
+                    </div>
+                </div>
+
+                <div class="lifecycle-step" id="step-4">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Gemini AI Prompt Injection</div>
+                        <div class="beginner-only">Backend talks to Google AI asking it to generate 5 tech questions for the user.</div>
+                        <div class="step-details dev-only"><strong>Class:</strong> GeminiServiceImpl.java<br><strong>Network:</strong> Sync HTTP POST to <code>generativelanguage.googleapis.com</code></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Database Schema -->
+        <section id="database" class="section">
+            <div class="section-header">
+                <h1 class="section-title">Database Schema</h1>
+                <p class="section-subtitle">Hover over tables to interact.</p>
+            </div>
+
+            <div class="db-grid">
+                <div class="db-table">
+                    <div class="db-header"><span>users</span><i class="bi bi-person"></i></div>
+                    <div class="db-row"><span>id</span> <span class="type-pk">PK</span></div>
+                    <div class="db-row"><span>email</span> <span>VARCHAR</span></div>
+                    <div class="db-row"><span>password_hash</span> <span>VARCHAR</span></div>
+                </div>
+
+                <div class="db-table">
+                    <div class="db-header"><span>interview_sessions</span><i class="bi bi-camera-video"></i></div>
+                    <div class="db-row"><span>id</span> <span class="type-pk">PK</span></div>
+                    <div class="db-row"><span>user_id</span> <span class="type-fk">FK</span></div>
+                    <div class="db-row"><span>status</span> <span>ENUM</span></div>
+                </div>
+
+                <div class="db-table">
+                    <div class="db-header"><span>interview_questions</span><i class="bi bi-question-circle"></i></div>
+                    <div class="db-row"><span>id</span> <span class="type-pk">PK</span></div>
+                    <div class="db-row"><span>session_id</span> <span class="type-fk">FK</span></div>
+                    <div class="db-row"><span>question_text</span> <span>TEXT</span></div>
+                </div>
+
+                <div class="db-table">
+                    <div class="db-header"><span>answer_evaluations</span><i class="bi bi-check-all"></i></div>
+                    <div class="db-row"><span>id</span> <span class="type-pk">PK</span></div>
+                    <div class="db-row"><span>question_id</span> <span class="type-fk">FK</span></div>
+                    <div class="db-row"><span>score</span> <span>INTEGER</span></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Reveal sections on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // update sidebar
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    document.querySelector(`a[href="#${entry.target.id}"]`).classList.add('active');
+                }
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+
+        // Toggles
+        const body = document.body;
+        document.getElementById('btn-beginner').addEventListener('click', (e) => {
+            body.classList.remove('mode-developer'); body.classList.add('mode-beginner');
+            e.target.classList.add('active'); document.getElementById('btn-developer').classList.remove('active');
+        });
+        document.getElementById('btn-developer').addEventListener('click', (e) => {
+            body.classList.remove('mode-beginner'); body.classList.add('mode-developer');
+            e.target.classList.add('active'); document.getElementById('btn-beginner').classList.remove('active');
+        });
+
+        // Lifecycle Animation
+        const startBtn = document.getElementById('start-animation-btn');
+        const steps = document.querySelectorAll('.lifecycle-step');
+        let animTimer;
+        startBtn.addEventListener('click', () => {
+            steps.forEach(s => s.classList.remove('active'));
+            if(animTimer) clearInterval(animTimer);
+            let i = 0;
+            steps[0].classList.add('active');
+            animTimer = setInterval(() => {
+                steps[i].classList.remove('active');
+                i++;
+                if(i >= steps.length) { clearInterval(animTimer); steps[steps.length-1].classList.add('active'); return; }
+                steps[i].classList.add('active');
+                steps[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 2500);
+        });
+        steps.forEach(s => s.addEventListener('click', () => {
+            if(animTimer) clearInterval(animTimer);
+            steps.forEach(x => x.classList.remove('active'));
+            s.classList.add('active');
+        }));
+    </script>
+</body>
+</html>
