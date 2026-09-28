@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════════
- *  RESUME MANAGEMENT — Controller & Animation Engine
+ *  RESUME MANAGEMENT - Controller & Animation Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

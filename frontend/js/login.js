@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * VELLOXPREP — WORLD-CLASS AI SAAS AUTHENTICATION ENGINE
+ * VELLOXPREP - WORLD-CLASS AI SAAS AUTHENTICATION ENGINE
  * Handles:
  *  - Atmospheric Neural Network Canvas (Particle physics & synaptic pulses)
  *  - Desktop Ambient Cursor Parallax & Glow
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 300);
     }
 
-    // Handle successful OAuth callback — save token and redirect to dashboard
+    // Handle successful OAuth callback - save token and redirect to dashboard
     if (oauthToken && oauthEmail) {
         if (typeof Auth !== 'undefined') {
             Auth.saveToken(

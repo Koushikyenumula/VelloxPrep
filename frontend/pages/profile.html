@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://velloxprep.onrender.com" crossorigin>
+    <link rel="dns-prefetch" href="https://velloxprep.onrender.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VelloxPrep Candidate Profile — manage your candidate profile, account credentials, and review your performance analytics.">
-    <title>Candidate Profile — VelloxPrep</title>
+    <meta name="description"
+        content="VelloxPrep Candidate Profile - manage your candidate profile, account credentials, and review your performance analytics.">
+    <title>Candidate Profile - VelloxPrep</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,8 +61,8 @@
             justify-content: center;
             font-size: 2.8rem;
             font-weight: 800;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
+            color: var(--accent);
+            box-shadow: 0 8px 32px rgba(0, 87, 255, 0.2);
             overflow: hidden;
         }
 
@@ -70,7 +79,7 @@
         .stat-mini-box:hover {
             border-color: var(--accent-border);
             transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 39);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
@@ -116,7 +125,10 @@
 
     <!-- Auth Guard -->
     <script src="../js/auth.js"></script>
+
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
+
 <body>
 
     <!-- ── Canvas Neural Network Background ──────────────────────────── -->
@@ -153,9 +165,6 @@
                     <span class="pulse-dot"></span>
                     <span>Account Active</span>
                 </div>
-                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
-                    <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
-                </button>
                 <span class="topbar-date" id="currentDate"></span>
             </div>
         </header>
@@ -175,16 +184,19 @@
                             <div class="profile-avatar-wrapper">
                                 <div class="profile-avatar-main mx-auto" id="profileAvatarContainer">
                                     <span class="profile-avatar-initials" id="profileInitials">U</span>
-                                    <img src="" id="profileImage" class="d-none" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <img loading="lazy" src="" id="profileImage" class="d-none" alt="Profile"
+                                        style="width: 100%; height: 100%; object-fit: cover;">
                                 </div>
                             </div>
 
-                            <h3 class="fw-bold text-white mb-1" id="profileName">User Name</h3>
+                            <h3 class="fw-bold me-1 mb-1" id="profileName">User Name</h3>
                             <p class="text-secondary small mb-3" id="profileEmail">user@example.com</p>
 
                             <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
-                                <span class="session-badge badge-difficulty-easy px-3 py-1" id="profileRole">Candidate</span>
-                                <button class="btn btn-session-nav btn-sm px-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <span class="session-badge badge-difficulty-easy px-3 py-1"
+                                    id="profileRole">Candidate</span>
+                                <button class="btn btn-session-nav btn-sm px-3" data-bs-toggle="modal"
+                                    data-bs-target="#editProfileModal">
                                     <i class="bi bi-pencil-square me-1"></i> Edit Profile
                                 </button>
                             </div>
@@ -192,13 +204,14 @@
                             <div class="text-start border-top border-color pt-3">
                                 <div class="profile-detail-row">
                                     <span class="text-secondary small">Account Status</span>
-                                    <span class="badge d-flex align-items-center gap-1.5" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3);">
-                                        <span class="pulse-dot" style="background: #34D399; width: 6px; height: 6px;"></span> Active
+                                    <span class="badge d-flex align-items-center gap-2"
+                                        style=" color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                        <span class="pulse-dot" style="width: 8px; height: 6px;"></span> Active
                                     </span>
                                 </div>
                                 <div class="profile-detail-row">
                                     <span class="text-secondary small">Member Since</span>
-                                    <span class="text-white small fw-semibold" id="profileJoinedDate">Loading…</span>
+                                    <span class="me-1 small fw-semibold" id="profileJoinedDate">Loading…</span>
                                 </div>
                             </div>
                         </div>
@@ -218,46 +231,58 @@
 
                         <div class="p-3 p-md-4">
                             <div id="statsSkeleton" class="row g-3">
-                                <div class="col-6 col-md-3"><div class="skeleton-card" style="height: 110px;"></div></div>
-                                <div class="col-6 col-md-3"><div class="skeleton-card" style="height: 110px;"></div></div>
-                                <div class="col-6 col-md-3"><div class="skeleton-card" style="height: 110px;"></div></div>
-                                <div class="col-6 col-md-3"><div class="skeleton-card" style="height: 110px;"></div></div>
+                                <div class="col-6 col-md-3">
+                                    <div class="skeleton-card" style="height: 110px;"></div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="skeleton-card" style="height: 110px;"></div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="skeleton-card" style="height: 110px;"></div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="skeleton-card" style="height: 110px;"></div>
+                                </div>
                             </div>
 
                             <div id="statsContent" class="row g-3 d-none">
                                 <div class="col-6 col-md-3">
                                     <div class="stat-mini-box">
-                                        <div class="stat-mini-icon" style="background: rgba(99, 102, 241, 0.15); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.3);">
+                                        <div class="stat-mini-icon"
+                                            style="background: rgba(99, 102, 241, 0.15); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.3);">
                                             <i class="bi bi-mic-fill"></i>
                                         </div>
-                                        <div class="h3 fw-bold text-white mb-0" id="statInterviews">0</div>
+                                        <div class="h3 fw-bold me-1 mb-0" id="statInterviews">0</div>
                                         <div class="text-secondary small mt-1">Total Interviews</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
                                     <div class="stat-mini-box">
-                                        <div class="stat-mini-icon" style="background: rgba(167, 139, 250, 0.15); color: #A78BFA; border: 1px solid rgba(167, 139, 250, 0.3);">
+                                        <div class="stat-mini-icon"
+                                            style="background: rgba(167, 139, 250, 0.15); color: #A78BFA; border: 1px solid rgba(167, 139, 250, 0.3);">
                                             <i class="bi bi-graph-up-arrow"></i>
                                         </div>
-                                        <div class="h3 fw-bold text-white mb-0"><span id="statAverage">0</span>%</div>
+                                        <div class="h3 fw-bold me-1 mb-0"><span id="statAverage">0</span>%</div>
                                         <div class="text-secondary small mt-1">Average Score</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
                                     <div class="stat-mini-box">
-                                        <div class="stat-mini-icon" style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                        <div class="stat-mini-icon"
+                                            style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3);">
                                             <i class="bi bi-trophy-fill"></i>
                                         </div>
-                                        <div class="h3 fw-bold text-white mb-0"><span id="statBest">0</span>%</div>
+                                        <div class="h3 fw-bold me-1 mb-0"><span id="statBest">0</span>%</div>
                                         <div class="text-secondary small mt-1">Best Score</div>
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-3">
                                     <div class="stat-mini-box">
-                                        <div class="stat-mini-icon" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                        <div class="stat-mini-icon"
+                                            style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3);">
                                             <i class="bi bi-file-earmark-person-fill"></i>
                                         </div>
-                                        <div class="h3 fw-bold text-white mb-0" id="statResumes">0</div>
+                                        <div class="h3 fw-bold me-1 mb-0" id="statResumes">0</div>
                                         <div class="text-secondary small mt-1">Resumes Uploaded</div>
                                     </div>
                                 </div>
@@ -276,11 +301,13 @@
                         <div class="p-3 p-md-4">
                             <div class="row align-items-center mb-4">
                                 <div class="col-md-8 text-start">
-                                    <h5 class="text-white mb-1">Account Password</h5>
-                                    <p class="text-secondary small mb-0">Use a strong, unique password to secure your interview preparation account.</p>
+                                    <h5 class="me-1 mb-1">Account Password</h5>
+                                    <p class="text-secondary small mb-0">Use a strong, unique password to secure your
+                                        interview preparation account.</p>
                                 </div>
                                 <div class="col-md-4 text-start text-md-end mt-3 mt-md-0">
-                                    <button class="btn btn-session-nav px-3.5" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                    <button class="btn btn-session-nav px-3.5" data-bs-toggle="modal"
+                                        data-bs-target="#changePasswordModal">
                                         <i class="bi bi-key me-1"></i> Change Password
                                     </button>
                                 </div>
@@ -290,11 +317,13 @@
 
                             <div class="row align-items-center">
                                 <div class="col-md-8 text-start">
-                                    <h5 class="text-white mb-1">Two-Factor Authentication (2FA)</h5>
-                                    <p class="text-secondary small mb-0">Add cryptographic multi-factor authorization to protect your assessments.</p>
+                                    <h5 class="me-1 mb-1    ">Two-Factor Authentication (2FA)</h5>
+                                    <p class="text-secondary small mb-0">Add cryptographic multi-factor authorization to
+                                        protect your assessments.</p>
                                 </div>
                                 <div class="col-md-4 text-start text-md-end mt-3 mt-md-0">
-                                    <button class="btn btn-session-submit px-3.5" onclick="if(typeof Toast!=='undefined'&&typeof Toast.show==='function'){Toast.show('2FA multi-factor authentication protocol coming soon!', 'info');}">
+                                    <button class="btn btn-session-submit px-3.5"
+                                        onclick="if(typeof Toast!=='undefined'&&typeof Toast.show==='function'){Toast.show('2FA multi-factor authentication protocol coming soon!', 'info');}">
                                         <i class="bi bi-shield-check me-1"></i> Enable 2FA
                                     </button>
                                 </div>
@@ -313,19 +342,20 @@
                         <div class="p-3 p-md-4">
                             <div class="profile-detail-row">
                                 <span class="text-secondary small">Platform</span>
-                                <span class="text-white fw-medium small">VelloxPrep AI</span>
+                                <span class="m1-1 fw-medium small">VelloxPrep AI</span>
                             </div>
                             <div class="profile-detail-row">
                                 <span class="text-secondary small">Created By</span>
-                                <span class="text-white fw-semibold small" style="color: var(--accent) !important;"><i class="bi bi-code-slash me-1"></i> Koushik Yenumula</span>
+                                <span class="m1-1 fw-semibold small" style="color: var(--accent) !important;"><i
+                                        class="bi bi-code-slash me-1"></i> Koushik Yenumula</span>
                             </div>
                             <div class="profile-detail-row">
                                 <span class="text-secondary small">Architecture</span>
-                                <span class="text-white fw-medium small">Spring Boot 3 REST API + Modern SPA</span>
+                                <span class="m1-1 fw-medium small">Spring Boot 3 REST API + Modern SPA</span>
                             </div>
                             <div class="profile-detail-row">
                                 <span class="text-secondary small">AI Engine</span>
-                                <span class="text-white fw-medium small">Google Gemini AI Intelligence</span>
+                                <span class="m1-1 fw-medium small">Google Gemini AI Intelligence</span>
                             </div>
                         </div>
                     </div>
@@ -337,10 +367,12 @@
     </div>
 
     <!-- ── Edit Profile Modal ─────────────────────────────────────── -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+        aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content premium-modal">
-                <div class="modal-icon-badge" style="background: var(--accent-subtle); color: #A78BFA; border: 1px solid var(--accent-border);">
+                <div class="modal-icon-badge"
+                    style="background: var(--accent-subtle); color: #A78BFA; border: 1px solid var(--accent-border);">
                     <i class="bi bi-person-lines-fill"></i>
                 </div>
                 <h4 class="modal-title mb-1" id="editProfileModalLabel">Edit Candidate Profile</h4>
@@ -349,7 +381,8 @@
                 <form id="editProfileForm">
                     <div class="text-start mb-3">
                         <label for="editProfileName" class="form-label-custom mb-1">Candidate Name</label>
-                        <input type="text" class="form-control-custom w-100" id="editProfileName" placeholder="Enter your full name">
+                        <input type="text" class="form-control-custom w-100" id="editProfileName"
+                            placeholder="Enter your full name">
                     </div>
                     <div class="text-start mb-4">
                         <label for="editProfileImage" class="form-label-custom mb-1">Profile Photo (Optional)</label>
@@ -358,7 +391,8 @@
 
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-modal-cancel w-50" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-modal-confirm-primary w-50" id="saveProfileBtn">Save Changes</button>
+                        <button type="submit" class="btn btn-modal-confirm-primary w-50" id="saveProfileBtn">Save
+                            Changes</button>
                     </div>
                 </form>
             </div>
@@ -366,10 +400,12 @@
     </div>
 
     <!-- ── Change Password Modal ─────────────────────────────────────── -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content premium-modal">
-                <div class="modal-icon-badge" style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3);">
+                <div class="modal-icon-badge"
+                    style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3);">
                     <i class="bi bi-shield-lock-fill"></i>
                 </div>
                 <h4 class="modal-title mb-1" id="changePasswordModalLabel">Change Password</h4>
@@ -378,22 +414,26 @@
                 <form id="changePasswordForm">
                     <div class="text-start mb-3">
                         <label for="oldPassword" class="form-label-custom mb-1">Current Password</label>
-                        <input type="password" class="form-control-custom w-100" id="oldPassword" placeholder="••••••••" required>
+                        <input type="password" class="form-control-custom w-100" id="oldPassword" placeholder="••••••••"
+                            required>
                         <div class="invalid-feedback" id="oldPasswordError">Incorrect current password.</div>
                     </div>
                     <div class="text-start mb-3">
                         <label for="newPassword" class="form-label-custom mb-1">New Password</label>
-                        <input type="password" class="form-control-custom w-100" id="newPassword" placeholder="Minimum 6 characters" required minlength="6">
+                        <input type="password" class="form-control-custom w-100" id="newPassword"
+                            placeholder="Minimum 6 characters" required minlength="6">
                     </div>
                     <div class="text-start mb-4">
                         <label for="confirmPassword" class="form-label-custom mb-1">Confirm New Password</label>
-                        <input type="password" class="form-control-custom w-100" id="confirmPassword" placeholder="Repeat new password" required minlength="6">
+                        <input type="password" class="form-control-custom w-100" id="confirmPassword"
+                            placeholder="Repeat new password" required minlength="6">
                         <div class="invalid-feedback">Passwords do not match.</div>
                     </div>
 
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-modal-cancel w-50" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-modal-confirm-primary w-50" id="savePasswordBtn">Update Password</button>
+                        <button type="submit" class="btn btn-modal-confirm-primary w-50" id="savePasswordBtn">Update
+                            Password</button>
                     </div>
                 </form>
             </div>
@@ -408,4 +448,5 @@
     <script src="../js/api.js"></script>
     <script src="../js/profile.js"></script>
 </body>
+
 </html>

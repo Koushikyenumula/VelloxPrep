@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * CENTRAL API CLIENT — JavaScript
+ * CENTRAL API CLIENT - JavaScript
  * VelloxPrep Platform
  *
  * Exposes all REST endpoint mappings under the global `API` namespace.

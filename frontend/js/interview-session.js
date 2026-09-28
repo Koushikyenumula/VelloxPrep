@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  SUBJECTIVE AI INTERVIEW SESSION — Controller & Physics Engine
+ *  SUBJECTIVE AI INTERVIEW SESSION - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

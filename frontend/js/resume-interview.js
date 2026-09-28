@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  RESUME-BASED AI INTERVIEW GENERATOR — Controller & Physics Engine
+ *  RESUME-BASED AI INTERVIEW GENERATOR - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

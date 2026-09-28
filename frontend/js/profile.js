@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  CANDIDATE PROFILE — Controller & Physics Engine
+ *  CANDIDATE PROFILE - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

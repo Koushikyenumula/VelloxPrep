@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  MCQ SESSION — Controller & Interactive Evaluation Engine
+ *  MCQ SESSION - Controller & Interactive Evaluation Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://velloxprep.onrender.com" crossorigin>
+    <link rel="dns-prefetch" href="https://velloxprep.onrender.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VelloxPrep Interview History — review detailed AI feedback, score metrics, and performance breakdowns for all your practice sessions.">
-    <title>Interview History & Results — VelloxPrep</title>
+    <meta name="description" content="VelloxPrep Interview History - review detailed AI feedback, score metrics, and performance breakdowns for all your practice sessions.">
+    <title>Interview History & Results - VelloxPrep</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +30,8 @@
 
     <!-- Auth Guard and Fetch Interceptor -->
     <script src="../js/auth.js"></script>
+
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
@@ -62,9 +69,6 @@
                     <span class="pulse-dot"></span>
                     <span>Telemetry Active</span>
                 </div>
-                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
-                    <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
-                </button>
                 <span class="topbar-date" id="currentDate"></span>
             </div>
         </header>
@@ -151,7 +155,7 @@
                                         <span class="input-group-text bg-transparent border-end-0 border-color text-secondary">
                                             <i class="bi bi-search"></i>
                                         </span>
-                                        <input type="text" id="sessionSearch" class="form-control bg-transparent border-start-0 border-color text-light" placeholder="Search by topic or skill…" style="border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+                                        <input type="text" id="sessionSearch" class="form-control bg-transparent border-start-0 border-color" placeholder="Search by topic or skill…" style="border-radius: 0 var(--radius-md) var(--radius-md) 0;">
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +186,7 @@
                             <div class="action-icon-box action-icon-primary mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.6rem;">
                                 <i class="bi bi-inbox-fill"></i>
                             </div>
-                            <h5 class="fw-bold text-white mb-1">No Practice Sessions Yet</h5>
+                            <h5 class="fw-bold mb-1">No Practice Sessions Yet</h5>
                             <p class="text-secondary small mb-3">Launch a practice session to start building your evaluation dossier.</p>
                             <a href="interview-generate.html" class="btn btn-session-submit px-4">Start Interview</a>
                         </div>

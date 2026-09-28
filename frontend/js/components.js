@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * COMMON COMPONENTS — JavaScript
+ * COMMON COMPONENTS - JavaScript
  * VelloxPrep Platform
  *
  * Handles reusable UI components like the Sidebar and Layout Wrapper.
@@ -53,7 +53,10 @@ const Sidebar = (() => {
             <div class="sidebar-header">
                 <div class="sidebar-brand">
                     <div class="sidebar-brand-icon" style="overflow: hidden; background: none; box-shadow: none;">
-                        <img src="../assets/logo.png" alt="VelloxPrep Logo" style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                            <rect width="100" height="100" rx="22" fill="var(--accent)" />
+                            <path d="M28 32 L50 78 L72 32" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        </svg>
                     </div>
                     <span class="sidebar-brand-text">VelloxPrep</span>
                 </div>
@@ -135,13 +138,17 @@ const Sidebar = (() => {
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Logout</span>
                     </button>
-                    <button class="btn btn-outline-secondary sidebar-theme-toggle" id="themeToggleBtn" aria-label="Toggle Theme" style="border-radius: var(--radius-sm); border-color: var(--border-color); color: var(--text-secondary);">
-                        <i class="bi bi-moon-stars-fill" id="themeToggleIcon"></i>
-                    </button>
                 </div>
-                <div class="sidebar-creator">
-                    <i class="bi bi-code-slash"></i>
-                    <span>Created by <strong>Koushik Yenumula</strong></span>
+                <div class="sidebar-creator d-flex flex-column align-items-center gap-1">
+                    <div>
+                        <i class="bi bi-code-slash"></i>
+                        <span>Created by <strong>Koushik Yenumula</strong></span>
+                    </div>
+                    <span class="badge" style="background: var(--bg-base); color: var(--text-muted); border: 1px solid var(--border-color); font-weight: 500; font-size: 0.65rem;">v1.2</span>
+                </div>
+                <div class="sidebar-legal-links d-flex justify-content-center gap-3 mt-3" style="font-size: 0.75rem;">
+                    <a href="privacy.html" class="text-secondary text-decoration-none hover-accent">Privacy</a>
+                    <a href="terms.html" class="text-secondary text-decoration-none hover-accent">Terms</a>
                 </div>
             </div>
         `;

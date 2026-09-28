@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   VELLOXPREP SIDEBAR — LUXURY GLASSMORPHISM NAVIGATION
+   VELLOXPREP SIDEBAR - LUXURY GLASSMORPHISM NAVIGATION
    ═══════════════════════════════════════════════════════════════════ */
 
 .sidebar {
@@ -27,6 +27,7 @@
     justify-content: space-between;
     border-bottom: 1px solid var(--border-color);
     background: rgba(255, 255, 255, 0.01);
+    position: relative;
 }
 
 .sidebar-brand {
@@ -138,8 +139,8 @@
 
 /* Active Menu Item Glow */
 .sidebar-menu-item.active a {
-    color: #FFFFFF;
-    background: linear-gradient(90deg, rgba(124, 92, 255, 0.22) 0%, rgba(124, 92, 255, 0.06) 100%);
+    color: var(--accent);
+    background: linear-gradient(90deg, rgba(0, 87, 255, 0.12) 0%, rgba(0, 87, 255, 0.03) 100%);
     border: 1px solid var(--accent-border);
     font-weight: 600;
     box-shadow: 0 4px 16px -4px var(--accent-glow);
@@ -153,10 +154,10 @@
 .sidebar-menu-item.active a::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 20%;
-    bottom: 20%;
-    width: 3px;
+    left: -0.85rem;
+    top: 15%;
+    bottom: 15%;
+    width: 4px;
     border-radius: 0 4px 4px 0;
     background: var(--accent);
     box-shadow: 0 0 10px var(--accent);
@@ -229,9 +230,9 @@
     background: rgba(244, 63, 94, 0.08);
     border: 1px solid rgba(244, 63, 94, 0.22);
     border-radius: var(--radius-sm);
-    color: #FDA4AF;
+    color: var(--danger);
     font-size: 0.84rem;
-    font-weight: 500;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -241,7 +242,7 @@
 }
 
 .sidebar-logout-btn:hover {
-    background: rgba(244, 63, 94, 0.18);
+    background: var(--danger);
     color: #FFF;
     border-color: var(--danger);
     box-shadow: 0 0 12px rgba(244, 63, 94, 0.25);
@@ -331,24 +332,35 @@
     body.sidebar-collapsed .sidebar-menu-item a span,
     body.sidebar-collapsed .sidebar-user-info,
     body.sidebar-collapsed .sidebar-logout-btn span,
-    body.sidebar-collapsed .sidebar-creator {
+    body.sidebar-collapsed .sidebar-creator,
+    body.sidebar-collapsed .sidebar-legal-links {
         display: none !important;
     }
 
     body.sidebar-collapsed .sidebar-header {
+        flex-direction: column;
         justify-content: center;
-        padding: 0 0.5rem;
+        padding: 1rem 0;
+        height: auto;
+        gap: 0.5rem;
     }
 
     body.sidebar-collapsed .sidebar-menu-item a {
         justify-content: center;
-        padding: 0.75rem 0.5rem;
+        padding: 0.75rem 0;
         gap: 0;
     }
 
     body.sidebar-collapsed .sidebar-user {
         justify-content: center;
-        padding: 0.5rem;
+        padding: 0.5rem 0;
+        background: transparent;
+        border-color: transparent;
+    }
+    
+    body.sidebar-collapsed .sidebar-logout-btn {
+        width: 38px;
+        padding: 0;
     }
 
     body.sidebar-collapsed .sidebar-collapse-btn i {

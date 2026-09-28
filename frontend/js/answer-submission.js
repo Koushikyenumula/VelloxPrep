@@ -18,8 +18,8 @@
  *   This module exposes `AnswerSubmission` on the global `window` object.
  *   The session page should call:
  *
- *     AnswerSubmission.init({ ... })   — once, on page load
- *     AnswerSubmission.submit()        — on submit button click
+ *     AnswerSubmission.init({ ... })   - once, on page load
+ *     AnswerSubmission.submit()        - on submit button click
  * ═══════════════════════════════════════════════════════════════════
  */
 

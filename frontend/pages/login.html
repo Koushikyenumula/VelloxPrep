@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://velloxprep.onrender.com" crossorigin>
+    <link rel="dns-prefetch" href="https://velloxprep.onrender.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="VelloxPrep — The world-class AI-powered interview preparation and technical intelligence platform. Login to start preparing.">
+    <meta name="description" content="VelloxPrep - The world-class AI-powered interview preparation and technical intelligence platform. Login to start preparing.">
     <meta name="keywords" content="AI interview prep, technical interview, coding interview, mock interview, VelloxPrep, login">
     <meta name="author" content="VelloxPrep">
     <meta name="robots" content="index, follow">
-    <title>VelloxPrep — Login</title>
+    <title>VelloxPrep - Login</title>
 
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,6 +30,8 @@
 
     <!-- Official Google Identity Services SDK -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 </head>
 <body>
 
@@ -41,15 +48,14 @@
     <header class="auth-top-bar">
         <a href="login.html" class="brand-anchor" aria-label="VelloxPrep Home">
             <div class="brand-logo-wrap">
-                <img src="../assets/logo.png" alt="VelloxPrep Logo" class="brand-logo-img">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="brand-logo-img">
+                    <rect width="100" height="100" rx="22" fill="var(--accent)" />
+                    <path d="M28 32 L50 78 L72 32" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
             </div>
             <span class="brand-name">VelloxPrep</span>
             <span class="brand-badge">AI Platform</span>
         </a>
-
-        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle light/dark theme">
-            <i class="bi bi-moon-stars" id="themeToggleIcon"></i>
-        </button>
     </header>
 
     <!-- ── Main Viewport Split Layout ──────────────────────────────── -->

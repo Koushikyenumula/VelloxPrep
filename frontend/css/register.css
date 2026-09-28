@@ -1,26 +1,26 @@
 /* ═══════════════════════════════════════════════════════════════════
-   REGISTER PAGE — Premium Glassmorphism Design
+   REGISTER PAGE - Premium Glassmorphism Design
    VelloxPrep Platform
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ── CSS Custom Properties ───────────────────────────────────────── */
 :root {
-    --primary:        hsl(250, 80%, 60%);
-    --primary-light:  hsl(250, 80%, 75%);
-    --primary-dark:   hsl(250, 80%, 45%);
-    --accent:         hsl(290, 80%, 60%);
-    --accent-light:   hsl(290, 80%, 75%);
+    --primary:        hsl(219, 100%, 50%); /* Signal Blue */
+    --primary-light:  hsl(219, 100%, 65%);
+    --primary-dark:   hsl(219, 100%, 40%);
+    --accent:         hsl(219, 100%, 50%);
+    --accent-light:   hsl(219, 100%, 65%);
 
-    --bg-dark:        hsl(0, 0%, 4%);
-    --bg-card:        hsl(0, 0%, 8%);
-    --bg-input:       hsl(0, 0%, 12%);
+    --bg-dark:        hsl(45, 20%, 96%); /* Porcelain */
+    --bg-card:        hsl(0, 0%, 100%);
+    --bg-input:       hsl(0, 0%, 94%);
 
-    --text-primary:   hsl(0, 0%, 96%);
-    --text-secondary: hsl(0, 0%, 65%);
-    --text-muted:     hsl(0, 0%, 45%);
+    --text-primary:   hsl(0, 0%, 15%);
+    --text-secondary: hsl(0, 0%, 40%);
+    --text-muted:     hsl(0, 0%, 60%);
 
-    --border-color:   hsla(0, 0%, 100%, 0.12);
-    --border-focus:   hsla(0, 0%, 50%, 0.50);
+    --border-color:   hsla(0, 0%, 0%, 0.12);
+    --border-focus:   hsla(219, 100%, 50%, 0.50);
 
     --success:        hsl(150, 80%, 40%);
     --danger:         hsl(350, 80%, 50%);

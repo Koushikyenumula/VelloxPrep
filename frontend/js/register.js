@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * REGISTER PAGE — JavaScript
+ * REGISTER PAGE - JavaScript
  * VelloxPrep Platform
  *
  * Handles:
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     togglePassword.addEventListener('click', handleTogglePassword);
     toggleConfirmPassword.addEventListener('click', handleToggleConfirmPassword);
 
-    // Real-time validation — clear errors on input
+    // Real-time validation - clear errors on input
     nameInput.addEventListener('input', () => clearFieldError(nameInput));
     emailInput.addEventListener('input', () => clearFieldError(emailInput));
     passwordInput.addEventListener('input', () => clearFieldError(passwordInput));

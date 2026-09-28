@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  INTERVIEW HISTORY & RESULTS — Controller & Physics Engine
+ *  INTERVIEW HISTORY & RESULTS - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */
@@ -437,7 +437,7 @@
             const diffClass = difficulty.toLowerCase();
 
             const scoreVal = session.score != null ? Math.round(session.score) : null;
-            let scoreBadge = '<span class="text-secondary">—</span>';
+            let scoreBadge = '<span class="text-secondary">-</span>';
             if (scoreVal !== null) {
                 let badgeClass = 'score-low';
                 if (scoreVal >= 75) badgeClass = 'score-high';
@@ -445,7 +445,7 @@
                 scoreBadge = `<span class="badge-score ${badgeClass}">${scoreVal}%</span>`;
             }
             
-            let dateStr = '—';
+            let dateStr = '-';
             if (session.createdAt) {
                 const dateObj = new Date(session.createdAt);
                 dateStr = dateObj.toLocaleDateString('en-US', {
@@ -484,7 +484,7 @@
                     ${typeBadge}
                 </td>
                 <td>
-                    <span class="fw-semibold text-white">${skillName}</span>
+                    <span class="fw-semibold">${skillName}</span>
                 </td>
                 <td>
                     <span class="session-badge badge-difficulty-${diffClass}">${difficulty}</span>
@@ -606,7 +606,7 @@
             
             let answerText = '<span class="text-secondary italic">No candidate answer submitted.</span>';
             let feedbackText = '<span class="text-secondary italic">No feedback available.</span>';
-            let scoreBadge = '<span class="text-secondary">—</span>';
+            let scoreBadge = '<span class="text-secondary">-</span>';
 
             if (evalObj) {
                 if (evalObj.userAnswer && evalObj.userAnswer.trim()) {

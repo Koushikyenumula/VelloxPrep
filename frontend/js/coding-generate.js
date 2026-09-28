@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  MOCK CODING TEST GENERATOR — Controller & Physics Engine
+ *  MOCK CODING TEST GENERATOR - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

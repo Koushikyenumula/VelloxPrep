@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  MOCK CODING TEST SESSION — Controller & Monaco IDE Integration
+ *  MOCK CODING TEST SESSION - Controller & Monaco IDE Integration
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

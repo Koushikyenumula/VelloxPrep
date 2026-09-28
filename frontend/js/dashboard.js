@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * DASHBOARD PAGE — High-Craft Animation Engine & Telemetry
+ * DASHBOARD PAGE - High-Craft Animation Engine & Telemetry
  * VelloxPrep Platform
  *
  * Handles:

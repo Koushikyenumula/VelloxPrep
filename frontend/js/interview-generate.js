@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  STANDARD INTERVIEW GENERATE — Controller & Animation Engine
+ *  STANDARD INTERVIEW GENERATE - Controller & Animation Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */

@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- * GLOBAL AUTHENTICATION MODULE — JavaScript
+ * GLOBAL AUTHENTICATION MODULE - JavaScript
  * VelloxPrep Platform
  * ═══════════════════════════════════════════════════════════════════
  */

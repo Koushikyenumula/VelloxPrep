@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════════
- *  ADMIN DASHBOARD — Controller & Physics Engine
+ *  ADMIN DASHBOARD - Controller & Physics Engine
  *  VelloxPrep Platform (Aesthetic & Neural Motion Synchronized)
  * ═══════════════════════════════════════════════════════════════════
  */
@@ -430,13 +430,13 @@
 
             const name = user.name || 'Anonymous Candidate';
             const initial = name.charAt(0).toUpperCase() || 'U';
-            const email = user.email || '—';
+            const email = user.email || '-';
             const role = user.role || 'USER';
             const isAdmin = role === 'ADMIN';
 
             const joinedDate = user.createdAt
                 ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                : '—';
+                : '-';
 
             const resumeCount = user.totalResumes != null ? user.totalResumes : (user.resumesCount != null ? user.resumesCount : 0);
             const sessionCount = user.totalSessions != null ? user.totalSessions : (user.sessionsCount != null ? user.sessionsCount : 0);
