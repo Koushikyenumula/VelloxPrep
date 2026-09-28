@@ -80,36 +80,7 @@
 }
 
 /* ── Light Mode Support ─────────────────────────────────────────── */
-[data-theme="light"] {
-    --bg-base:          #F8FAFC;
-    --bg-surface:       #FFFFFF;
-    --bg-surface-elev:  #F1F5F9;
-    --bg-input:         rgba(0, 0, 0, 0.025);
-    --bg-input-hover:   rgba(0, 0, 0, 0.04);
-    --bg-input-focus:   rgba(0, 0, 0, 0.05);
 
-    --card-surface:     rgba(255, 255, 255, 0.85);
-    --card-border:      rgba(0, 0, 0, 0.08);
-    --card-border-hover:rgba(0, 0, 0, 0.15);
-
-    --text-primary:     #0F172A;
-    --text-secondary:   #475569;
-    --text-muted:       #64748B;
-    --text-dim:         #94A3B8;
-
-    --accent:           #6D4AFF;
-    --accent-hover:     #5B35F5;
-    --accent-active:    #4D26E0;
-    --accent-subtle:    rgba(109, 74, 255, 0.10);
-    --accent-border:    rgba(109, 74, 255, 0.25);
-    --accent-glow:      rgba(109, 74, 255, 0.15);
-
-    --canvas-node:      rgba(70, 85, 120, 0.35);
-    --canvas-line:      rgba(100, 115, 160, 0.10);
-    --canvas-pulse:     rgba(109, 74, 255, 0.6);
-
-    --shadow-panel:     0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 0 0 1px var(--card-border);
-}
 
 /* ── Global Reset & Base Setup ───────────────────────────────────── */
 *, *::before, *::after {
@@ -1099,7 +1070,7 @@ html, body {
     transition: transform 250ms var(--ease-out);
 }
 
-[data-theme="light"] .google-modal-card {
+.google-modal-card {
     background: #FFFFFF;
     border-color: rgba(0, 0, 0, 0.1);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
@@ -1132,7 +1103,7 @@ html, body {
     color: var(--text-primary);
 }
 
-[data-theme="light"] .google-modal-close:hover {
+.google-modal-close:hover {
     background: rgba(0, 0, 0, 0.06);
     color: #202124;
 }
@@ -1144,7 +1115,7 @@ html, body {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="light"] .google-accounts-list {
+.google-accounts-list {
     border-top-color: rgba(0, 0, 0, 0.08);
 }
 
@@ -1165,7 +1136,7 @@ html, body {
     font-family: var(--font-sans);
 }
 
-[data-theme="light"] .google-account-item {
+.google-account-item {
     border-bottom-color: rgba(0, 0, 0, 0.08);
 }
 
@@ -1177,7 +1148,7 @@ html, body {
     background: rgba(255, 255, 255, 0.06);
 }
 
-[data-theme="light"] .google-account-item:hover {
+.google-account-item:hover {
     background: rgba(0, 0, 0, 0.04);
 }
 
@@ -1204,7 +1175,7 @@ html, body {
     flex-shrink: 0;
 }
 
-[data-theme="light"] .google-avatar-icon {
+.google-avatar-icon {
     background: rgba(0, 0, 0, 0.05);
 }
 
@@ -1240,7 +1211,7 @@ html, body {
     text-align: center;
 }
 
-[data-theme="light"] .google-modal-footer {
+.google-modal-footer {
     border-top-color: rgba(0, 0, 0, 0.08);
 }
 

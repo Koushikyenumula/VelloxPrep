@@ -154,10 +154,10 @@
 .sidebar-menu-item.active a::before {
     content: '';
     position: absolute;
-    left: -0.85rem;
-    top: 15%;
-    bottom: 15%;
-    width: 4px;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
     border-radius: 0 4px 4px 0;
     background: var(--accent);
     box-shadow: 0 0 10px var(--accent);
