@@ -241,7 +241,7 @@ html, body {
 }
 
 .theme-toggle-btn:focus-visible {
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 /* ── Main Split Viewport Layout ──────────────────────────────────── */
@@ -442,7 +442,7 @@ html, body {
     background: var(--card-surface);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-panel);
+    box-shadow: none;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: var(--sp-6);
@@ -569,7 +569,7 @@ html, body {
 .custom-input:focus {
     background-color: var(--bg-input-focus);
     border-color: var(--accent);
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 .form-group-custom:focus-within .field-label {
@@ -606,7 +606,7 @@ html, body {
 }
 
 .btn-toggle-eye:focus-visible {
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 /* Inline Calm Validation Feedback */
@@ -630,7 +630,7 @@ html, body {
 }
 
 .custom-input.is-invalid:focus {
-    box-shadow: 0 0 0 3px var(--error-subtle);
+    box-shadow: none;
 }
 
 /* ── Password Strength Bar ───────────────────────────────────────── */
@@ -724,7 +724,7 @@ html, body {
 }
 
 .custom-checkbox-input:focus-visible {
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 .auth-link {
@@ -766,7 +766,7 @@ html, body {
     justify-content: center;
     gap: var(--sp-2);
     cursor: pointer;
-    box-shadow: var(--shadow-btn);
+    box-shadow: none;
     transition: all var(--transition-fast);
     outline: none;
     position: relative;
@@ -775,7 +775,7 @@ html, body {
 .btn-primary-auth:hover:not(:disabled) {
     background-color: var(--accent-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(124, 92, 255, 0.4);
+    box-shadow: none;
 }
 
 .btn-primary-auth:hover:not(:disabled) .btn-arrow-icon {
@@ -788,7 +788,7 @@ html, body {
 }
 
 .btn-primary-auth:focus-visible {
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 .btn-primary-auth:disabled {
@@ -904,7 +904,7 @@ html, body {
 }
 
 .btn-social:focus-visible {
-    box-shadow: var(--shadow-focus);
+    box-shadow: none;
 }
 
 .social-icon-svg {
@@ -1063,7 +1063,7 @@ html, body {
     background: #131314;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
-    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.85);
+    box-shadow: none;
     padding: 36px 36px 28px;
     position: relative;
     transform: scale(0.94) translateY(10px);
@@ -1073,7 +1073,7 @@ html, body {
 .google-modal-card {
     background: #FFFFFF;
     border-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: none;
 }
 
 .google-modal-backdrop.active .google-modal-card {

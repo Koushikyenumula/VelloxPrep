@@ -22,7 +22,7 @@
 .upload-dropzone.drag-active {
     background: radial-gradient(circle at 50% 50%, rgba(124, 92, 255, 0.08) 0%, rgba(124, 92, 255, 0.02) 100%) !important;
     border-color: var(--accent) !important;
-    box-shadow: inset 0 0 24px rgba(124, 92, 255, 0.06), 0 8px 24px -8px var(--accent-glow);
+    box-shadow: none;
 }
 
 .upload-icon-wrapper {
@@ -37,7 +37,7 @@
     justify-content: center;
     font-size: 1.65rem;
     color: var(--accent);
-    box-shadow: 0 0 16px var(--accent-glow);
+    box-shadow: none;
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     animation: iconFloat 4s ease-in-out infinite;
 }
@@ -51,7 +51,7 @@
     transform: translateY(-4px) scale(1.08);
     color: #FFF;
     background: var(--accent);
-    box-shadow: 0 0 24px var(--accent-glow);
+    box-shadow: none;
 }
 
 .upload-title {
@@ -76,7 +76,7 @@
     border-radius: var(--radius-sm);
     font-size: 0.85rem;
     transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: var(--shadow-btn);
+    box-shadow: none;
 }
 
 .btn-browse:hover,
@@ -85,7 +85,7 @@
     color: #FFF;
     border-color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px var(--accent-glow);
+    box-shadow: none;
 }
 
 /* ── Analysis Result View ─────────────────────────────────────────── */
@@ -113,7 +113,7 @@
     align-items: center;
     justify-content: center;
     background: var(--accent-subtle);
-    box-shadow: 0 0 20px var(--accent-glow);
+    box-shadow: none;
     transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -171,7 +171,7 @@
     color: #FFF;
     border-color: var(--accent);
     transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 4px 12px var(--accent-glow);
+    box-shadow: none;
 }
 
 /* ── Resume Table & Actions ───────────────────────────────────────── */
@@ -199,7 +199,7 @@
     background: #38BDF8;
     color: #08090C;
     transform: scale(1.1);
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+    box-shadow: none;
 }
 
 .btn-table-action.action-delete {
@@ -212,7 +212,7 @@
     background: var(--danger);
     color: #FFF;
     transform: scale(1.1);
-    box-shadow: 0 0 12px var(--danger-glow);
+    box-shadow: none;
 }
 
 /* Upload Loader Animation */

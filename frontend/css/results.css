@@ -25,7 +25,7 @@
     color: var(--text-primary);
     border-color: var(--accent);
     transform: translateX(-4px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+    box-shadow: none;
 }
 
 /* ── Session Meta Badge ─────────────────────────────────────────── */
@@ -144,7 +144,7 @@
     margin-bottom: 1.25rem;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: var(--shadow-card);
+    box-shadow: none;
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
     position: relative;
     overflow: hidden;
@@ -153,7 +153,7 @@
 .eval-card:hover {
     border-color: var(--accent-border);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-panel);
+    box-shadow: none;
 }
 
 .eval-card::before {

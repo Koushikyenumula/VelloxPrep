@@ -142,7 +142,7 @@ const Sidebar = (() => {
                 <div class="sidebar-creator d-flex flex-column align-items-center gap-1">
                     <div>
                         <i class="bi bi-code-slash"></i>
-                        <span>Created by <strong>Koushik Yenumula</strong></span>
+                        <span>Created by <a href="https://www.linkedin.com/in/koushik25/" target="_blank" style="text-decoration: none; color: inherit;"><strong>Koushik Yenumula</strong></a></span>
                     </div>
                     <span class="badge" style="background: var(--bg-base); color: var(--text-muted); border: 1px solid var(--border-color); font-weight: 500; font-size: 0.65rem;">v1.2</span>
                 </div>

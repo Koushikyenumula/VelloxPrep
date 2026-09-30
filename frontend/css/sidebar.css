@@ -15,7 +15,7 @@
     flex-direction: column;
     z-index: 100;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
 }
 
 /* ── Sidebar Header ──────────────────────────────────────────────── */
@@ -46,7 +46,7 @@
     justify-content: center;
     overflow: hidden;
     flex-shrink: 0;
-    box-shadow: 0 0 16px var(--accent-glow);
+    box-shadow: none;
 }
 
 .sidebar-brand-text {
@@ -143,12 +143,12 @@
     background: linear-gradient(90deg, rgba(0, 87, 255, 0.12) 0%, rgba(0, 87, 255, 0.03) 100%);
     border: 1px solid var(--accent-border);
     font-weight: 600;
-    box-shadow: 0 4px 16px -4px var(--accent-glow);
+    box-shadow: none;
 }
 
 .sidebar-menu-item.active a i {
     color: var(--accent-hover);
-    filter: drop-shadow(0 0 8px var(--accent-glow));
+    filter: );
 }
 
 .sidebar-menu-item.active a::before {
@@ -160,7 +160,7 @@
     width: 3px;
     border-radius: 0 4px 4px 0;
     background: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
+    box-shadow: none;
 }
 
 /* ── Sidebar Footer User Capsule ─────────────────────────────────── */
@@ -245,7 +245,7 @@
     background: var(--danger);
     color: #FFF;
     border-color: var(--danger);
-    box-shadow: 0 0 12px rgba(244, 63, 94, 0.25);
+    box-shadow: none;
 }
 
 .sidebar-theme-toggle {

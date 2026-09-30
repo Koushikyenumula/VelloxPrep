@@ -127,7 +127,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: 2.5rem 2rem;
-    box-shadow: var(--shadow-card);
+    box-shadow: none;
     animation: cardSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -153,7 +153,7 @@ body {
     justify-content: center;
     font-size: 1.6rem;
     color: #fff;
-    box-shadow: 0 4px 20px hsla(245, 80%, 55%, 0.35);
+    box-shadow: none;
 }
 
 .brand-title {
@@ -196,7 +196,7 @@ body {
     font-weight: 400;
     padding: 0.8rem 1rem 0.8rem 2.75rem;
     transition: var(--transition);
-    box-shadow: var(--shadow-input);
+    box-shadow: none;
 }
 
 .form-control::placeholder {
@@ -219,8 +219,7 @@ body {
 .form-control:focus {
     background: hsla(225, 20%, 20%, 0.90);
     border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px hsla(230, 80%, 60%, 0.15),
-                var(--shadow-input);
+    box-shadow: none;
     color: var(--text-primary);
     outline: none;
 }
@@ -236,7 +235,7 @@ body {
 .form-control:-webkit-autofill:hover,
 .form-control:-webkit-autofill:focus,
 .form-control:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px var(--bg-input) inset !important;
+    -webkit-box-shadow: none;
     -webkit-text-fill-color: var(--text-primary) !important;
     transition: background-color 5000s ease-in-out 0s;
 }
@@ -244,13 +243,13 @@ body {
 /* ── Validation States ───────────────────────────────────────────── */
 .form-control.is-invalid {
     border-color: var(--danger);
-    box-shadow: 0 0 0 3px hsla(0, 75%, 60%, 0.12);
+    box-shadow: none;
     background-image: none !important;
 }
 
 .form-control.is-valid {
     border-color: var(--success);
-    box-shadow: 0 0 0 3px hsla(145, 65%, 45%, 0.12);
+    box-shadow: none;
     background-image: none !important;
 }
 
@@ -320,7 +319,7 @@ body {
 
 .btn-register:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 24px hsla(245, 80%, 55%, 0.35);
+    box-shadow: none;
     color: #fff;
 }
 
@@ -330,7 +329,7 @@ body {
 
 .btn-register:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px hsla(245, 80%, 55%, 0.25);
+    box-shadow: none;
 }
 
 .btn-register:disabled {

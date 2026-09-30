@@ -76,7 +76,7 @@
     padding: 0.45rem 1.1rem;
     font-variant-numeric: tabular-nums;
     backdrop-filter: blur(12px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
     transition: all var(--transition-fast);
 }
 
@@ -94,7 +94,7 @@
 
 .timer-display.warning {
     border-color: rgba(245, 158, 11, 0.4);
-    box-shadow: 0 0 16px rgba(245, 158, 11, 0.2);
+    box-shadow: none;
 }
 .timer-display.warning .timer-icon,
 .timer-display.warning .timer-value {
@@ -103,7 +103,7 @@
 
 .timer-display.danger {
     border-color: rgba(239, 68, 68, 0.5);
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.35);
+    box-shadow: none;
     animation: timerPulse 1s ease-in-out infinite;
 }
 .timer-display.danger .timer-icon,
@@ -152,7 +152,7 @@
     background: var(--accent);
     border-color: var(--accent);
     color: #FFF;
-    box-shadow: 0 0 16px var(--accent-glow);
+    box-shadow: none;
     transform: scale(1.1);
 }
 
@@ -203,7 +203,7 @@
     background: linear-gradient(90deg, #7C5CFF, #38BDF8);
     border-radius: var(--radius-full);
     transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 12px var(--accent-glow);
+    box-shadow: none;
 }
 
 /* ── Question Card ───────────────────────────────────────────────── */
@@ -212,7 +212,7 @@
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: 2rem;
-    box-shadow: var(--shadow-card);
+    box-shadow: none;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     margin-bottom: 1.25rem;
@@ -254,7 +254,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     color: #FFF;
-    box-shadow: 0 0 10px var(--accent-glow);
+    box-shadow: none;
 }
 
 .question-text {
@@ -347,7 +347,7 @@
 .mcq-option input:checked + .mcq-option-box {
     border-color: var(--accent) !important;
     background: var(--accent-subtle) !important;
-    box-shadow: 0 0 24px var(--accent-glow) !important;
+    box-shadow: none;
     transform: translateY(-2px);
 }
 
@@ -355,14 +355,14 @@
     background: var(--accent);
     color: #FFF;
     border-color: var(--accent);
-    box-shadow: 0 0 12px var(--accent-glow);
+    box-shadow: none;
 }
 
 /* Review Mode Correct / Incorrect Styling */
 .mcq-option-box.option-correct {
     border-color: #10B981 !important;
     background: rgba(16, 185, 129, 0.12) !important;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25) !important;
+    box-shadow: none;
 }
 .mcq-option-box.option-correct .mcq-letter {
     background: #10B981;
@@ -373,7 +373,7 @@
 .mcq-option-box.option-incorrect {
     border-color: #EF4444 !important;
     background: rgba(239, 68, 68, 0.12) !important;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.25) !important;
+    box-shadow: none;
 }
 .mcq-option-box.option-incorrect .mcq-letter {
     background: #EF4444;
@@ -472,7 +472,7 @@
     font-weight: 600;
     font-size: 0.88rem;
     padding: 0.65rem 1.4rem;
-    box-shadow: 0 4px 16px var(--accent-glow);
+    box-shadow: none;
     transition: all var(--transition-fast);
     display: inline-flex;
     align-items: center;
@@ -482,7 +482,7 @@
 .btn-session-submit:hover:not(:disabled) {
     background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 22px rgba(124, 92, 255, 0.55);
+    box-shadow: none;
     color: #FFF;
 }
 
@@ -493,7 +493,7 @@
     background: var(--card-surface);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-panel);
+    box-shadow: none;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -512,7 +512,7 @@
     font-size: 2rem;
     color: #FFF;
     margin-bottom: 1.25rem;
-    box-shadow: 0 0 28px rgba(16, 185, 129, 0.4);
+    box-shadow: none;
     animation: badgeFloat 3.5s ease-in-out infinite;
 }
 
